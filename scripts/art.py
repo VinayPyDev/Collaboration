@@ -14,3 +14,8 @@ def load_player_idle():
     return {
         "idle_0": pygame.transform.scale(pygame.image.load("player_animations/idle/player.png").convert_alpha(), (150, 150))
     }
+
+def load_sunset_bg_full():
+    return {
+        "sunset": pygame.transform.scale(pygame.image.load("data/sunsetbg_full.png").convert_alpha(), (1280, 720))
+    }

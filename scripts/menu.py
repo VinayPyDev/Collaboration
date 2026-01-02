@@ -1,7 +1,7 @@
 import pygame
 import sys
 
-from font import get_font
+from font import get_font, get_font_BOLD
 
 pygame.init()
 
@@ -40,12 +40,12 @@ def options():
         screen.fill("black")
         mouse_pos = pygame.mouse.get_pos()
         
-        text = get_font(45).render("This is Made by VinayPyDev.", True, "White")
+        text = get_font_BOLD(45).render("Made by VinayPyDev, Lucas_art, Rusty9q1.", True, "White")
         rect = text.get_rect(center=(WIDTH // 2, 260))
         screen.blit(text, rect)
 
         back = BUTTON(None, (WIDTH // 2, 460), "BACK", get_font(75), "Green", "White")
-        back.change_color(mouse_pos)
+        back.switch_color(mouse_pos)
         back.update()
 
         for event in pygame.event.get():
@@ -60,18 +60,18 @@ def options():
 
 def main_menu():
     while True:
-        screen.fill((40, 40, 40))
+        screen.fill((0, 0, 0))
         mouse_pos = pygame.mouse.get_pos()
 
-        title = get_font(85).render("Cards Of Soccer", True, "#0026FF")
-        screen.blit(title, (40, 40))
+        title = get_font(80).render("Voices of Silent Shadows", True, "#BEBEBE")
+        screen.blit(title, (10, 40))
 
-        play = BUTTON(None, (165, 250), "PLAY", get_font(70), "#00B7FF", "White")
-        options_btn = BUTTON(None, (240, 400), "OPTIONS", get_font(70), "#00B7FF", "White")
-        quit_btn = BUTTON(None, (150, 550), "QUIT", get_font(70), "#00B7FF", "White")
+        play = BUTTON(None, (640, 250), "PLAY", get_font(80), "#636363", "#FFFFFF")
+        options_btn = BUTTON(None, (640, 400), "OPTIONS", get_font(80), "#636363", "#FFFFFF")
+        quit_btn = BUTTON(None, (640, 550), "QUIT", get_font(80), "#636363", "#FFFFFF")
 
         for btn in [play, options_btn, quit_btn]:
-            btn.change_color(mouse_pos)
+            btn.switch_color(mouse_pos)
             btn.update()
 
         for event in pygame.event.get():

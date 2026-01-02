@@ -11,3 +11,6 @@ def resource_path(relative_path):
 
 def get_font(size):
     return pygame.font.Font(resource_path("font/PixeloidMono.ttf"), size)
+
+def get_font_BOLD(size):
+    return pygame.font.Font(resource_path("font/PixeloidSans-Bold.ttf"), size)

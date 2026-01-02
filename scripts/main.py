@@ -1,7 +1,10 @@
 import pygame
 import sys
-from art import load_player_idle
+
+from art import load_player_idle, load_sunset_bg_full
 from camera import Camera
+from display import draw_sunset_bg_full
+from menu import main_menu
 
 pygame.init()
 WIDTH, HEIGHT = 1280, 720
@@ -10,6 +13,7 @@ clock = pygame.time.Clock()
 
 art = {}
 art.update(load_player_idle())
+art.update(load_sunset_bg_full())
 
 class Player:
     def __init__(self, img, x, y):
@@ -19,7 +23,7 @@ class Player:
         self.y = float(y)
         self.rect.topleft = (self.x, self.y)
 
-player = Player(art["idle_0"], 640, 360)
+player = Player(art["idle_0"], 640, 430)
 
 camera_x = 0
 
@@ -27,8 +31,14 @@ player_speed = 300
 move_left = False
 move_right = False
 
+main_menu()
+
 running = True
 while running:
+    
+    screen.fill((30, 30, 30))
+    draw_sunset_bg_full(screen, art)
+
     dt = clock.tick(60) / 1000
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -40,7 +50,7 @@ while running:
                 move_right = True
 
             if event.key == pygame.K_ESCAPE:
-                running = False
+                main_menu()
                 
         if event.type == pygame.KEYUP:
             if event.key in (pygame.K_a, pygame.K_LEFT):
@@ -62,7 +72,6 @@ while running:
 
     player.rect.topleft = (int(player.x - camera_x), int(player.y))
     
-    screen.fill((30, 30, 30))
     screen.blit(player.image, player.rect)
     pygame.display.update()
 
