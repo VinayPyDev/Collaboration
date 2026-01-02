@@ -20,14 +20,12 @@ class Player:
         self.rect.topleft = (self.x, self.y)
 
 player = Player(art["idle_0"], 640, 360)
-camera = Camera(WIDTH, HEIGHT)
+
+camera_x = 0
 
 player_speed = 300
 move_left = False
 move_right = False
-
-WORLD_WIDTH = 4000
-WORLD_HEIGHT = 1000
 
 running = True
 while running:
@@ -55,13 +53,17 @@ while running:
     if move_right:
         player.x += player_speed * dt
 
-    player.x = max(0, min(player.x, WORLD_WIDTH - player.rect.width))
-    player.rect.topleft = (int(player.x), int(player.y))
+    if player.x - camera_x < -50:
+        camera_x -= 100
+        print("camera moved to left!")
+    if player.x - camera_x > WIDTH - 125:
+        camera_x += 100
+        print("camera moved to right!")
 
-    camera.update(player)
-
+    player.rect.topleft = (int(player.x - camera_x), int(player.y))
+    
     screen.fill((30, 30, 30))
-    screen.blit(player.image, camera.apply(player))
+    screen.blit(player.image, player.rect)
     pygame.display.update()
 
 pygame.quit()
