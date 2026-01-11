@@ -2,6 +2,7 @@ import pygame
 import sys
 
 from font import get_font, get_font_BOLD
+from text import disclaimer_screen
 
 pygame.init()
 
@@ -81,6 +82,7 @@ def main_menu():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if play.check_input(mouse_pos):
                     pygame.time.wait(100)
+                    disclaimer_screen()
                     return "PLAY"
                 if options_btn.check_input(mouse_pos):
                     options()

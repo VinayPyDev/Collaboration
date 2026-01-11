@@ -5,5 +5,8 @@ def draw_player_idle(screen, art, x, y):
     rect = img.get_rect(center=(x, y))
     screen.blit(img, rect)
     
-def draw_sunset_bg_full(screen, art):
-    screen.blit(art["sunset"], (0, -150))
+def draw_sunset_bg_full(screen, art, camera_x):
+    screen.blit(art["sunset"], (-camera_x, -150))
+
+def draw_dungeon_bg_full(screen, art, camera_x):
+    screen.blit(art["dungeon"], (3200 - camera_x, -150))
