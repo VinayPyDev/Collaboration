@@ -12,15 +12,15 @@ def resource_path(relative_path):
 
 def load_player_idle():
     return {
-        "idle_0": pygame.transform.scale(pygame.image.load("player_animations/idle/player.png").convert_alpha(), (150, 150))
+        "idle_0": pygame.transform.scale(pygame.image.load(resource_path("player_animations/idle/player.png")).convert_alpha(), (150, 150))
     }
 
 def load_sunset_bg_full():
     return {
-        "sunset": pygame.transform.scale(pygame.image.load("data/sunsetbg_full.png").convert_alpha(), (2900, 720))
+        "sunset": pygame.transform.scale(pygame.image.load(resource_path("data/sunsetbg_full.png")).convert_alpha(), (2900, 720))
     }
 
 def load_dungeon_bg_full():
     return {
-        "dungeon": pygame.transform.scale(pygame.image.load("data/dungeonbg_full.png").convert_alpha(), (1900, 720))
+        "dungeon": pygame.transform.scale(pygame.image.load(resource_path("data/dungeonbg_full.png")).convert_alpha(), (1900, 720))
     }

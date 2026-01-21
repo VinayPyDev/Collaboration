@@ -66,10 +66,7 @@ while running:
     if move_right:
         player.x += player_speed * dt
 
-    if player.x - camera_x < 200:
-        camera_x -= 300 * dt
-    if player.x - camera_x > WIDTH - 200:
-        camera_x += 300 * dt
+    camera_x = player.x - WIDTH // 2
 
     if player.x >= 3200:
         in_dungeon = True
