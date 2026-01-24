@@ -15,9 +15,19 @@ def load_player_idle():
         "idle_0": pygame.transform.scale(pygame.image.load(resource_path("player_animations/idle/player.png")).convert_alpha(), (150, 150))
     }
 
+def load_player_idle_left():
+    return {
+        "idle_1": pygame.transform.scale(pygame.image.load(resource_path("player_animations/idle/player_left.png")).convert_alpha(), (150, 150))
+    }
+
 def load_sunset_bg_full():
     return {
         "sunset": pygame.transform.scale(pygame.image.load(resource_path("data/sunsetbg_full.png")).convert_alpha(), (2900, 720))
+    }
+
+def load_sunset_bg_2_full():
+    return {
+        "sunset_2": pygame.transform.scale(pygame.image.load(resource_path("data/sunset_bg_2.png")).convert_alpha(), (2900, 720))
     }
 
 def load_dungeon_bg_full():

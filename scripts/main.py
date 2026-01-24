@@ -1,8 +1,9 @@
 import pygame
 import sys
 
-from art import load_player_idle, load_sunset_bg_full, load_dungeon_bg_full
-from display import draw_sunset_bg_full, draw_dungeon_bg_full
+from art import load_player_idle, load_player_idle_left
+from art import load_sunset_bg_full, load_dungeon_bg_full, load_sunset_bg_2_full
+from display import draw_sunset_bg_full, draw_dungeon_bg_full, draw_sunset_bg_2_full
 from menu import main_menu
 from text import Awareness_text
 
@@ -13,7 +14,11 @@ clock = pygame.time.Clock()
 
 art = {}
 art.update(load_player_idle())
+art.update(load_player_idle_left())
+
 art.update(load_sunset_bg_full())
+art.update(load_sunset_bg_2_full())
+
 art.update(load_dungeon_bg_full())
 
 class Player:
@@ -25,11 +30,13 @@ class Player:
         self.rect.topleft = (self.x, self.y)
 
 player = Player(art["idle_0"], 640, 430)
+player_facing = "right"
 
 camera_x = 0
 
-in_dungeon = False
+in_dungeon = True
 in_sunset = True
+in_sunset_2 = True
 
 player_speed = 150
 move_left = False
@@ -63,21 +70,30 @@ while running:
 
     if move_left:
         player.x -= player_speed * dt
+        player.image = art["idle_1"]
+        player_facing = "left"
     if move_right:
         player.x += player_speed * dt
+        player.image = art["idle_0"]
+        player_facing = "right"
 
     camera_x = player.x - WIDTH // 2
+
+    if camera_x < 0:
+        camera_x = 0
+    if player.x < 0:
+        player.x = 0
 
     if player.x >= 3200:
         in_dungeon = True
 
-    if not in_dungeon:
-        draw_sunset_bg_full(screen, art, camera_x)
-    else:
+    if in_dungeon == True:
         draw_dungeon_bg_full(screen, art, camera_x)
 
     if in_sunset == True:
         draw_sunset_bg_full(screen, art, camera_x)
+    if in_sunset_2 == True:
+        draw_sunset_bg_2_full(screen, art, camera_x)
 
     player.rect.topleft = (int(player.x - camera_x), int(player.y))
     
