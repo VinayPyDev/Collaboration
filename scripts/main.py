@@ -3,9 +3,10 @@ import sys
 
 from art import load_player_idle, load_player_idle_left
 from art import load_sunset_bg_full, load_dungeon_bg_full, load_sunset_bg_2_full
-from display import draw_sunset_bg_full, draw_dungeon_bg_full, draw_sunset_bg_2_full
+from display import draw_sunset_bg_full, draw_dungeon_bg_full, draw_sunset_bg_2_full, render_memory_1
 from menu import main_menu
 from text import Awareness_text
+from memory_render import Render_memory_1
 
 pygame.init()
 WIDTH, HEIGHT = 1280, 720
@@ -20,6 +21,11 @@ art.update(load_sunset_bg_full())
 art.update(load_sunset_bg_2_full())
 
 art.update(load_dungeon_bg_full())
+
+Memory_1_frames = render_memory_1()
+frame = 0
+last_update = pygame.time.get_ticks()
+animation_cooldown = 100
 
 class Player:
     def __init__(self, img, x, y):
@@ -68,6 +74,14 @@ while running:
             if event.key in (pygame.K_d, pygame.K_RIGHT):
                 move_right = False
 
+    current_time = pygame.time.get_ticks()
+    if current_time - last_update >= animation_cooldown:
+        Memory_frames += 1
+        last_update = current_time
+
+        if Memory_frames >= len(Memory_frames):
+            Memory_frames = 0
+
     if move_left:
         player.x -= player_speed * dt
         player.image = art["idle_1"]
@@ -96,6 +110,9 @@ while running:
         draw_sunset_bg_2_full(screen, art, camera_x)
 
     player.rect.topleft = (int(player.x - camera_x), int(player.y))
+
+    if player.x == 1300:
+        render_memory_1(screen, Memory_1_frames[Memory_frames])
     
     screen.blit(player.image, player.rect)
     pygame.display.update()
