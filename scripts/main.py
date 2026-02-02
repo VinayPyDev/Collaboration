@@ -22,7 +22,7 @@ art.update(load_sunset_bg_2_full())
 
 art.update(load_dungeon_bg_full())
 
-Memory_1_frames = render_memory_1()
+Memory_1_frames = Render_memory_1()
 frame = 0
 last_update = pygame.time.get_ticks()
 animation_cooldown = 100
@@ -73,14 +73,14 @@ while running:
                 move_left = False
             if event.key in (pygame.K_d, pygame.K_RIGHT):
                 move_right = False
-
+    
     current_time = pygame.time.get_ticks()
     if current_time - last_update >= animation_cooldown:
-        Memory_frames += 1
+        frame += 1
         last_update = current_time
 
-        if Memory_frames >= len(Memory_frames):
-            Memory_frames = 0
+        if frame >= len(Memory_1_frames):
+            frame = 0
 
     if move_left:
         player.x -= player_speed * dt
@@ -111,10 +111,11 @@ while running:
 
     player.rect.topleft = (int(player.x - camera_x), int(player.y))
 
-    if player.x == 1300:
-        render_memory_1(screen, Memory_1_frames[Memory_frames])
+    if player.x >= 1300 and player.x <= 1320:
+        render_memory_1(screen, Memory_1_frames[frame], camera_x)
     
     screen.blit(player.image, player.rect)
+
     pygame.display.update()
 
 pygame.quit()
