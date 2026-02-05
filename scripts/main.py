@@ -3,10 +3,10 @@ import sys
 
 from art import load_player_idle, load_player_idle_left
 from art import load_sunset_bg_full, load_dungeon_bg_full, load_sunset_bg_2_full
-from display import draw_sunset_bg_full, draw_dungeon_bg_full, draw_sunset_bg_2_full, render_memory_1
+from display import draw_sunset_bg_full, draw_dungeon_bg_full, draw_sunset_bg_2_full, render_memory_1, render_memory_2, render_memory_3, render_memory_4, render_memory_5
 from menu import main_menu
 from text import Awareness_text
-from memory_render import Render_memory_1
+from memory_render import Render_memory_1, Render_memory_2, Render_memory_3, Render_memory_4, Render_memory_5
 
 pygame.init()
 WIDTH, HEIGHT = 1280, 720
@@ -27,6 +27,26 @@ frame = 0
 last_update = pygame.time.get_ticks()
 animation_cooldown = 100
 
+Memory_2_frames = Render_memory_2()
+frame = 0
+last_update = pygame.time.get_ticks()
+animation_cooldown = 100
+
+Memory_3_frames = Render_memory_3()
+frame = 0
+last_update = pygame.time.get_ticks()
+animation_cooldown = 100
+
+Memory_4_frames = Render_memory_4()
+frame = 0
+last_update = pygame.time.get_ticks()
+animation_cooldown = 100
+
+Memory_5_frames = Render_memory_5()
+frame = 0
+last_update = pygame.time.get_ticks()
+animation_cooldown = 100
+
 class Player:
     def __init__(self, img, x, y):
         self.image = img
@@ -34,6 +54,12 @@ class Player:
         self.x = float(x)
         self.y = float(y)
         self.rect.topleft = (self.x, self.y)
+
+memory1Trigger = False
+memory2Trigger = False
+memory3Trigger = False
+memory4Trigger = False
+memory5Trigger = False
 
 player = Player(art["idle_0"], 640, 430)
 player_facing = "right"
@@ -82,6 +108,18 @@ while running:
         if frame >= len(Memory_1_frames):
             frame = 0
 
+        if frame >= len(Memory_2_frames):
+            frame = 0
+
+        if frame >= len(Memory_3_frames):
+            frame = 0
+        
+        if frame >= len(Memory_4_frames):
+            frame = 0
+        
+        if frame >= len(Memory_5_frames):
+            frame = 0
+
     if move_left:
         player.x -= player_speed * dt
         player.image = art["idle_1"]
@@ -98,6 +136,21 @@ while running:
     if player.x < 0:
         player.x = 0
 
+    if not memory1Trigger and player.x >= 1300:
+        memory1Trigger = True
+
+    if not memory2Trigger and player.x >= 2700:
+        memory2Trigger = True
+
+    if not memory3Trigger and player.x >= 4000:
+        memory3Trigger = True
+    
+    if not memory4Trigger and player.x >= 5300:
+        memory4Trigger = True
+    
+    if not memory5Trigger and player.x >= 6400:
+        memory5Trigger = True
+
     if player.x >= 3200:
         in_dungeon = True
 
@@ -111,8 +164,20 @@ while running:
 
     player.rect.topleft = (int(player.x - camera_x), int(player.y))
 
-    if player.x >= 1300 and player.x <= 1320:
+    if memory1Trigger:
         render_memory_1(screen, Memory_1_frames[frame], camera_x)
+
+    if memory2Trigger:
+        render_memory_2(screen, Memory_2_frames[frame], camera_x)
+
+    if memory3Trigger:
+        render_memory_3(screen, Memory_3_frames[frame], camera_x)
+
+    if memory4Trigger:
+        render_memory_4(screen, Memory_4_frames[frame], camera_x)
+
+    if memory5Trigger:
+        render_memory_5(screen, Memory_5_frames[frame], camera_x)
     
     screen.blit(player.image, player.rect)
 
