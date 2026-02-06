@@ -35,3 +35,6 @@ def render_memory_5(screen, frame_img, camera_x):
 
 def render_memory_6(screen, frame_img, camera_x):
     screen.blit(frame_img, (7300 - camera_x, 300))
+
+def render_memory_7(screen, frame_img, camera_x):
+    screen.blit(frame_img, (8450 - camera_x, 300))

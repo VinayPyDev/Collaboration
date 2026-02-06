@@ -3,10 +3,10 @@ import sys
 
 from art import load_player_idle, load_player_idle_left
 from art import load_sunset_bg_full, load_dungeon_bg_full, load_sunset_bg_2_full
-from display import draw_sunset_bg_full, draw_dungeon_bg_full, draw_sunset_bg_2_full, render_memory_1, render_memory_2, render_memory_3, render_memory_4, render_memory_5
+from display import draw_sunset_bg_full, draw_dungeon_bg_full, draw_sunset_bg_2_full, render_memory_1, render_memory_2, render_memory_3, render_memory_4, render_memory_5, render_memory_6, render_memory_7
 from menu import main_menu
 from text import Awareness_text
-from memory_render import Render_memory_1, Render_memory_2, Render_memory_3, Render_memory_4, Render_memory_5
+from memory_render import Render_memory_1, Render_memory_2, Render_memory_3, Render_memory_4, Render_memory_5, Render_memory_6, Render_memory_7
 
 pygame.init()
 WIDTH, HEIGHT = 1280, 720
@@ -47,6 +47,16 @@ frame = 0
 last_update = pygame.time.get_ticks()
 animation_cooldown = 100
 
+Memory_6_frames = Render_memory_6()
+frame = 0
+last_update = pygame.time.get_ticks()
+animation_cooldown = 100
+
+Memory_7_frames = Render_memory_7()
+frame = 0
+last_update = pygame.time.get_ticks()
+animation_cooldown = 100
+
 class Player:
     def __init__(self, img, x, y):
         self.image = img
@@ -60,6 +70,8 @@ memory2Trigger = False
 memory3Trigger = False
 memory4Trigger = False
 memory5Trigger = False
+memory6Trigger = False
+memory7Trigger = False
 
 player = Player(art["idle_0"], 640, 430)
 player_facing = "right"
@@ -119,6 +131,12 @@ while running:
         
         if frame >= len(Memory_5_frames):
             frame = 0
+            
+        if frame >= len(Memory_6_frames):
+            frame = 0
+
+        if frame >= len(Memory_7_frames):
+            frame = 0
 
     if move_left:
         player.x -= player_speed * dt
@@ -151,6 +169,12 @@ while running:
     if not memory5Trigger and player.x >= 6400:
         memory5Trigger = True
 
+    if not memory6Trigger and player.x >= 7300:
+        memory6Trigger = True
+
+    if not memory7Trigger and player.x >= 8450:
+        memory7Trigger = True
+
     if player.x >= 3200:
         in_dungeon = True
 
@@ -178,7 +202,13 @@ while running:
 
     if memory5Trigger:
         render_memory_5(screen, Memory_5_frames[frame], camera_x)
-    
+
+    if memory6Trigger:
+        render_memory_6(screen, Memory_6_frames[frame], camera_x)
+
+    if memory7Trigger:
+        render_memory_7(screen, Memory_7_frames[frame], camera_x)
+
     screen.blit(player.image, player.rect)
 
     pygame.display.update()
