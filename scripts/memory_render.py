@@ -146,19 +146,18 @@ class Memory_6():
         return image    
 
 def Render_memory_6():
-    memory_6_img = pygame.image.load(resource_path("Memory/memory6.png")).convert_alpha()
+    memory_6_img = pygame.image.load(resource_path("Memory/memory6_full (1).png")).convert_alpha()
     SpriteSheet = Memory_6(memory_6_img)
     frames = 16
     width, height = 300, 300
     scale = 1.0
-    colorkey = (255, 255, 255)
+    colorkey = (0, 0, 0)
 
     animation_list = []
     for i in range(frames):
         animation_list.append(SpriteSheet.get_image(i, width, height, scale, colorkey))
 
     return animation_list
-
 
 class Memory_7():
     def __init__(self, image):
@@ -177,7 +176,57 @@ def Render_memory_7():
     frames = 37
     width, height = 300, 300
     scale = 1.0
-    colorkey = (255, 255, 255)
+    colorkey = (0, 0, 0)
+
+    animation_list = []
+    for i in range(frames):
+        animation_list.append(SpriteSheet.get_image(i, width, height, scale, colorkey))
+
+    return animation_list
+
+class Memory_8():
+    def __init__(self, image):
+        self.sheet = image
+
+    def get_image(self, frame, width, height, scale, color):
+        image = pygame.Surface((width, height), pygame.SRCALPHA).convert_alpha()
+        image.blit(self.sheet, (0, 0), (frame * width, 0, width, height))
+        image = pygame.transform.scale(image, (width * scale, height * scale))
+        image.set_colorkey(color)
+        return image    
+
+def Render_memory_8():
+    memory_8_img = pygame.image.load(resource_path("Memory/memory8.png")).convert_alpha()
+    SpriteSheet = Memory_8(memory_8_img)
+    frames = 20
+    width, height = 300, 300
+    scale = 1.0
+    colorkey = (0, 0, 0)
+
+    animation_list = []
+    for i in range(frames):
+        animation_list.append(SpriteSheet.get_image(i, width, height, scale, colorkey))
+
+    return animation_list
+
+class Memory_9():
+    def __init__(self, image):
+        self.sheet = image
+
+    def get_image(self, frame, width, height, scale, color):
+        image = pygame.Surface((width, height), pygame.SRCALPHA).convert_alpha()
+        image.blit(self.sheet, (0, 0), (frame * width, 0, width, height))
+        image = pygame.transform.scale(image, (width * scale, height * scale))
+        image.set_colorkey(color)
+        return image    
+
+def Render_memory_9():
+    memory_9_img = pygame.image.load(resource_path("Memory/memory9.png")).convert_alpha()
+    SpriteSheet = Memory_9(memory_9_img)
+    frames = 32
+    width, height = 300, 300
+    scale = 1.0
+    colorkey = (0, 0, 0)
 
     animation_list = []
     for i in range(frames):
