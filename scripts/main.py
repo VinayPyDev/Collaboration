@@ -28,42 +28,42 @@ last_update = pygame.time.get_ticks()
 animation_cooldown = 100
 
 Memory_2_frames = Render_memory_2()
-frame = 0
+frame2 = 0
 last_update = pygame.time.get_ticks()
 animation_cooldown = 100
 
 Memory_3_frames = Render_memory_3()
-frame = 0
+frame3 = 0
 last_update = pygame.time.get_ticks()
 animation_cooldown = 100
 
 Memory_4_frames = Render_memory_4()
-frame = 0
+frame4 = 0
 last_update = pygame.time.get_ticks()
 animation_cooldown = 100
 
 Memory_5_frames = Render_memory_5()
-frame = 0
+frame5 = 0
 last_update = pygame.time.get_ticks()
 animation_cooldown = 100
 
 Memory_6_frames = Render_memory_6()
-frame = 0
+frame6 = 0
 last_update = pygame.time.get_ticks()
 animation_cooldown = 100
 
 Memory_7_frames = Render_memory_7()
-frame = 0
+frame7 = 0
 last_update = pygame.time.get_ticks()
 animation_cooldown = 100
 
 Memory_8_frames = Render_memory_8()
-frame = 0
+frame8 = 0
 last_update = pygame.time.get_ticks()
 animation_cooldown = 100
 
 Memory_9_frames = Render_memory_9()
-frame = 0
+frame9 = 0
 last_update = pygame.time.get_ticks()
 animation_cooldown = 100
 
@@ -126,35 +126,43 @@ while running:
     
     current_time = pygame.time.get_ticks()
     if current_time - last_update >= animation_cooldown:
-        frame += 1
         last_update = current_time
+        frame += 1
+        frame2 += 1
+        frame3 += 1
+        frame4 += 1
+        frame5 += 1
+        frame6 += 1
+        frame7 += 1
+        frame8 += 1
+        frame9 += 1
 
         if frame >= len(Memory_1_frames):
             frame = 0
 
-        if frame >= len(Memory_2_frames):
-            frame = 0
+        if frame2 >= len(Memory_2_frames):
+            frame2 = 0
 
-        if frame >= len(Memory_3_frames):
-            frame = 0
+        if frame3 >= len(Memory_3_frames):
+            frame3 = 0
         
-        if frame >= len(Memory_4_frames):
-            frame = 0
+        if frame4 >= len(Memory_4_frames):
+            frame4 = 0
         
-        if frame >= len(Memory_5_frames):
-            frame = 0
+        if frame5 >= len(Memory_5_frames):
+            frame5 = 0
             
-        if frame >= len(Memory_6_frames):
-            frame = 0
+        if frame6 >= len(Memory_6_frames):
+            frame6 = 0
 
-        if frame >= len(Memory_7_frames):
-            frame = 0
+        if frame7 >= len(Memory_7_frames):
+            frame7 = 0
 
-        if frame >= len(Memory_8_frames):
-            frame = 0
+        if frame8 >= len(Memory_8_frames):
+            frame8 = 0
 
-        if frame >= len(Memory_9_frames):
-            frame = 0
+        if frame9 >= len(Memory_9_frames):
+            frame9 = 0
 
     if move_left:
         player.x -= player_speed * dt
@@ -199,15 +207,11 @@ while running:
     if not memory9Trigger and player.x >= 10750:
         memory9Trigger = True
 
-    if player.x >= 3200:
-        in_dungeon = True
-
-    if in_dungeon == True:
+    if in_dungeon:
         draw_dungeon_bg_full(screen, art, camera_x)
-
-    if in_sunset == True:
+    if in_sunset:
         draw_sunset_bg_full(screen, art, camera_x)
-    if in_sunset_2 == True:
+    if in_sunset_2:
         draw_sunset_bg_2_full(screen, art, camera_x)
 
     player.rect.topleft = (int(player.x - camera_x), int(player.y))
@@ -216,28 +220,28 @@ while running:
         render_memory_1(screen, Memory_1_frames[frame], camera_x)
 
     if memory2Trigger:
-        render_memory_2(screen, Memory_2_frames[frame], camera_x)
+        render_memory_2(screen, Memory_2_frames[frame2], camera_x)
 
     if memory3Trigger:
-        render_memory_3(screen, Memory_3_frames[frame], camera_x)
+        render_memory_3(screen, Memory_3_frames[frame3], camera_x)
 
     if memory4Trigger:
-        render_memory_4(screen, Memory_4_frames[frame], camera_x)
+        render_memory_4(screen, Memory_4_frames[frame4], camera_x)
 
     if memory5Trigger:
-        render_memory_5(screen, Memory_5_frames[frame], camera_x)
+        render_memory_5(screen, Memory_5_frames[frame5], camera_x)
 
     if memory6Trigger:
-        render_memory_6(screen, Memory_6_frames[frame], camera_x)
+        render_memory_6(screen, Memory_6_frames[frame6], camera_x)
 
     if memory7Trigger:
-        render_memory_7(screen, Memory_7_frames[frame], camera_x)
+        render_memory_7(screen, Memory_7_frames[frame7], camera_x)
     
     if memory8Trigger:
-        render_memory_8(screen, Memory_8_frames[frame], camera_x)
+        render_memory_8(screen, Memory_8_frames[frame8], camera_x)
     
     if memory9Trigger:
-        render_memory_9(screen, Memory_9_frames[frame], camera_x)   
+        render_memory_9(screen, Memory_9_frames[frame9], camera_x)   
     
     screen.blit(player.image, player.rect)
 

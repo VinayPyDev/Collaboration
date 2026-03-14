@@ -101,7 +101,7 @@ def Render_memory_4():
     frames = 20
     width, height = 300, 300
     scale = 1.0
-    colorkey = (255, 255, 255)
+    colorkey = (155, 155, 155)
 
     animation_list = []
     for i in range(frames):

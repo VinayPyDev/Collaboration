@@ -19,28 +19,28 @@ def draw_dungeon_bg_full(screen, art, camera_x):
 
 # Memories
 def render_memory_1(screen, frame_img, camera_x):
-    screen.blit(frame_img, (1300 - camera_x, 300))
+    screen.blit(frame_img, (2000 - camera_x, 200))
 
 def render_memory_2(screen, frame_img, camera_x):
-    screen.blit(frame_img, (2700 - camera_x, 300))
+    screen.blit(frame_img, (4000 - camera_x, 200))
 
 def render_memory_3(screen, frame_img, camera_x):
-    screen.blit(frame_img, (4000 - camera_x, 300))
+    screen.blit(frame_img, (6000 - camera_x, 200))
 
 def render_memory_4(screen, frame_img, camera_x):
-    screen.blit(frame_img, (5300 - camera_x, 300))
+    screen.blit(frame_img, (8000 - camera_x, 200))
 
 def render_memory_5(screen, frame_img, camera_x):
-    screen.blit(frame_img, (6400 - camera_x, 300))
+    screen.blit(frame_img, (10000 - camera_x, 200))
 
 def render_memory_6(screen, frame_img, camera_x):
-    screen.blit(frame_img, (7300 - camera_x, 300))
+    screen.blit(frame_img, (12000 - camera_x, 200))
 
 def render_memory_7(screen, frame_img, camera_x):
-    screen.blit(frame_img, (8450 - camera_x, 300))
+    screen.blit(frame_img, (14000 - camera_x, 200))
 
 def render_memory_8(screen, frame_img, camera_x):
-    screen.blit(frame_img, (9523 - camera_x, 300))
+    screen.blit(frame_img, (16000 - camera_x, 200))
 
 def render_memory_9(screen, frame_img, camera_x):
-    screen.blit(frame_img, (10750 - camera_x, 300))
+    screen.blit(frame_img, (18000 - camera_x, 200))
