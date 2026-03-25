@@ -2,11 +2,12 @@ import pygame
 import sys
 
 from art import load_player_idle, load_player_idle_left
-from art import load_sunset_bg_full, load_dungeon_bg_full, load_sunset_bg_2_full
+from art import load_sunset_bg_full, load_dungeon_bg_full, load_sunset_bg_2_full, load_sunset_extra, load_keys
 from display import draw_sunset_bg_full, draw_dungeon_bg_full, draw_sunset_bg_2_full, render_memory_1, render_memory_2, render_memory_3, render_memory_4, render_memory_5, render_memory_6, render_memory_7, render_memory_8, render_memory_9
+from display import draw_sunset_bg_extra_full, render_key1, render_key2, render_key3, render_key4
 from menu import main_menu
-from text import Awareness_text
 from memory_render import Render_memory_1, Render_memory_2, Render_memory_3, Render_memory_4, Render_memory_5, Render_memory_6, Render_memory_7, Render_memory_8, Render_memory_9
+from transition import TransitionObj, fade
 
 pygame.init()
 WIDTH, HEIGHT = 1280, 720
@@ -19,8 +20,18 @@ art.update(load_player_idle_left())
 
 art.update(load_sunset_bg_full())
 art.update(load_sunset_bg_2_full())
+art.update(load_sunset_extra())
 
 art.update(load_dungeon_bg_full())
+
+art.update(load_keys())
+
+transition_text = ""
+sunset_to_dusk = "The sun has descended and dusk holds its crown"
+dusk_to_dungeon = "The dusk faded away and now night is in its prime"
+dungeon_to_void = "The innocence has been stabbed and has turned to the path of grief"
+
+current_bg = "sunset"
 
 Memory_1_frames = Render_memory_1()
 frame = 0
@@ -209,12 +220,28 @@ while running:
 
     if in_dungeon:
         draw_dungeon_bg_full(screen, art, camera_x)
+        draw_sunset_bg_extra_full(screen, art, camera_x)
     if in_sunset:
         draw_sunset_bg_full(screen, art, camera_x)
     if in_sunset_2:
         draw_sunset_bg_2_full(screen, art, camera_x)
 
     player.rect.topleft = (int(player.x - camera_x), int(player.y))
+
+    if player.x >= 3600 and current_bg == "sunset" and in_sunset:
+        transition_text = sunset_to_dusk
+        fade.start()
+        current_bg = "dusk"
+    
+    if player.x >= 5000 and current_bg == "dusk" and in_sunset_2:
+        transition_text = dusk_to_dungeon
+        fade.start()
+        current_bg = "dungeon"
+    
+    if player.x >= 7000 and current_bg == "dungeon" and in_dungeon:
+        transition_text = dungeon_to_void
+        fade.start()
+        current_bg = "void"
 
     if memory1Trigger:
         render_memory_1(screen, Memory_1_frames[frame], camera_x)
@@ -244,6 +271,9 @@ while running:
         render_memory_9(screen, Memory_9_frames[frame9], camera_x)   
     
     screen.blit(player.image, player.rect)
+
+    fade.update(dt)
+    fade.draw(screen)
 
     pygame.display.update()
 
