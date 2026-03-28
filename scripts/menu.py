@@ -1,13 +1,25 @@
 import pygame
 import sys
+import os
 
 from font import get_font, get_font_BOLD
 from text import disclaimer_screen
 
 pygame.init()
 
+
+def resource_path(relative_path):
+    try:
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.dirname(os.path.dirname(__file__))
+    return os.path.join(base_path, relative_path)
+
 WIDTH, HEIGHT = 1280, 720
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
+
+masking_r = pygame.transform.scale(pygame.image.load(resource_path("data/masking_r.png")).convert_alpha(), (100, 100))
+masking_l = pygame.transform.scale(pygame.image.load(resource_path("data/masking_l.png")).convert_alpha(), (100, 100))
 
 class BUTTON:
     def __init__(self, image, pos, text_input, font, base_color, hovering_color):
@@ -63,6 +75,15 @@ def main_menu():
     while True:
         screen.fill((0, 0, 0))
         mouse_pos = pygame.mouse.get_pos()
+
+        screen.blit(masking_r, (700, 200))
+        screen.blit(masking_l, (475, 200))
+
+        screen.blit(masking_r, (775, 350))
+        screen.blit(masking_l, (400, 350))
+
+        screen.blit(masking_r, (685, 500))
+        screen.blit(masking_l, (475, 500))
 
         title = get_font(80).render("Voices of Silent Shadows", True, "#BEBEBE")
         screen.blit(title, (10, 40))

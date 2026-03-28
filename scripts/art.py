@@ -22,15 +22,28 @@ def load_player_idle_left():
 
 def load_sunset_bg_full():
     return {
-        "sunset": pygame.transform.scale(pygame.image.load(resource_path("data/sunsetbg_full.png")).convert_alpha(), (2900, 720))
+        "sunset": pygame.transform.scale(pygame.image.load(resource_path("data/sunsetbg_full.png")).convert_alpha(), (3000, 720))
+    }
+
+def load_sunset_extra():
+    return {
+        "sunset_ex": pygame.transform.scale(pygame.image.load(resource_path("data/sunset_extra.png")).convert_alpha(), (3000, 720))
     }
 
 def load_sunset_bg_2_full():
     return {
-        "sunset_2": pygame.transform.scale(pygame.image.load(resource_path("data/sunset_bg_2.png")).convert_alpha(), (2900, 720))
+        "sunset_2": pygame.transform.scale(pygame.image.load(resource_path("data/sunset_bg_2.png")).convert_alpha(), (3000, 720))
     }
 
 def load_dungeon_bg_full():
     return {
-        "dungeon": pygame.transform.scale(pygame.image.load(resource_path("data/dungeonbg_full.png")).convert_alpha(), (1900, 720))
+        "dungeon": pygame.transform.scale(pygame.image.load(resource_path("data/dungeonbg_full.png")).convert_alpha(), (3000, 720))
+    }
+
+def load_keys():
+    return {
+        "key1": pygame.image.load(resource_path("data/sprite-0001.png")).convert_alpha(),
+        "key2": pygame.image.load(resource_path("data/sprite-0003.png")).convert_alpha(),
+        "key3": pygame.image.load(resource_path("data/sprite-0004.png")).convert_alpha(),
+        "key4": pygame.image.load(resource_path("data/sprite-0005.png")).convert_alpha()
     }
