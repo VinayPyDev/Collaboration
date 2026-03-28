@@ -146,7 +146,7 @@ class Memory_6():
         return image    
 
 def Render_memory_6():
-    memory_6_img = pygame.image.load(resource_path("Memory/memory6_full (1).png")).convert_alpha()
+    memory_6_img = pygame.image.load(resource_path("Memory/memory6_full.png")).convert_alpha()
     SpriteSheet = Memory_6(memory_6_img)
     frames = 16
     width, height = 300, 300
@@ -171,7 +171,7 @@ class Memory_7():
         return image    
 
 def Render_memory_7():
-    memory_7_img = pygame.image.load(resource_path("Memory/memory7.png")).convert_alpha()
+    memory_7_img = pygame.image.load(resource_path("Memory/memory7_2.png")).convert_alpha()
     SpriteSheet = Memory_7(memory_7_img)
     frames = 37
     width, height = 300, 300
@@ -196,7 +196,7 @@ class Memory_8():
         return image    
 
 def Render_memory_8():
-    memory_8_img = pygame.image.load(resource_path("Memory/memory8.png")).convert_alpha()
+    memory_8_img = pygame.image.load(resource_path("Memory/memory8_2.png")).convert_alpha()
     SpriteSheet = Memory_8(memory_8_img)
     frames = 20
     width, height = 300, 300
@@ -221,7 +221,7 @@ class Memory_9():
         return image    
 
 def Render_memory_9():
-    memory_9_img = pygame.image.load(resource_path("Memory/memory9.png")).convert_alpha()
+    memory_9_img = pygame.image.load(resource_path("Memory/memory9_2.png")).convert_alpha()
     SpriteSheet = Memory_9(memory_9_img)
     frames = 32
     width, height = 300, 300

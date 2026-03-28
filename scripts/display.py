@@ -20,6 +20,9 @@ def draw_sunset_bg_2_full(screen, art, camera_x):
 def draw_dungeon_bg_full(screen, art, camera_x):
     screen.blit(art["dungeon"], (6000 - camera_x, -150))
 
+def draw_dungeon_bg_full_2(screen, art, camera_x):
+    screen.blit(art["dungeon"], (8932 - camera_x, -150))
+
 # Memories
 def render_memory_1(screen, frame_img, camera_x):
     screen.blit(frame_img, (2000 - camera_x, 200))
@@ -37,7 +40,7 @@ def render_memory_5(screen, frame_img, camera_x):
     screen.blit(frame_img, (10000 - camera_x, 200))
 
 def render_memory_6(screen, frame_img, camera_x):
-    screen.blit(frame_img, (12000 - camera_x, 200))
+    screen.blit(frame_img, (12600 - camera_x, 200))
 
 def render_memory_7(screen, frame_img, camera_x):
     screen.blit(frame_img, (14000 - camera_x, 200))
@@ -50,7 +53,7 @@ def render_memory_9(screen, frame_img, camera_x):
 
 # Keys
 def render_key1(screen, art, camera_x):
-    screen.blit(art["key1"], (150 - camera_x, -50))
+    screen.blit(art["key1"], (150 - camera_x, -150))
 def render_key2(screen, art, camera_x):
     screen.blit(art["key2"], (50 - camera_x, -150))
 def render_key3(screen, art, camera_x):

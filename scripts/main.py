@@ -4,7 +4,7 @@ import sys
 from art import load_player_idle, load_player_idle_left
 from art import load_sunset_bg_full, load_dungeon_bg_full, load_sunset_bg_2_full, load_sunset_extra, load_keys
 from display import draw_sunset_bg_full, draw_dungeon_bg_full, draw_sunset_bg_2_full, render_memory_1, render_memory_2, render_memory_3, render_memory_4, render_memory_5, render_memory_6, render_memory_7, render_memory_8, render_memory_9
-from display import draw_sunset_bg_extra_full, render_key1, render_key2, render_key3, render_key4
+from display import draw_sunset_bg_extra_full, render_key1, render_key2, render_key3, render_key4, draw_dungeon_bg_full_2
 from menu import main_menu
 from memory_render import Render_memory_1, Render_memory_2, Render_memory_3, Render_memory_4, Render_memory_5, Render_memory_6, Render_memory_7, Render_memory_8, Render_memory_9
 from transition import TransitionObj, fade
@@ -220,20 +220,23 @@ while running:
 
     if in_dungeon:
         draw_dungeon_bg_full(screen, art, camera_x)
-        draw_sunset_bg_extra_full(screen, art, camera_x)
+        draw_dungeon_bg_full_2(screen, art, camera_x)
     if in_sunset:
         draw_sunset_bg_full(screen, art, camera_x)
+        draw_sunset_bg_extra_full(screen, art, camera_x)
     if in_sunset_2:
         draw_sunset_bg_2_full(screen, art, camera_x)
 
     player.rect.topleft = (int(player.x - camera_x), int(player.y))
 
-    if player.x >= 3600 and current_bg == "sunset" and in_sunset:
+    print(round(player.x))
+
+    if player.x >= 3100 and current_bg == "sunset" and in_sunset:
         transition_text = sunset_to_dusk
         fade.start()
         current_bg = "dusk"
     
-    if player.x >= 5000 and current_bg == "dusk" and in_sunset_2:
+    if player.x >= 6545 and current_bg == "dusk" and in_sunset_2:
         transition_text = dusk_to_dungeon
         fade.start()
         current_bg = "dungeon"
@@ -269,7 +272,12 @@ while running:
     
     if memory9Trigger:
         render_memory_9(screen, Memory_9_frames[frame9], camera_x)   
-    
+
+    render_key1(screen, art, camera_x) 
+    render_key2(screen, art, camera_x)
+    render_key3(screen, art, camera_x)
+    render_key4(screen, art, camera_x)
+
     screen.blit(player.image, player.rect)
 
     fade.update(dt)
