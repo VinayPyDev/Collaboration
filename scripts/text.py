@@ -63,6 +63,6 @@ def disclaimer_screen():
 
 def Start_text():
     text = get_font(45).render("Collect all the memories", True, "#000000")
-    text_rect = text.rect(center=(200, -150))
+    text_rect = text.get_rect(center=(200, -150))
 
     screen.blit(text, text_rect)
