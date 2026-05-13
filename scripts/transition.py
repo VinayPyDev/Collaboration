@@ -61,27 +61,49 @@ class TransitionObj:
         self.wait_time = wait_duration
         self.waiting = False
 
+    # def update(self, dt):
+    #     if not self.active:
+    #         return
+        
+    #     if self.waiting:
+    #         self.wait_time -= int(dt * 1000)
+    #         if self.wait_time <= 0:
+    #             self.active = False
+    #         return
+        
+    #     if not self.reverse:
+    #         self.val += 51 * dt
+    #         if self.val >= 255:
+    #             self.val = 255
+    #             self.waiting = True
+    #     else:
+    #         self.val -= 51 * dt
+    #         if self.val <= 0:
+    #             self.val = 0
+    #             self.waiting = True
     def update(self, dt):
-        if not self.active:
-            return
-        
-        if self.waiting:
-            self.wait_time -= int(dt * 1000)
-            if self.wait_time <= 0:
-                self.active = False
-            return
-        
-        if not self.reverse:
-            self.val += 51 * dt
-            if self.val >= 255:
-                self.val = 255
-                self.waiting = True
-        else:
-            self.val -= 51 * dt
-            if self.val <= 0:
-                self.val = 0
-                self.waiting = True
-
+            if not self.active:
+                return
+            
+            if self.waiting:
+                self.wait_time -= int(dt * 1000)
+                if self.wait_time <= 0:
+                    # Automatically start fading back out
+                    self.reverse = True
+                    self.waiting = False
+                    self.wait_time = 0
+                return
+            
+            if not self.reverse:
+                self.val += 51 * dt
+                if self.val >= 255:
+                    self.val = 255
+                    self.waiting = True
+            else:
+                self.val -= 51 * dt
+                if self.val <= 0:
+                    self.val = 0
+                    self.active = False
     def draw(self, screen):
         if not self.active:
             return

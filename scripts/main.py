@@ -293,12 +293,11 @@ while running:
 
     fade.update(dt)
     fade.draw(screen)
-    # TODO: remove the 3000, reverse=True and add a auto-reversal to TransitionObj in trasition.py
-    if player.x >= 3100 and current_bg == "sunset" and in_sunset and not sunset_fade_triggered:
+    # Done(TODO): remove the 3000, reverse=True and add a auto-reversal to TransitionObj in trasition.py
+    if player.x >= 2600 and current_bg == "sunset" and in_sunset and not sunset_fade_triggered:
         transition_text_surface = get_font(45).render(sunset_to_dusk, True, (244, 244, 244))
         text_timer = 3000
-        fade.start(0, reverse=False)
-        fade.start(3000, reverse=True) 
+        fade.start(3000, reverse=False) 
         fade_out_started = True
         current_bg = "dusk"
         sunset_fade_triggered = True
@@ -306,8 +305,7 @@ while running:
     if player.x >= 6545 and current_bg == "dusk" and in_sunset_2 and not dusk_fade_triggered:
         transition_text_surface = get_font(45).render(dusk_to_dungeon, True, (244, 244, 244))
         text_timer = 3000
-        fade.start(0, reverse=False)
-        fade.start(3000, reverse=True)
+        fade.start(3000, reverse=False)
         fade_out_started = True
         current_bg = "dungeon"
         dusk_fade_triggered = True
@@ -315,8 +313,7 @@ while running:
     if player.x >= 7000 and current_bg == "dungeon" and in_dungeon and not dungeon_fade_triggered:
         transition_text_surface = get_font(45).render(dungeon_to_void, True, (244, 244, 244))
         text_timer = 3000
-        fade.start(0, reverse=False)
-        fade.start(3000, reverse=True)
+        fade.start(3000, reverse=False)
         fade_out_started = True
         current_bg = "void"
         dungeon_fade_triggered = True
