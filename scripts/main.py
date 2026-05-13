@@ -1,18 +1,26 @@
 import pygame
 import sys
+import os
 
 from art import load_player_idle, load_player_idle_left
-from art import load_sunset_bg_full, load_dungeon_bg_full, load_sunset_bg_2_full, load_sunset_extra, load_keys
+from art import load_sunset_bg_full, load_dungeon_bg_full, load_sunset_bg_2_full, load_sunset_extra, load_keys, load_void_bg_full
 from display import draw_sunset_bg_full, draw_dungeon_bg_full, draw_sunset_bg_2_full, render_memory_1, render_memory_2, render_memory_3, render_memory_4, render_memory_5, render_memory_6, render_memory_7, render_memory_8, render_memory_9
-from display import draw_sunset_bg_extra_full, render_key1, render_key2, render_key3, render_key4, draw_dungeon_bg_full_2
+from display import draw_sunset_bg_extra_full, render_key1, render_key2, render_key3, render_key4, draw_dungeon_bg_full_2, draw_void_bg_full, draw_void_bg_2_full
 from menu import main_menu
 from memory_render import Render_memory_1, Render_memory_2, Render_memory_3, Render_memory_4, Render_memory_5, Render_memory_6, Render_memory_7, Render_memory_8, Render_memory_9
 from transition import TransitionObj, fade
+from tilesets import Render_Sunrise_Tileset, Render_Dungeon_Tileset, Render_Void_Tileset
+from font import get_font
 
 pygame.init()
 WIDTH, HEIGHT = 1280, 720
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 clock = pygame.time.Clock()
+
+def load_map(path):
+    with open(path + '.txt', 'r') as f:
+        data = f.read().splitlines()
+    return [list(row) for row in data]
 
 art = {}
 art.update(load_player_idle())
@@ -23,6 +31,7 @@ art.update(load_sunset_bg_2_full())
 art.update(load_sunset_extra())
 
 art.update(load_dungeon_bg_full())
+art.update(load_void_bg_full())
 
 art.update(load_keys())
 
@@ -30,6 +39,15 @@ transition_text = ""
 sunset_to_dusk = "The sun has descended and dusk holds its crown"
 dusk_to_dungeon = "The dusk faded away and now night is in its prime"
 dungeon_to_void = "The innocence has been stabbed and has turned to the path of grief"
+
+sunset_fade_triggered = False
+dusk_fade_triggered = False
+dungeon_fade_triggered = False
+
+fade_out_started = False
+
+text_timer = 0
+text_surf = None
 
 current_bg = "sunset"
 
@@ -104,10 +122,15 @@ camera_x = 0
 in_dungeon = True
 in_sunset = True
 in_sunset_2 = True
+in_void = True
 
 player_speed = 150
 move_left = False
 move_right = False
+
+ground_y = 600
+
+text_displayed = False
 
 main_menu()
 
@@ -226,25 +249,13 @@ while running:
         draw_sunset_bg_extra_full(screen, art, camera_x)
     if in_sunset_2:
         draw_sunset_bg_2_full(screen, art, camera_x)
+    if in_void:
+        draw_void_bg_full(screen, art, camera_x)
+        draw_void_bg_2_full(screen, art, camera_x)
 
     player.rect.topleft = (int(player.x - camera_x), int(player.y))
 
-    print(round(player.x))
-
-    if player.x >= 3100 and current_bg == "sunset" and in_sunset:
-        transition_text = sunset_to_dusk
-        fade.start()
-        current_bg = "dusk"
-    
-    if player.x >= 6545 and current_bg == "dusk" and in_sunset_2:
-        transition_text = dusk_to_dungeon
-        fade.start()
-        current_bg = "dungeon"
-    
-    if player.x >= 7000 and current_bg == "dungeon" and in_dungeon:
-        transition_text = dungeon_to_void
-        fade.start()
-        current_bg = "void"
+    # print(round(player.x))
 
     if memory1Trigger:
         render_memory_1(screen, Memory_1_frames[frame], camera_x)
@@ -282,6 +293,40 @@ while running:
 
     fade.update(dt)
     fade.draw(screen)
+    # TODO: remove the 3000, reverse=True and add a auto-reversal to TransitionObj in trasition.py
+    if player.x >= 3100 and current_bg == "sunset" and in_sunset and not sunset_fade_triggered:
+        transition_text_surface = get_font(45).render(sunset_to_dusk, True, (244, 244, 244))
+        text_timer = 3000
+        fade.start(0, reverse=False)
+        fade.start(3000, reverse=True) 
+        fade_out_started = True
+        current_bg = "dusk"
+        sunset_fade_triggered = True
+
+    if player.x >= 6545 and current_bg == "dusk" and in_sunset_2 and not dusk_fade_triggered:
+        transition_text_surface = get_font(45).render(dusk_to_dungeon, True, (244, 244, 244))
+        text_timer = 3000
+        fade.start(0, reverse=False)
+        fade.start(3000, reverse=True)
+        fade_out_started = True
+        current_bg = "dungeon"
+        dusk_fade_triggered = True
+    
+    if player.x >= 7000 and current_bg == "dungeon" and in_dungeon and not dungeon_fade_triggered:
+        transition_text_surface = get_font(45).render(dungeon_to_void, True, (244, 244, 244))
+        text_timer = 3000
+        fade.start(0, reverse=False)
+        fade.start(3000, reverse=True)
+        fade_out_started = True
+        current_bg = "void"
+        dungeon_fade_triggered = True
+
+    if fade_out_started and fade.val >= 255 and not text_displayed:
+        text_displayed = True
+
+    if text_displayed and text_timer > 0 and transition_text_surface is not None:
+        screen.blit(transition_text_surface, (10, 360))
+        text_timer -= int(dt * 1000)
 
     pygame.display.update()
 
