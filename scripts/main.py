@@ -2,14 +2,20 @@ import pygame
 import sys
 import os
 
-from art import load_player_idle, load_player_idle_left
 from art import load_sunset_bg_full, load_dungeon_bg_full, load_sunset_bg_2_full, load_sunset_extra, load_keys, load_void_bg_full
+from art import RenderPlayerIdleLeft, RenderPlayerIdleRight, RenderPlayerMoveLeft, RenderPlayerMoveRight
+
 from display import draw_sunset_bg_full, draw_dungeon_bg_full, draw_sunset_bg_2_full, render_memory_1, render_memory_2, render_memory_3, render_memory_4, render_memory_5, render_memory_6, render_memory_7, render_memory_8, render_memory_9
 from display import draw_sunset_bg_extra_full, render_key1, render_key2, render_key3, render_key4, draw_dungeon_bg_full_2, draw_void_bg_full, draw_void_bg_2_full
+
 from menu import main_menu
+
 from memory_render import Render_memory_1, Render_memory_2, Render_memory_3, Render_memory_4, Render_memory_5, Render_memory_6, Render_memory_7, Render_memory_8, Render_memory_9
+
 from transition import TransitionObj, fade
+
 from tilesets import Render_Sunrise_Tileset, Render_Dungeon_Tileset, Render_Void_Tileset
+
 from font import get_font
 
 pygame.init()
@@ -23,8 +29,6 @@ def load_map(path):
     return [list(row) for row in data]
 
 art = {}
-art.update(load_player_idle())
-art.update(load_player_idle_left())
 
 art.update(load_sunset_bg_full())
 art.update(load_sunset_bg_2_full())
@@ -37,8 +41,10 @@ art.update(load_keys())
 
 transition_text = ""
 sunset_to_dusk = "The sun has descended and dusk holds its crown"
-dusk_to_dungeon = "The dusk faded away and now night is in its prime"
-dungeon_to_void = "The innocence has been stabbed and has turned to the path of grief"
+dusk_to_dungeon = "The dusk faded away and now night is in its "
+dusk_to_dungeon_2 = "prime"
+dungeon_to_void = "The innocence has been stabbed and has turned"
+dungeon_to_void_2 = " to the path of grief"
 
 sunset_fade_triggered = False
 dusk_fade_triggered = False
@@ -96,14 +102,6 @@ frame9 = 0
 last_update = pygame.time.get_ticks()
 animation_cooldown = 100
 
-class Player:
-    def __init__(self, img, x, y):
-        self.image = img
-        self.rect = self.image.get_rect()
-        self.x = float(x)
-        self.y = float(y)
-        self.rect.topleft = (self.x, self.y)
-
 memory1Trigger = False
 memory2Trigger = False
 memory3Trigger = False
@@ -114,8 +112,20 @@ memory7Trigger = False
 memory8Trigger = False
 memory9Trigger = False
 
-player = Player(art["idle_0"], 640, 430)
+player_x = 640
+player_y = 386
+
+idle_right_frames = RenderPlayerIdleRight()
+idle_left_frames = RenderPlayerIdleLeft()
+
 player_facing = "right"
+current_frame = 0
+frame_timer = 0
+frame_cooldown = 100
+current_player_img = idle_right_frames[0]
+
+move_right_frames = RenderPlayerMoveRight()
+move_left_frames = RenderPlayerMoveLeft()
 
 camera_x = 0
 
@@ -199,46 +209,63 @@ while running:
             frame9 = 0
 
     if move_left:
-        player.x -= player_speed * dt
-        player.image = art["idle_1"]
+        player_x -= player_speed * dt
         player_facing = "left"
     if move_right:
-        player.x += player_speed * dt
-        player.image = art["idle_0"]
+        player_x += player_speed * dt
         player_facing = "right"
 
-    camera_x = player.x - WIDTH // 2
+    frame_timer += dt * 1000
+    if frame_timer >= frame_cooldown:
+        frame_timer = 0
+        current_frame += 1
+
+        if player_facing == "right":
+            if current_frame >= len(idle_right_frames):
+                current_frame = 0
+            if current_frame >= len(move_right_frames):
+                current_frame = 0
+        else:
+            if current_frame >= len(idle_left_frames):
+                current_frame = 0
+            if current_frame >= len(move_left_frames):
+                current_frame = 0
+
+    camera_x = player_x - WIDTH // 2
 
     if camera_x < 0:
         camera_x = 0
-    if player.x < 0:
-        player.x = 0
+    if player_x < 0:
+        player_x = 0
+    
+    if player_y > ground_y - 150:
+        player_y = ground_y - 150
 
-    if not memory1Trigger and player.x >= 1300:
+    if not memory1Trigger and player_x >= 1300:
         memory1Trigger = True
 
-    if not memory2Trigger and player.x >= 2700:
+    if not memory2Trigger and player_x >= 2700:
         memory2Trigger = True
 
-    if not memory3Trigger and player.x >= 4000:
+    if not memory3Trigger and player_x >= 4000:
         memory3Trigger = True
     
-    if not memory4Trigger and player.x >= 5300:
+    if not memory4Trigger and player_x >= 5300:
         memory4Trigger = True
     
-    if not memory5Trigger and player.x >= 6400:
+    if not memory5Trigger and player_x >= 6400:
         memory5Trigger = True
 
-    if not memory6Trigger and player.x >= 7300:
+    if not memory6Trigger and player_x >= 7300:
         memory6Trigger = True
 
-    if not memory7Trigger and player.x >= 8450:
+    if not memory7Trigger and player_x >= 8450:
         memory7Trigger = True
 
-    if not memory8Trigger and player.x >= 9523:
+    if not memory8Trigger and player_x >= 9523:
         memory8Trigger = True
     
-    if not memory9Trigger and player.x >= 10750:
+    if not memory9Trigger and player_x >= 10750:
         memory9Trigger = True
 
     if in_dungeon:
@@ -253,9 +280,15 @@ while running:
         draw_void_bg_full(screen, art, camera_x)
         draw_void_bg_2_full(screen, art, camera_x)
 
-    player.rect.topleft = (int(player.x - camera_x), int(player.y))
+    if player_facing == "right":
+        current_player_img = idle_right_frames[current_frame]
+    elif player_facing == "left":
+        current_player_img = idle_left_frames[current_frame]
 
-    # print(round(player.x))
+    if player_facing == "right" and move_right:
+        current_player_img = move_right_frames[current_frame]
+    elif player_facing == "left" and move_left:
+        current_player_img = move_left_frames[current_frame]
 
     if memory1Trigger:
         render_memory_1(screen, Memory_1_frames[frame], camera_x)
@@ -284,35 +317,33 @@ while running:
     if memory9Trigger:
         render_memory_9(screen, Memory_9_frames[frame9], camera_x)   
 
-    render_key1(screen, art, camera_x) 
-    render_key2(screen, art, camera_x)
-    render_key3(screen, art, camera_x)
-    render_key4(screen, art, camera_x)
-
-    screen.blit(player.image, player.rect)
+    screen.blit(current_player_img, (int(player_x - camera_x), int(player_y)))
 
     fade.update(dt)
     fade.draw(screen)
     # Done(TODO): remove the 3000, reverse=True and add a auto-reversal to TransitionObj in trasition.py
-    if player.x >= 2600 and current_bg == "sunset" and in_sunset and not sunset_fade_triggered:
+    if player_x >= 2600 and current_bg == "sunset" and in_sunset and not sunset_fade_triggered:
         transition_text_surface = get_font(45).render(sunset_to_dusk, True, (244, 244, 244))
+        transition_text_surface_2 = get_font(45).render(" ", True, (244, 244, 244))
         text_timer = 3000
         fade.start(3000, reverse=False) 
         fade_out_started = True
         current_bg = "dusk"
         sunset_fade_triggered = True
 
-    if player.x >= 6545 and current_bg == "dusk" and in_sunset_2 and not dusk_fade_triggered:
+    if player_x >= 5645 and current_bg == "dusk" and in_sunset_2 and not dusk_fade_triggered:
         transition_text_surface = get_font(45).render(dusk_to_dungeon, True, (244, 244, 244))
-        text_timer = 3000
+        transition_text_surface_2 = get_font(45).render(dusk_to_dungeon_2, True, (244, 244, 244))
+        text_timer = 8000
         fade.start(3000, reverse=False)
         fade_out_started = True
         current_bg = "dungeon"
         dusk_fade_triggered = True
     
-    if player.x >= 7000 and current_bg == "dungeon" and in_dungeon and not dungeon_fade_triggered:
+    if player_x >= 8700 and current_bg == "dungeon" and in_dungeon and not dungeon_fade_triggered:
         transition_text_surface = get_font(45).render(dungeon_to_void, True, (244, 244, 244))
-        text_timer = 3000
+        transition_text_surface_2 = get_font(45).render(dungeon_to_void_2, True, (244, 244, 244))
+        text_timer = 8000
         fade.start(3000, reverse=False)
         fade_out_started = True
         current_bg = "void"
@@ -324,6 +355,14 @@ while running:
     if text_displayed and text_timer > 0 and transition_text_surface is not None:
         screen.blit(transition_text_surface, (10, 360))
         text_timer -= int(dt * 1000)
+    if text_displayed and text_timer > 0 and transition_text_surface_2 is not None:
+        screen.blit(transition_text_surface_2, (10, 460))
+        text_timer -= int(dt * 1000)
+
+    render_key1(screen, art, camera_x) 
+    render_key2(screen, art, camera_x)
+    render_key3(screen, art, camera_x)
+    render_key4(screen, art, camera_x)
 
     pygame.display.update()
 
