@@ -11,30 +11,50 @@ def resource_path(relative_path):
 
 def SocialMediaButton():
     return {
-        "youtube": pygame.transform.scale(pygame.image.load(resource_path("data/social media sprites/Youtube.png")).convert_alpha(), (64, 64)),
-        "instagram": pygame.transform.scale(pygame.image.load(resource_path("data/social media sprites/Instagram.png")).convert_alpha(), (64, 64)),
-        "facebook": pygame.transform.scale(pygame.image.load(resource_path("data/social media sprites/FaceBook.png")).convert_alpha(), (64, 64)),
-        "twitter": pygame.transform.scale(pygame.image.load(resource_path("data/social media sprites/Twitter.png")).convert_alpha(), (64, 64)),
+        "youtube": pygame.transform.scale(pygame.image.load(resource_path("data/social media sprites/youtube-scaled.png")).convert_alpha(), (150, 150)),
+        "instagram": pygame.transform.scale(pygame.image.load(resource_path("data/social media sprites/instagram-scaled.png")).convert_alpha(), (150, 150)),
+        "facebook": pygame.transform.scale(pygame.image.load(resource_path("data/social media sprites/facebook-scaled.png")).convert_alpha(), (150, 150)),
+        "twitter": pygame.transform.scale(pygame.image.load(resource_path("data/social media sprites/x-scaled.png")).convert_alpha(), (150, 150)),
+        "itch.io": pygame.transform.scale(pygame.image.load(resource_path("data/social media sprites/itch-scaled.png")).convert_alpha(), (150, 150)),
+        "steam": pygame.transform.scale(pygame.image.load(resource_path("data/social media sprites/steam-scaled.png")).convert_alpha(), (150, 150)),
+        "tiktok": pygame.transform.scale(pygame.image.load(resource_path("data/social media sprites/tiktok-scaled1.png")).convert_alpha(), (150, 150)),
+        "twitch": pygame.transform.scale(pygame.image.load(resource_path("data/social media sprites/twitch-scaled.png")).convert_alpha(), (150, 150))
     }
 
 def RenderYoutubeButton(screen, art):
-    screen.blit(art["youtube"], (300, 656))
+    screen.blit(art["youtube"], (0, 570))
 def RenderInstagramButton(screen, art):
-    screen.blit(art["instagram"], (400, 656))
+    screen.blit(art["instagram"], (150, 570))
 def RenderFaceBookButton(screen, art):
-    screen.blit(art["facebook"], (500, 656))
+    screen.blit(art["facebook"], (300, 570))
 def RenderTwitterButton(screen, art):
-    screen.blit(art["twitter"], (600, 565))
+    screen.blit(art["twitter"], (450, 570))
+def RenderItchIoButton(screen, art):
+    screen.blit(art["itch.io"], (600, 570))
+def RenderSteamButton(screen, art):
+    screen.blit(art["steam"], (750, 570))
+def RenderTikTokButton(screen, art):
+    screen.blit(art["tiktok"], (900, 570))
+def RenderTwitch(screen, art):
+    screen.blit(art["twitch"], (1050, 570))
 
 def HoverBar():
     return {
-        "if_hovered": pygame.transform.scale(pygame.image.load(resource_path("data/slider.png")).convert_alpha(), (200, 250))
+        "if_hovered": pygame.transform.scale(pygame.image.load(resource_path("data/slider.png")).convert_alpha(), (500, 650))
     }
 def RenderHoverBar(screen, art):
-    screen.blit(art["if_hovered"], (300, 656 - 50))
+    screen.blit(art["if_hovered"], (0, 656 - 600))
 def RenderHoverBar2(screen, art):
-    screen.blit(art["if_hovered"], (400, 656 - 50))
+    screen.blit(art["if_hovered"], (150, 656 - 600))
 def RenderHoverBar3(screen, art):
-    screen.blit(art["if_hovered"], (500, 656 - 50))
+    screen.blit(art["if_hovered"], (300, 656 - 600))
 def RenderHoverBar4(screen, art):
-    screen.blit(art["if_hovered"], (600, 656 - 50))
+    screen.blit(art["if_hovered"], (450, 656 - 600))
+def RenderHoverBar5(screen, art):
+    screen.blit(art["if_hovered"], (600, 656 - 600))
+def RenderHoverBar6(screen, art):
+    screen.blit(art["if_hovered"], (750, 656 - 600))
+def RenderHoverBar7(screen, art):
+    screen.blit(art["if_hovered"], (900, 656 - 600))
+def RenderHoverBar8(screen, art):
+    screen.blit(art["if_hovered"], (1050, 656 - 600))
