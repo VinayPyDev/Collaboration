@@ -147,6 +147,8 @@ main_menu()
 running = True
 while running:
     
+    mouse_pos = pygame.mouse.get_pos()
+
     screen.fill((10, 10, 10))
 
     dt = clock.tick(60) / 1000
@@ -167,7 +169,7 @@ while running:
                 move_left = False
             if event.key in (pygame.K_d, pygame.K_RIGHT):
                 move_right = False
-    
+
     current_time = pygame.time.get_ticks()
     if current_time - last_update >= animation_cooldown:
         last_update = current_time

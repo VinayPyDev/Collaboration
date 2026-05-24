@@ -1,3 +1,5 @@
+import pygame
+
 def draw_player_idle(screen, art, x, y):
     img = art["idle_0"]
     rect = img.get_rect(center=(x, y))
@@ -22,6 +24,12 @@ def draw_dungeon_bg_full(screen, art, camera_x):
 
 def draw_dungeon_bg_full_2(screen, art, camera_x):
     screen.blit(art["dungeon"], (8932 - camera_x, -150))
+
+def draw_void_bg_full(screen, art, camera_x):
+    screen.blit(art["void"], (11932 - camera_x, -150))
+
+def draw_void_bg_2_full(screen, art, camera_x):
+    screen.blit(art["void"], (14932 - camera_x, -150))
 
 # Memories
 def render_memory_1(screen, frame_img, camera_x):

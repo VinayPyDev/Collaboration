@@ -1,0 +1,78 @@
+
+# def build_sunrise_ground(start_x, end_x):
+#     global ground_y
+#     tiles = []
+#     t = Render_Sunrise_Tileset()
+#     tile_w = t["tile_1"].get_width()   # 48
+#     tile_h = t["tile_1"].get_height()  # 48
+
+#     x = start_x
+#     while x < end_x:
+#         tiles.append({"image": t["tile_1"], "world_x": x, "world_y": ground_y})
+
+#         for row in range(3):
+#             sub_x = x
+#             while sub_x < x + tile_w:
+#                 tiles.append({
+#                     "image": t["tile_9"],   # 16x16
+#                     "world_x": sub_x,
+#                     "world_y": ground_y + tile_h + row * 16
+#                 })
+#                 sub_x += t["tile_9"].get_width()
+#         x += tile_w
+
+#     return tiles
+
+# def build_dungeon_ground(start_x, end_x):
+#     global ground_y
+#     tiles = []
+#     t = Render_Dungeon_Tileset()
+#     tile_w = t["tile_1"].get_width()
+#     tile_h = t["tile_1"].get_height()
+
+#     x = start_x
+#     while x < end_x:
+#         tiles.append({"image": t["tile_1"], "world_x": x, "world_y": ground_y})
+
+#         for row in range(3):
+#             sub_x = x
+#             while sub_x < x + tile_w:
+#                 tiles.append({
+#                     "image": t["tile_8"],   # 16x16
+#                     "world_x": sub_x,
+#                     "world_y": ground_y + tile_h + row * 16
+#                 })
+#                 sub_x += t["tile_8"].get_width()
+#         x += tile_w
+
+#     return tiles
+
+# def build_void_ground(start_x, end_x):
+#     global ground_y
+#     tiles = []
+#     t = Render_Void_Tileset()
+#     tile_w = t["tile_1"].get_width()
+#     tile_h = t["tile_1"].get_height()
+
+#     x = start_x
+#     while x < end_x:
+#         tiles.append({"image": t["tile_1"], "world_x": x, "world_y": ground_y})
+
+#         for row in range(3):
+#             sub_x = x
+#             while sub_x < x + tile_w:
+#                 remaining = (x + tile_w) - sub_x
+#                 img = t["tile_12"] if remaining >= 32 else t["tile_11"]  # 32x16 or 16x16
+#                 tiles.append({
+#                     "image": img,
+#                     "world_x": sub_x,
+#                     "world_y": ground_y + tile_h + row * 16
+#                 })
+#                 sub_x += img.get_width()
+#         x += tile_w
+
+#     return tiles
+
+# sunset_tiles = build_sunrise_ground(0, 12000)
+# dungeon_tiles = build_dungeon_ground(0, 12000)
+# void_tiles = build_void_ground(0, 12000)
