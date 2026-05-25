@@ -67,6 +67,6 @@ def RenderHoverBar5(screen, art):
 def RenderHoverBar6(screen, art):
     screen.blit(art["if_hovered"], (750, 626 - 600))
 def RenderHoverBar7(screen, art):
-    screen.blit(art["if_hovered"], (900, 626 - 600))
+    screen.blit(art["if_hovered"], (850, 626 - 600))
 def RenderHoverBar8(screen, art):
-    screen.blit(art["if_hovered"], (1050, 626 - 600))
+    screen.blit(art["if_hovered"], (875, 626 - 600))

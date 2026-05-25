@@ -190,22 +190,22 @@ def main_menu():
         steam7_rect = art["steam_small"].get_rect(topleft=(775, 540))
 
             # tiktok
-        tiktok1_rect = art["tiktok_small"].get_rect(topleft=(925, 60))
-        tiktok2_rect = art["tiktok_small"].get_rect(topleft=(925, 140))
-        tiktok3_rect = art["tiktok_small"].get_rect(topleft=(925, 220))
-        tiktok4_rect = art["tiktok_small"].get_rect(topleft=(925, 300))
-        tiktok5_rect = art["tiktok_small"].get_rect(topleft=(925, 380))
-        tiktok6_rect = art["tiktok_small"].get_rect(topleft=(925, 460))
-        tiktok7_rect = art["tiktok_small"].get_rect(topleft=(925, 540))
+        tiktok1_rect = art["tiktok_small"].get_rect(topleft=(875, 60))
+        tiktok2_rect = art["tiktok_small"].get_rect(topleft=(875, 140))
+        tiktok3_rect = art["tiktok_small"].get_rect(topleft=(875, 220))
+        tiktok4_rect = art["tiktok_small"].get_rect(topleft=(875, 300))
+        tiktok5_rect = art["tiktok_small"].get_rect(topleft=(875, 380))
+        tiktok6_rect = art["tiktok_small"].get_rect(topleft=(875, 460))
+        tiktok7_rect = art["tiktok_small"].get_rect(topleft=(875, 540))
             
             # twitch
-        twitch1_rect = art["twitch_small"].get_rect(topleft=(1075, 60))
-        twitch2_rect = art["twitch_small"].get_rect(topleft=(1075, 140))
-        twitch3_rect = art["twitch_small"].get_rect(topleft=(1075, 220))
-        twitch4_rect = art["twitch_small"].get_rect(topleft=(1075, 300))
-        twitch5_rect = art["twitch_small"].get_rect(topleft=(1075, 380))
-        twitch6_rect = art["twitch_small"].get_rect(topleft=(1075, 460))
-        twitch7_rect = art["twitch_small"].get_rect(topleft=(1075, 540))
+        twitch1_rect = art["twitch_small"].get_rect(topleft=(900, 60))
+        twitch2_rect = art["twitch_small"].get_rect(topleft=(900, 140))
+        twitch3_rect = art["twitch_small"].get_rect(topleft=(900, 220))
+        twitch4_rect = art["twitch_small"].get_rect(topleft=(900, 300))
+        twitch5_rect = art["twitch_small"].get_rect(topleft=(900, 380))
+        twitch6_rect = art["twitch_small"].get_rect(topleft=(900, 460))
+        twitch7_rect = art["twitch_small"].get_rect(topleft=(900, 540))
 
         screen.blit(art["youtube"], youtube_btn_rect)
         screen.blit(art["instagram"], instagram_btn_rect)
@@ -238,8 +238,6 @@ def main_menu():
             screen.blit(text5_Utube, (150, 420))
             text6_Utube = get_font(48).render("DVD", True, (0, 0, 0))
             screen.blit(text6_Utube, (150, 500))
-            text7_Utube = get_font(48).render("Mochi", True, (0, 0, 0))
-            screen.blit(text7_Utube, (150, 560))
 
         if on_instagram_button:
             RenderHoverBar2(screen, art)
@@ -263,8 +261,6 @@ def main_menu():
             screen.blit(text5_Itube, (300, 420))
             text6_Itube = get_font(48).render("DVD", True, (0, 0, 0))
             screen.blit(text6_Itube, (300, 500))
-            text7_Itube = get_font(48).render("Mochi", True, (0, 0, 0))
-            screen.blit(text7_Itube, (300, 560))
 
         if on_facebook_button:
             RenderHoverBar3(screen, art)
@@ -288,8 +284,6 @@ def main_menu():
             screen.blit(text5_Ftube, (450, 420))
             text6_Ftube = get_font(48).render("DVD", True, (0, 0, 0))
             screen.blit(text6_Ftube, (450, 500))
-            text7_Ftube = get_font(48).render("Mochi", True, (0, 0, 0))
-            screen.blit(text7_Ftube, (450, 560))
 
         if on_twitter_button:
             RenderHoverBar4(screen, art)
@@ -313,8 +307,6 @@ def main_menu():
             screen.blit(text5_Ttube, (600, 420))
             text6_Ttube = get_font(48).render("DVD", True, (0, 0, 0))
             screen.blit(text6_Ttube, (600, 500))
-            text7_Ttube = get_font(48).render("Mochi", True, (0, 0, 0))
-            screen.blit(text7_Ttube, (600, 560))
 
         if on_itchio_button:
             RenderHoverBar5(screen, art)
@@ -338,8 +330,6 @@ def main_menu():
             screen.blit(text5_ITtube, (750, 420))
             text6_ITtube = get_font(48).render("DVD", True, (0, 0, 0))
             screen.blit(text6_ITtube, (750, 500))
-            text7_ITtube = get_font(48).render("Mochi", True, (0, 0, 0))
-            screen.blit(text7_ITtube, (750, 560))
 
         if on_steam_button:
             RenderHoverBar6(screen, art)
@@ -363,8 +353,6 @@ def main_menu():
             screen.blit(text5_Stube, (900, 420))
             text6_Stube = get_font(48).render("DVD", True, (0, 0, 0))
             screen.blit(text6_Stube, (900, 500))
-            text7_Stube = get_font(48).render("Mochi", True, (0, 0, 0))
-            screen.blit(text7_Stube, (900, 560))
 
         if on_tiktok_button:
             RenderHoverBar7(screen, art)
@@ -378,17 +366,15 @@ def main_menu():
             text1_TTtube = get_font(48).render("Error 404", True, (0, 0, 0))
             screen.blit(text1_TTtube, (980, 100))
             text2_TTtube = get_font(48).render("LucaArt", True, (0, 0, 0))
-            screen.blit(text2_TTtube, (1050, 180))
+            screen.blit(text2_TTtube, (1000, 180))
             text3_TTtube = get_font(48).render("Rusty9q1", True, (0, 0, 0))
-            screen.blit(text3_TTtube, (1050, 260))
+            screen.blit(text3_TTtube, (1000, 260))
             text4_TTtube = get_font(48).render("Toasty", True, (0, 0, 0))
-            screen.blit(text4_TTtube, (1050, 340))
+            screen.blit(text4_TTtube, (1000, 340))
             text5_TTtube = get_font(48).render("Kaan", True, (0, 0, 0))
-            screen.blit(text5_TTtube, (1050, 420))
+            screen.blit(text5_TTtube, (1000, 420))
             text6_TTtube = get_font(48).render("DVD", True, (0, 0, 0))
-            screen.blit(text6_TTtube, (1050, 500))
-            text7_TTtube = get_font(48).render("Mochi", True, (0, 0, 0))
-            screen.blit(text7_TTtube, (1050, 560))
+            screen.blit(text6_TTtube, (1000, 500))
 
         if on_twitch_button:
             RenderHoverBar8(screen, art)
@@ -401,36 +387,17 @@ def main_menu():
             screen.blit(art["twitch_small"], twitch7_rect)
 
             text1_TWtube = get_font(48).render("VinayPyDev", True, (0, 0, 0))
-            screen.blit(text1_TWtube, (1175, 100))
+            screen.blit(text1_TWtube, (1000, 100))
             text2_TWtube = get_font(48).render("LucaArt", True, (0, 0, 0))
-            screen.blit(text2_TWtube, (1175, 180))
+            screen.blit(text2_TWtube, (1000, 180))
             text3_TWtube = get_font(48).render("Rusty9q1", True, (0, 0, 0))
-            screen.blit(text3_TWtube, (1175, 260))
+            screen.blit(text3_TWtube, (1000, 260))
             text4_TWtube = get_font(48).render("Toasty", True, (0, 0, 0))
-            screen.blit(text4_TWtube, (1175, 340))
+            screen.blit(text4_TWtube, (1000, 340))
             text5_TWtube = get_font(48).render("Kaan", True, (0, 0, 0))
-            screen.blit(text5_TWtube, (1175, 420))
+            screen.blit(text5_TWtube, (1000, 420))
             text6_TWtube = get_font(48).render("DVD", True, (0, 0, 0))
-            screen.blit(text6_TWtube, (1175, 500))
-            text7_TWtube = get_font(48).render("Mochi", True, (0, 0, 0))
-            screen.blit(text7_TWtube, (1175, 560))
-
-        #redirecting
-
-        # if on_instagram_button and youtube1_rect.collidepoint(mouse_pos):
-
-        if on_facebook_button:
-            RenderHoverBar3(screen, art)
-        if on_twitter_button:
-            RenderHoverBar4(screen, art)
-        if on_itchio_button:
-            RenderHoverBar5(screen, art)
-        if on_steam_button:
-            RenderHoverBar6(screen, art)
-        if on_tiktok_button:
-            RenderHoverBar7(screen, art)
-        if on_twitch_button:
-            RenderHoverBar8(screen, art)
+            screen.blit(text6_TWtube, (1000, 500))
 
         if on_youtube_button is None:
             on_youtube_button = False
@@ -490,16 +457,16 @@ def main_menu():
                         elif youtube3_rect.collidepoint(event.pos):
                             print("BINGO2")
                         elif youtube4_rect.collidepoint(event.pos):
-                            print("BINGO4")
+                            webbrowser.open("https://youtube.com/@tw0astey1?si=lEj-1kOZU8i90aj3")
                         elif youtube5_rect.collidepoint(event.pos):
-                            print("BINGO5")
+                            webbrowser.open("https://www.youtube.com/@kaan_tuna")
                         elif youtube6_rect.collidepoint(event.pos):
                             print("BINGO6")
                         elif youtube7_rect.collidepoint(event.pos):
                             print("BINGO7")
                     if on_instagram_button:
                         if instagram1_rect.collidepoint(event.pos):
-                            webbrowser.open("https://www.instagram.com/@VinayPyDev")
+                            webbrowser.open("https://www.instagram.com/vinaypydev?igsh=djgxb2J2ZTU2bTh6")
                         elif instagram2_rect.collidepoint(event.pos):
                             print("BINGO1")
                         elif instagram3_rect.collidepoint(event.pos):
@@ -529,7 +496,7 @@ def main_menu():
                             print("BINGO7")
                     if on_twitter_button:
                         if twitter1_rect.collidepoint(event.pos):
-                            webbrowser.open("https://www.twitter.com/@VinayPyDev")
+                            webbrowser.open("https://www.twitter.com/VinayPyDev")
                         elif twitter2_rect.collidepoint(event.pos):
                             print("BINGO1")
                         elif twitter3_rect.collidepoint(event.pos):
@@ -537,7 +504,7 @@ def main_menu():
                         elif twitter4_rect.collidepoint(event.pos):
                             print("BINGO4")
                         elif twitter5_rect.collidepoint(event.pos):
-                            print("BINGO5")
+                            webbrowser.open("https://www.twitter.com/plazmaero")
                         elif twitter6_rect.collidepoint(event.pos):
                             print("BINGO6")
                         elif twitter7_rect.collidepoint(event.pos):
@@ -546,26 +513,26 @@ def main_menu():
                         if itchio1_rect.collidepoint(event.pos):
                             webbrowser.open("https://VinayPyDev.itch.io")
                         elif itchio2_rect.collidepoint(event.pos):
-                            print("BINGO1")
+                            webbrowser.open("https://that-guy-absorbed.itch.io")
                         elif itchio3_rect.collidepoint(event.pos):
-                            print("BINGO2")
+                            webbrowser.open("https://Rusty9q1.itch.io")
                         elif itchio4_rect.collidepoint(event.pos):
-                            print("BINGO4")
+                            webbrowser.open("https://elwario33.itch.io")
                         elif itchio5_rect.collidepoint(event.pos):
-                            print("BINGO5")
+                            webbrowser.open("https://plazmaero.itch.io")
                         elif itchio6_rect.collidepoint(event.pos):
                             print("BINGO6")
                         elif itchio7_rect.collidepoint(event.pos):
                             print("BINGO7")
                     if on_steam_button:
                         if steam1_rect.collidepoint(event.pos):
-                            webbrowser.open("https://www.steam.com/@VinayPyDev")
+                            webbrowser.open("https://www.steamcommunity.com/profiles/76561198697457955/")
                         elif steam2_rect.collidepoint(event.pos):
                             print("BINGO1")
                         elif steam3_rect.collidepoint(event.pos):
-                            print("BINGO2")
+                            webbrowser.open("https://steamcommmunity.com/profiles/76561199507093252/")
                         elif steam4_rect.collidepoint(event.pos):
-                            print("BINGO4")
+                            webbrowser.open("https://steamcommunity.com/profiles/76561199046217834/")
                         elif steam5_rect.collidepoint(event.pos):
                             print("BINGO5")
                         elif steam6_rect.collidepoint(event.pos):
