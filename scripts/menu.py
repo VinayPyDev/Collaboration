@@ -230,8 +230,8 @@ def main_menu():
             screen.blit(text1_Utube, (150, 100))
             text2_Utube = get_font(48).render("LucaArt", True, (0, 0, 0))
             screen.blit(text2_Utube, (150, 180))
-            text3_Utube = get_font(48).render("Rusty9q1", True, (0, 0, 0))
-            screen.blit(text3_Utube, (150, 260))
+            text3_Utube = get_font(48).render("Error 404", True, (0, 0, 0))
+            screen.blit(text3_Utube, (130, 260))
             text4_Utube = get_font(48).render("Toasty", True, (0, 0, 0))
             screen.blit(text4_Utube, (150, 340))
             text5_Utube = get_font(48).render("Kaan", True, (0, 0, 0))
@@ -251,15 +251,15 @@ def main_menu():
 
             text1_Itube = get_font(48).render("VinayPyDev", True, (0, 0, 0))
             screen.blit(text1_Itube, (300, 100))
-            text2_Itube = get_font(48).render("LucaArt", True, (0, 0, 0))
+            text2_Itube = get_font(48).render("Error 404", True, (0, 0, 0))
             screen.blit(text2_Itube, (300, 180))
-            text3_Itube = get_font(48).render("Rusty9q1", True, (0, 0, 0))
+            text3_Itube = get_font(48).render("Error 404", True, (0, 0, 0))
             screen.blit(text3_Itube, (300, 260))
-            text4_Itube = get_font(48).render("Toasty", True, (0, 0, 0))
+            text4_Itube = get_font(48).render("Error 404", True, (0, 0, 0))
             screen.blit(text4_Itube, (300, 340))
             text5_Itube = get_font(48).render("Kaan", True, (0, 0, 0))
             screen.blit(text5_Itube, (300, 420))
-            text6_Itube = get_font(48).render("DVD", True, (0, 0, 0))
+            text6_Itube = get_font(48).render("Error 404", True, (0, 0, 0))
             screen.blit(text6_Itube, (300, 500))
 
         if on_facebook_button:
@@ -274,15 +274,15 @@ def main_menu():
 
             text1_Ftube = get_font(48).render("VinayPyDev", True, (0, 0, 0))
             screen.blit(text1_Ftube, (450, 100))
-            text2_Ftube = get_font(48).render("LucaArt", True, (0, 0, 0))
+            text2_Ftube = get_font(48).render("Error 404", True, (0, 0, 0))
             screen.blit(text2_Ftube, (450, 180))
-            text3_Ftube = get_font(48).render("Rusty9q1", True, (0, 0, 0))
+            text3_Ftube = get_font(48).render("Error 404", True, (0, 0, 0))
             screen.blit(text3_Ftube, (450, 260))
-            text4_Ftube = get_font(48).render("Toasty", True, (0, 0, 0))
+            text4_Ftube = get_font(48).render("Error 404", True, (0, 0, 0))
             screen.blit(text4_Ftube, (450, 340))
-            text5_Ftube = get_font(48).render("Kaan", True, (0, 0, 0))
+            text5_Ftube = get_font(48).render("Error 404", True, (0, 0, 0))
             screen.blit(text5_Ftube, (450, 420))
-            text6_Ftube = get_font(48).render("DVD", True, (0, 0, 0))
+            text6_Ftube = get_font(48).render("Error 404", True, (0, 0, 0))
             screen.blit(text6_Ftube, (450, 500))
 
         if on_twitter_button:
@@ -297,15 +297,15 @@ def main_menu():
 
             text1_Ttube = get_font(48).render("VinayPyDev", True, (0, 0, 0))
             screen.blit(text1_Ttube, (600, 100))
-            text2_Ttube = get_font(48).render("LucaArt", True, (0, 0, 0))
+            text2_Ttube = get_font(48).render("Error 404", True, (0, 0, 0))
             screen.blit(text2_Ttube, (600, 180))
-            text3_Ttube = get_font(48).render("Rusty9q1", True, (0, 0, 0))
+            text3_Ttube = get_font(48).render("Error 404", True, (0, 0, 0))
             screen.blit(text3_Ttube, (600, 260))
-            text4_Ttube = get_font(48).render("Toasty", True, (0, 0, 0))
+            text4_Ttube = get_font(48).render("Error 404", True, (0, 0, 0))
             screen.blit(text4_Ttube, (600, 340))
             text5_Ttube = get_font(48).render("Kaan", True, (0, 0, 0))
             screen.blit(text5_Ttube, (600, 420))
-            text6_Ttube = get_font(48).render("DVD", True, (0, 0, 0))
+            text6_Ttube = get_font(48).render("Error 404", True, (0, 0, 0))
             screen.blit(text6_Ttube, (600, 500))
 
         if on_itchio_button:
@@ -343,7 +343,7 @@ def main_menu():
 
             text1_Stube = get_font(48).render("VinayPyDev", True, (0, 0, 0))
             screen.blit(text1_Stube, (900, 100))
-            text2_Stube = get_font(48).render("LucaArt", True, (0, 0, 0))
+            text2_Stube = get_font(48).render("Error 404", True, (0, 0, 0))
             screen.blit(text2_Stube, (900, 180))
             text3_Stube = get_font(48).render("Rusty9q1", True, (0, 0, 0))
             screen.blit(text3_Stube, (900, 260))
@@ -356,6 +356,7 @@ def main_menu():
 
         if on_tiktok_button:
             RenderHoverBar7(screen, art)
+            screen.blit(art["tiktok_small"], tiktok1_rect)
             screen.blit(art["tiktok_small"], tiktok2_rect)
             screen.blit(art["tiktok_small"], tiktok3_rect)
             screen.blit(art["tiktok_small"], tiktok4_rect)
@@ -365,16 +366,16 @@ def main_menu():
 
             text1_TTtube = get_font(48).render("Error 404", True, (0, 0, 0))
             screen.blit(text1_TTtube, (980, 100))
-            text2_TTtube = get_font(48).render("LucaArt", True, (0, 0, 0))
-            screen.blit(text2_TTtube, (1000, 180))
-            text3_TTtube = get_font(48).render("Rusty9q1", True, (0, 0, 0))
-            screen.blit(text3_TTtube, (1000, 260))
+            text2_TTtube = get_font(48).render("Error 404", True, (0, 0, 0))
+            screen.blit(text2_TTtube, (980, 180))
+            text3_TTtube = get_font(48).render("Error 404", True, (0, 0, 0))
+            screen.blit(text3_TTtube, (980, 260))
             text4_TTtube = get_font(48).render("Toasty", True, (0, 0, 0))
-            screen.blit(text4_TTtube, (1000, 340))
+            screen.blit(text4_TTtube, (980, 340))
             text5_TTtube = get_font(48).render("Kaan", True, (0, 0, 0))
             screen.blit(text5_TTtube, (1000, 420))
-            text6_TTtube = get_font(48).render("DVD", True, (0, 0, 0))
-            screen.blit(text6_TTtube, (1000, 500))
+            text6_TTtube = get_font(48).render("Error 404", True, (0, 0, 0))
+            screen.blit(text6_TTtube, (980, 500))
 
         if on_twitch_button:
             RenderHoverBar8(screen, art)
@@ -453,7 +454,7 @@ def main_menu():
                         if youtube1_rect.collidepoint(event.pos):
                             webbrowser.open("https://www.youtube.com/@VinayPyDev")
                         elif youtube2_rect.collidepoint(event.pos):
-                            print("BINGO1")
+                            webbrowser.open("https://www.youtube.com/@LucaDoesTheArtThing")
                         elif youtube3_rect.collidepoint(event.pos):
                             print("BINGO2")
                         elif youtube4_rect.collidepoint(event.pos):
@@ -547,7 +548,7 @@ def main_menu():
                         elif tiktok4_rect.collidepoint(event.pos):
                             print("BINGO4")
                         elif tiktok5_rect.collidepoint(event.pos):
-                            print("BINGO5")
+                            webbrowser.open("https://www.tiktok.com/@plazmaero?lang=nl-NL")
                         elif tiktok6_rect.collidepoint(event.pos):
                             print("BINGO6")
                         elif tiktok7_rect.collidepoint(event.pos):
