@@ -9,14 +9,16 @@ from display import draw_sunset_bg_full, draw_dungeon_bg_full, draw_sunset_bg_2_
 from display import draw_sunset_bg_extra_full, render_key1, render_key2, render_key3, render_key4, draw_dungeon_bg_full_2, draw_void_bg_full, draw_void_bg_2_full
 
 from menu import main_menu
-
 from memory_render import Render_memory_1, Render_memory_2, Render_memory_3, Render_memory_4, Render_memory_5, Render_memory_6, Render_memory_7, Render_memory_8, Render_memory_9
-
 from transition import TransitionObj, fade
-
 from tilesets import Render_Sunrise_Tileset, Render_Dungeon_Tileset, Render_Void_Tileset
-
 from font import get_font
+
+from pathlib import Path
+sys.path.append(str(Path(__file__).parent.parent))
+
+# minigames
+from minigame1.scripts1.main import game1
 
 pygame.init()
 WIDTH, HEIGHT = 1280, 720
@@ -242,6 +244,9 @@ while running:
     
     if player_y > ground_y - 150:
         player_y = ground_y - 150
+
+    if player_x >= 2000:
+        game1()
 
     if not memory1Trigger and player_x >= 1300:
         memory1Trigger = True
