@@ -60,11 +60,11 @@ def render_memory_9(screen, frame_img, camera_x):
     screen.blit(frame_img, (18000 - camera_x, 200))
 
 # Keys
-def render_key1(screen, art, camera_x):
-    screen.blit(art["key1"], (150 - camera_x, -150))
-def render_key2(screen, art, camera_x):
-    screen.blit(art["key2"], (50 - camera_x, -150))
-def render_key3(screen, art, camera_x):
-    screen.blit(art["key3"], (150 - camera_x, -150))
-def render_key4(screen, art, camera_x):
-    screen.blit(art["key4"], (200 - camera_x, -150))
+def render_key1(screen, art):
+    screen.blit(art["key1"], (105, 0))
+def render_key2(screen, art):
+    screen.blit(art["key2"], (40, 65))
+def render_key3(screen, art):
+    screen.blit(art["key3"], (105, 65))
+def render_key4(screen, art):
+    screen.blit(art["key4"], (170, 65))

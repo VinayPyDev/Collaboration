@@ -19,6 +19,7 @@ sys.path.append(str(Path(__file__).parent.parent))
 
 # minigames
 from minigame1.scripts1.main import game1
+from minigame2.scripts2.main import game2
 
 pygame.init()
 WIDTH, HEIGHT = 1280, 720
@@ -41,12 +42,15 @@ art.update(load_void_bg_full())
 
 art.update(load_keys())
 
+minigame1_started = False
+minigame2_started = False
+
 transition_text = ""
 sunset_to_dusk = "The sun has descended and dusk holds its crown"
 dusk_to_dungeon = "The dusk faded away and now night is in its "
 dusk_to_dungeon_2 = "prime"
 dungeon_to_void = "The innocence has been stabbed and has turned"
-dungeon_to_void_2 = " to the path of grief"
+dungeon_to_void_2 = " to the path of vengeance"
 
 sunset_fade_triggered = False
 dusk_fade_triggered = False
@@ -245,8 +249,13 @@ while running:
     if player_y > ground_y - 150:
         player_y = ground_y - 150
 
-    if player_x >= 2000:
+    if player_x >= 2000 and not minigame1_started:
+        minigame1_started = True
         game1()
+
+    if player_x >= 4200 and not minigame2_started:
+        minigame2_started = True
+        game2()
 
     if not memory1Trigger and player_x >= 1300:
         memory1Trigger = True
@@ -366,10 +375,10 @@ while running:
         screen.blit(transition_text_surface_2, (10, 460))
         text_timer -= int(dt * 1000)
 
-    render_key1(screen, art, camera_x) 
-    render_key2(screen, art, camera_x)
-    render_key3(screen, art, camera_x)
-    render_key4(screen, art, camera_x)
+    render_key1(screen, art) 
+    render_key2(screen, art)
+    render_key3(screen, art)
+    render_key4(screen, art)
 
     pygame.display.update()
 

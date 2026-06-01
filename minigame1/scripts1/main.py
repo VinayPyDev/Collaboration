@@ -15,7 +15,7 @@ def game1():
     camera_y = 0
 
     rect = pygame.Rect(640, 360, 100, 100)
-    speed = 100
+    speed = 500
 
     food_scored = 0
     water_scored = 0
@@ -36,7 +36,8 @@ def game1():
     not_picked4 = True
     not_picked5 = True
 
-    while True:
+    running = True
+    while running:
         dt = clock.tick(60) / 1000
         screen.fill((0, 0, 0))
 
@@ -131,5 +132,5 @@ def game1():
         screen.blit(text2, (0, 100))
 
         pygame.draw.rect(screen, (255, 0, 0), (rect.x - camera_x, rect.y - camera_y, rect.width, rect.height))
-        
+    
         pygame.display.update() 

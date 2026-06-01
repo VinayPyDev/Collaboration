@@ -17,7 +17,7 @@ def Disclaimer_text():
     screen.blit(disclaimer_description_2, (0, 200))
     screen.blit(disclaimer_description_miss, (10, 150))
 
-    age_restriction_note = get_font(32).render("Players below the age of 13 require parental supervision or ", True, "#DADADA")
+    age_restriction_note = get_font(32).render("Players below the age of 16 require parental supervision or ", True, "#DADADA")
     age_restriction_note_2 = get_font(32).render("guidance because of the mature content and themes", True, "#DADADA")
     screen.blit(age_restriction_note, (10, 300))
     screen.blit(age_restriction_note_2, (10, 360))
