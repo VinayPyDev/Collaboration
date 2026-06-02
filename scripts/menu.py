@@ -7,6 +7,8 @@ from font import get_font, get_font_BOLD
 from text import disclaimer_screen
 from mediabutton import SocialMediaButton, SocialMediaButtonShrinked, HoverBar, RenderHoverBar, RenderHoverBar2, RenderHoverBar3, RenderHoverBar4
 from mediabutton import RenderHoverBar5, RenderHoverBar6, RenderHoverBar7, RenderHoverBar8
+from mediabutton import RenderClickYoutube, RenderClickInstagram, RenderClickTwitter, RenderClickFacebook, RenderClickItchIo, RenderClickTiktok, RenderClickSteam, RenderClickTwitch
+from mediabutton import LoadClickingYoutube, LoadClickingInstagram, LoadClickingFacebook, LoadClickingTwitter, LoadClickingItchIo, LoadClickingSteam, LoadClickingTiktok, LoadClickingTwitch
 
 pygame.init()
 
@@ -30,6 +32,28 @@ masking_l = pygame.transform.scale(pygame.image.load(resource_path("data/masking
 
 design_1 = pygame.transform.scale(pygame.image.load(resource_path("data/mask1.png")).convert_alpha(), (170, 170))
 design_2 = pygame.transform.scale(pygame.image.load(resource_path("data/mask2.png")).convert_alpha(), (170, 170))
+
+youtube_frames = RenderClickYoutube()
+instagram_frames = RenderClickInstagram()
+facebook_frames = RenderClickFacebook()
+twitter_frames = RenderClickTwitter()
+itchio_frames = RenderClickItchIo()
+steam_frames = RenderClickSteam()
+tiktok_frames = RenderClickTiktok()
+twitch_frames = RenderClickTwitch()
+
+current_frame = 0
+frame_timer = 0
+frame_cooldown = 50
+
+current_frame_idx1 = youtube_frames[0]
+current_frame_idx2 = instagram_frames[0]
+current_frame_idx3 = facebook_frames[0]
+current_frame_idx4 = twitter_frames[0]
+current_frame_idx5 = itchio_frames[0]
+current_frame_idx6 = steam_frames[0]
+current_frame_idx7 = tiktok_frames[0]
+current_frame_idx8 = twitch_frames[0]
 
 class BUTTON:
     def __init__(self, image, pos, text_input, font, base_color, hovering_color):
@@ -125,6 +149,56 @@ def main_menu():
             btn.switch_color(mouse_pos)
             btn.update()
         
+        if on_youtube_button:
+            current_time = pygame.time.get_ticks()
+            if current_frame < 4 and current_time - frame_timer > frame_cooldown:
+                current_frame += 1
+                frame_timer = current_time
+            
+            LoadClickingYoutube(screen, youtube_frames[current_frame], (0, 600))
+        if on_instagram_button:
+            current_time = pygame.time.get_ticks()
+            if current_frame < 4 and current_time - frame_timer > frame_cooldown:
+                current_frame += 1
+                frame_timer = current_time
+            
+            LoadClickingInstagram(screen, instagram_frames[current_frame], (0, 600))
+        if on_facebook_button:
+            current_time = pygame.time.get_ticks()
+            if current_frame < 4 and current_time - frame_timer > frame_cooldown:
+                current_frame += 1
+                frame_timer = current_time
+            
+            LoadClickingFacebook(screen, facebook_frames[current_frame], (0, 600))
+        if on_twitter_button:
+            current_time = pygame.time.get_ticks()
+            if current_frame < 4 and current_time - frame_timer > frame_cooldown:
+                current_frame += 1
+                frame_timer = current_time
+            
+            LoadClickingTwitter(screen, twitter_frames[current_frame], (0, 600))
+        if on_itchio_button:
+            current_time = pygame.time.get_ticks()
+            if current_frame < 4 and current_time - frame_timer > frame_cooldown:
+                current_frame += 1
+                frame_timer = current_time
+            
+            LoadClickingItchIo(screen, itchio_frames[current_frame], (0, 600))
+        if on_tiktok_button:
+            current_time = pygame.time.get_ticks()
+            if current_frame < 4 and current_time - frame_timer > frame_cooldown:
+                current_frame += 1
+                frame_timer = current_time
+            
+            LoadClickingTiktok(screen, tiktok_frames[current_frame], (0, 600))
+        if on_twitch_button:
+            current_time = pygame.time.get_ticks()
+            if current_frame < 4 and current_time - frame_timer > frame_cooldown:
+                current_frame += 1
+                frame_timer = current_time
+            
+            LoadClickingTwitch(screen, twitch_frames[current_frame], (0, 600))
+
         # Social media button
         youtube_btn_rect = art["youtube"].get_rect(topleft=(0, 600))
         instagram_btn_rect = art["instagram"].get_rect(topleft=(150, 600))

@@ -13,6 +13,7 @@ from memory_render import Render_memory_1, Render_memory_2, Render_memory_3, Ren
 from transition import TransitionObj, fade
 from tilesets import Render_Sunrise_Tileset, Render_Dungeon_Tileset, Render_Void_Tileset
 from font import get_font
+from text import Start_text
 
 from pathlib import Path
 sys.path.append(str(Path(__file__).parent.parent))
@@ -42,6 +43,7 @@ art.update(load_void_bg_full())
 
 art.update(load_keys())
 
+# minigames
 minigame1_started = False
 minigame2_started = False
 
@@ -154,7 +156,6 @@ running = True
 while running:
     
     mouse_pos = pygame.mouse.get_pos()
-
     screen.fill((10, 10, 10))
 
     dt = clock.tick(60) / 1000
@@ -162,18 +163,18 @@ while running:
         if event.type == pygame.QUIT:
             running = False
         if event.type == pygame.KEYDOWN:
-            if event.key in (pygame.K_a, pygame.K_LEFT):
+            if event.key == pygame.K_a:
                 move_left = True
-            if event.key in (pygame.K_d, pygame.K_RIGHT):
+            if event.key == pygame.K_d:
                 move_right = True
 
             if event.key == pygame.K_ESCAPE:
                 main_menu()
                 
         if event.type == pygame.KEYUP:
-            if event.key in (pygame.K_a, pygame.K_LEFT):
+            if event.key == pygame.K_a:
                 move_left = False
-            if event.key in (pygame.K_d, pygame.K_RIGHT):
+            if event.key == pygame.K_d:
                 move_right = False
 
     current_time = pygame.time.get_ticks()
@@ -191,28 +192,20 @@ while running:
 
         if frame >= len(Memory_1_frames):
             frame = 0
-
         if frame2 >= len(Memory_2_frames):
             frame2 = 0
-
         if frame3 >= len(Memory_3_frames):
             frame3 = 0
-        
         if frame4 >= len(Memory_4_frames):
             frame4 = 0
-        
         if frame5 >= len(Memory_5_frames):
             frame5 = 0
-            
         if frame6 >= len(Memory_6_frames):
             frame6 = 0
-
         if frame7 >= len(Memory_7_frames):
             frame7 = 0
-
         if frame8 >= len(Memory_8_frames):
             frame8 = 0
-
         if frame9 >= len(Memory_9_frames):
             frame9 = 0
 
@@ -249,38 +242,32 @@ while running:
     if player_y > ground_y - 150:
         player_y = ground_y - 150
 
-    if player_x >= 2000 and not minigame1_started:
+    if player_x >= 2400 and not minigame1_started:
+        result = game1()
+        print(result)
         minigame1_started = True
-        game1()
 
     if player_x >= 4200 and not minigame2_started:
+        result = game2()
+        print(result)
         minigame2_started = True
-        game2()
 
     if not memory1Trigger and player_x >= 1300:
         memory1Trigger = True
-
     if not memory2Trigger and player_x >= 2700:
         memory2Trigger = True
-
     if not memory3Trigger and player_x >= 4000:
         memory3Trigger = True
-    
     if not memory4Trigger and player_x >= 5300:
         memory4Trigger = True
-    
     if not memory5Trigger and player_x >= 6400:
         memory5Trigger = True
-
     if not memory6Trigger and player_x >= 7300:
         memory6Trigger = True
-
     if not memory7Trigger and player_x >= 8450:
         memory7Trigger = True
-
     if not memory8Trigger and player_x >= 9523:
-        memory8Trigger = True
-    
+        memory8Trigger = True 
     if not memory9Trigger and player_x >= 10750:
         memory9Trigger = True
 
@@ -296,6 +283,9 @@ while running:
         draw_void_bg_full(screen, art, camera_x)
         draw_void_bg_2_full(screen, art, camera_x)
 
+    if current_bg == "sunset":
+        Start_text()
+
     if player_facing == "right":
         current_player_img = idle_right_frames[current_frame]
     elif player_facing == "left":
@@ -308,28 +298,20 @@ while running:
 
     if memory1Trigger:
         render_memory_1(screen, Memory_1_frames[frame], camera_x)
-
     if memory2Trigger:
         render_memory_2(screen, Memory_2_frames[frame2], camera_x)
-
     if memory3Trigger:
         render_memory_3(screen, Memory_3_frames[frame3], camera_x)
-
     if memory4Trigger:
         render_memory_4(screen, Memory_4_frames[frame4], camera_x)
-
     if memory5Trigger:
         render_memory_5(screen, Memory_5_frames[frame5], camera_x)
-
     if memory6Trigger:
         render_memory_6(screen, Memory_6_frames[frame6], camera_x)
-
     if memory7Trigger:
-        render_memory_7(screen, Memory_7_frames[frame7], camera_x)
-    
+        render_memory_7(screen, Memory_7_frames[frame7], camera_x) 
     if memory8Trigger:
         render_memory_8(screen, Memory_8_frames[frame8], camera_x)
-    
     if memory9Trigger:
         render_memory_9(screen, Memory_9_frames[frame9], camera_x)   
 
