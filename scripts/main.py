@@ -27,6 +27,10 @@ WIDTH, HEIGHT = 1280, 720
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 clock = pygame.time.Clock()
 
+sunset_tilesets = Render_Sunrise_Tileset()
+dungeon_tilesets = Render_Dungeon_Tileset()
+void_tilesets = Render_Void_Tileset()
+
 def load_map(path):
     with open(path + '.txt', 'r') as f:
         data = f.read().splitlines()
@@ -142,7 +146,7 @@ in_sunset = True
 in_sunset_2 = True
 in_void = True
 
-player_speed = 150
+player_speed = 1050
 move_left = False
 move_right = False
 

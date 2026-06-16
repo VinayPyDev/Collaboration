@@ -151,7 +151,7 @@ def Render_memory_6():
     frames = 16
     width, height = 300, 300
     scale = 1.0
-    colorkey = (0, 0, 0)
+    colorkey = (0, 255, 0)
 
     animation_list = []
     for i in range(frames):
@@ -176,7 +176,7 @@ def Render_memory_7():
     frames = 37
     width, height = 300, 300
     scale = 1.0
-    colorkey = (0, 0, 0)
+    colorkey = (0, 255, 0)
 
     animation_list = []
     for i in range(frames):
@@ -201,7 +201,7 @@ def Render_memory_8():
     frames = 20
     width, height = 300, 300
     scale = 1.0
-    colorkey = (0, 0, 0)
+    colorkey = (0, 255, 0)
 
     animation_list = []
     for i in range(frames):
@@ -226,7 +226,7 @@ def Render_memory_9():
     frames = 32
     width, height = 300, 300
     scale = 1.0
-    colorkey = (0, 0, 0)
+    colorkey = (0, 255, 0)
 
     animation_list = []
     for i in range(frames):

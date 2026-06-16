@@ -1,6 +1,7 @@
 import pygame
 
 from font import get_font, get_font_BOLD
+from thanks import ThanksToDevsScreen
 
 WIDTH = 1280
 HEIGHT = 720
@@ -40,6 +41,8 @@ def disclaimer_screen():
     while running:
         screen.fill((10, 10, 10))
 
+        ThanksToDevsScreen()
+
         Disclaimer_text()
 
         current_time = pygame.time.get_ticks()
@@ -62,7 +65,7 @@ def disclaimer_screen():
         clock.tick(60)
 
 def Start_text():
-    text = get_font(45).render("Collect all the memories", True, "#000000")
-    text_rect = text.get_rect(center=(200, -150))
+    text = get_font_BOLD(45).render("Collect all the memories", True, "#000000")
+    text_rect = text.get_rect(center=(550, 35))
 
     screen.blit(text, text_rect)

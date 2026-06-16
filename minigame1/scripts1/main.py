@@ -36,8 +36,7 @@ def game1():
     not_picked4 = True
     not_picked5 = True
 
-    running = True
-    while running:
+    while True:
         dt = clock.tick(60) / 1000
         screen.fill((0, 0, 0))
 
@@ -133,4 +132,7 @@ def game1():
 
         pygame.draw.rect(screen, (255, 0, 0), (rect.x - camera_x, rect.y - camera_y, rect.width, rect.height))
     
+        if food_needs == 0 and water_needs == 0:
+            return False
+
         pygame.display.update() 

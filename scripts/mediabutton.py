@@ -209,7 +209,7 @@ class ClickSteam():
         return image
     
 def RenderClickSteam():
-    steam_spritesheet = pygame.image.load(resource_path("data/social media sprites/youtube-spritesheet.png")).convert_alpha()
+    steam_spritesheet = pygame.image.load(resource_path("data/social media sprites/steam-spritesheet.png")).convert_alpha()
     SpriteSheet = ClickSteam(steam_spritesheet)
     frames = 5
     width, height = 32, 32
@@ -259,7 +259,7 @@ class ClickTwitch():
         return image
     
 def RenderClickTwitch():
-    twitch_spritesheet = pygame.image.load(resource_path("data/social media sprites/youtube-spritesheet.png")).convert_alpha()
+    twitch_spritesheet = pygame.image.load(resource_path("data/social media sprites/twitch-spritesheet.png")).convert_alpha()
     SpriteSheet = ClickTwitch(twitch_spritesheet)
     frames = 5
     width, height = 32, 32

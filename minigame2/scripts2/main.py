@@ -123,4 +123,7 @@ def game2():
                         has_picked_up = False
                         has_clicked = True
 
+        if broken_itm_1 and broken_itm_2 and broken_itm_3 and broken_itm_4:
+            return False
+
         pygame.display.update()
