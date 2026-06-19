@@ -150,3 +150,9 @@ def load_keys():
         "key3": pygame.image.load(resource_path("data/sprite-0004.png")).convert_alpha(),
         "key4": pygame.image.load(resource_path("data/sprite-0005.png")).convert_alpha()
     }
+
+def Transition_backgrounds():
+    return {
+        "sunset_to_dungeon": pygame.transform.scale(pygame.image.load(resource_path("data/transition_bg.png")).convert_alpha(), (1280, 720)),
+        "dungeon_to_void": pygame.transform.scale(pygame.image.load(resource_path("data/transition_2_bg.png")).convert_alpha(), (1280, 720))
+    }

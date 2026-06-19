@@ -64,23 +64,13 @@ def game3():
                 sys.exit()
 
         camera_y = player_rect.centery - HEIGHT // 2
+        print(player_rect.y)
 
         keys = pygame.key.get_pressed()
         if keys[pygame.K_w]:
-            player_rect.y -= player_speed * dt
-        if keys[pygame.K_a]:
-            player_rect.x -= player_speed * dt        
+            player_rect.y -= player_speed * dt      
         if keys[pygame.K_s]:
             player_rect.y += player_speed * dt
-        if keys[pygame.K_d]:
-            player_rect.x += player_speed * dt
-
-        for tile_rect in tile_rects:
-            if player_rect.colliderect(tile_rect):
-                if keys[pygame.K_d]:
-                    player_rect.right = tile_rect.left
-                if keys[pygame.K_a]:
-                    player_rect.left = tile_rect.right
 
         for tile_rect in tile_rects:
             if player_rect.colliderect(tile_rect):

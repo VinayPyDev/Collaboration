@@ -9,6 +9,7 @@ from mediabutton import SocialMediaButton, SocialMediaButtonShrinked, HoverBar, 
 from mediabutton import RenderHoverBar5, RenderHoverBar6, RenderHoverBar7, RenderHoverBar8
 from mediabutton import RenderClickYoutube, RenderClickInstagram, RenderClickTwitter, RenderClickFacebook, RenderClickItchIo, RenderClickTiktok, RenderClickSteam, RenderClickTwitch
 from mediabutton import LoadClickingYoutube, LoadClickingInstagram, LoadClickingFacebook, LoadClickingTwitter, LoadClickingItchIo, LoadClickingSteam, LoadClickingTiktok, LoadClickingTwitch
+from thanks import ThanksToDevsScreen
 
 pygame.init()
 
@@ -714,6 +715,7 @@ def main_menu():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if play.check_input(mouse_pos):
                     pygame.time.wait(100)
+                    ThanksToDevsScreen()
                     disclaimer_screen()
                     return "PLAY"
                 if options_btn.check_input(mouse_pos):

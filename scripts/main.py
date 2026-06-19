@@ -4,9 +4,11 @@ import os
 
 from art import load_sunset_bg_full, load_dungeon_bg_full, load_sunset_bg_2_full, load_sunset_extra, load_keys, load_void_bg_full
 from art import RenderPlayerIdleLeft, RenderPlayerIdleRight, RenderPlayerMoveLeft, RenderPlayerMoveRight
+from art import Transition_backgrounds
 
 from display import draw_sunset_bg_full, draw_dungeon_bg_full, draw_sunset_bg_2_full, render_memory_1, render_memory_2, render_memory_3, render_memory_4, render_memory_5, render_memory_6, render_memory_7, render_memory_8, render_memory_9
 from display import draw_sunset_bg_extra_full, render_key1, render_key2, render_key3, render_key4, draw_dungeon_bg_full_2, draw_void_bg_full, draw_void_bg_2_full
+from display import RenderSunsetToDungeon, RenderDungeonToVoid
 
 from menu import main_menu
 from memory_render import Render_memory_1, Render_memory_2, Render_memory_3, Render_memory_4, Render_memory_5, Render_memory_6, Render_memory_7, Render_memory_8, Render_memory_9
@@ -41,11 +43,10 @@ art = {}
 art.update(load_sunset_bg_full())
 art.update(load_sunset_bg_2_full())
 art.update(load_sunset_extra())
-
 art.update(load_dungeon_bg_full())
 art.update(load_void_bg_full())
-
 art.update(load_keys())
+art.update(Transition_backgrounds())
 
 # minigames
 minigame1_started = False
@@ -151,6 +152,7 @@ move_left = False
 move_right = False
 
 ground_y = 600
+map_end_x = 11000
 
 text_displayed = False
 
@@ -166,20 +168,27 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_a:
-                move_left = True
-            if event.key == pygame.K_d:
-                move_right = True
+        # if event.type == pygame.KEYDOWN:
+        #     if event.key == pygame.K_a:
+        #         move_left = True
+        #     if event.key == pygame.K_d:
+        #         move_right = True
 
             if event.key == pygame.K_ESCAPE:
                 main_menu()
                 
-        if event.type == pygame.KEYUP:
-            if event.key == pygame.K_a:
-                move_left = False
-            if event.key == pygame.K_d:
-                move_right = False
+        # if event.type == pygame.KEYUP:
+        #     if event.key == pygame.K_a:
+        #         move_left = False
+        #     if event.key == pygame.K_d:
+        #         move_right = False
+
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_a]:
+        player_x -= player_speed * dt
+
+    if keys[pygame.K_d]:
+        player_x += player_speed * dt
 
     current_time = pygame.time.get_ticks()
     if current_time - last_update >= animation_cooldown:
@@ -242,19 +251,33 @@ while running:
         camera_x = 0
     if player_x < 0:
         player_x = 0
+
+    if camera_x > map_end_x:
+        camera_x = map_end_x
+    if player_x > map_end_x:
+        player_x = map_end_x
     
     if player_y > ground_y - 150:
         player_y = ground_y - 150
 
     if player_x >= 2400 and not minigame1_started:
-        result = game1()
-        print(result)
+        game1()
+        player_x = player_x + 10
         minigame1_started = True
 
     if player_x >= 4200 and not minigame2_started:
-        result = game2()
-        print(result)
+        game2()
+        player_x = player_x + 10
         minigame2_started = True
+
+    if minigame1_started:
+        move_right = False
+        move_left = False
+        # minigame1_started = False
+    if minigame2_started:
+        move_right = False
+        move_left = False
+        # minigame2_started = False
 
     if not memory1Trigger and player_x >= 1300:
         memory1Trigger = True
@@ -283,7 +306,9 @@ while running:
         draw_sunset_bg_extra_full(screen, art, camera_x)
     if in_sunset_2:
         draw_sunset_bg_2_full(screen, art, camera_x)
+        RenderSunsetToDungeon(screen, art, camera_x)
     if in_void:
+        RenderDungeonToVoid(screen, art, camera_x)
         draw_void_bg_full(screen, art, camera_x)
         draw_void_bg_2_full(screen, art, camera_x)
 
