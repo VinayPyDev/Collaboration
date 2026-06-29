@@ -13,7 +13,8 @@ from display import RenderSunsetToDungeon, RenderDungeonToVoid
 from menu import main_menu
 from memory_render import Render_memory_1, Render_memory_2, Render_memory_3, Render_memory_4, Render_memory_5, Render_memory_6, Render_memory_7, Render_memory_8, Render_memory_9
 from transition import TransitionObj, fade
-from tilesets import Render_Sunrise_Tileset, Render_Dungeon_Tileset, Render_Void_Tileset
+# from tilesets import Render_Sunrise_Tileset, Render_Dungeon_Tileset, Render_Void_Tileset
+from tilesets import Load_Sunrise_Tileset, Load_Dungeon_Tileset, Load_Void_Tileset
 from font import get_font
 from text import Start_text
 
@@ -29,14 +30,20 @@ WIDTH, HEIGHT = 1280, 720
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 clock = pygame.time.Clock()
 
-sunset_tilesets = Render_Sunrise_Tileset()
-dungeon_tilesets = Render_Dungeon_Tileset()
-void_tilesets = Render_Void_Tileset()
+# sunset_tilesets = Render_Sunrise_Tileset()
+# dungeon_tilesets = Render_Dungeon_Tileset()
+# void_tilesets = Render_Void_Tileset()
+
+sunrise_tiles = Load_Sunrise_Tileset()
+dungeon_tiles = Load_Dungeon_Tileset()
+void_tiles = Load_Void_Tileset()
 
 def load_map(path):
     with open(path + '.txt', 'r') as f:
         data = f.read().splitlines()
     return [list(row) for row in data]
+
+game_map = load_map("map/map.txt")
 
 art = {}
 
@@ -168,20 +175,8 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-        # if event.type == pygame.KEYDOWN:
-        #     if event.key == pygame.K_a:
-        #         move_left = True
-        #     if event.key == pygame.K_d:
-        #         move_right = True
-
             if event.key == pygame.K_ESCAPE:
                 main_menu()
-                
-        # if event.type == pygame.KEYUP:
-        #     if event.key == pygame.K_a:
-        #         move_left = False
-        #     if event.key == pygame.K_d:
-        #         move_right = False
 
     keys = pygame.key.get_pressed()
     if keys[pygame.K_a]:
@@ -313,7 +308,33 @@ while running:
         draw_void_bg_2_full(screen, art, camera_x)
 
     if current_bg == "sunset":
-        Start_text()
+        Start_text()   
+
+    tile_rects = []
+    y = 0
+    for row in game_map:
+        x = 0
+        for tile in row:
+            if tile == "1":
+                screen.blit(sunrise_tiles["sun_1"], (x * 48, y * 48))
+                tile_rects.append(pygame.Rect(x * 48, y * 48, 48, 48))
+            elif tile == "2":
+                screen.blit(sunrise_tiles["sun_2"], (x * 50, y * 23))
+                tile_rects.append(pygame.Rect(x * 50, y * 23, 50, 23))
+            elif tile == "3":
+                screen.blit(sunrise_tiles["sun_3"], (x * 18, y * 18))
+                tile_rects.append(pygame.Rect(x * 18, y * 18, 18, 18))
+            elif tile == "4":
+                screen.blit(sunrise_tiles["sun_4"], (x * 18, y * 18))
+                tile_rects.append(pygame.Rect(x * 18, y * 18, 18, 18))
+            elif tile == "5":
+                screen.blit(sunrise_tiles["sun_5"], (x * 18, y * 18))
+                tile_rects.append(pygame.Rect(x * 18, y * 18, 18, 18))
+            elif tile == "6":
+                screen.blit(sunrise_tiles["sun_6"], (x * 18, y * 18))
+                tile_rects.append(pygame.Rect(x * 18, y * 18, 18, 18))
+            x += 1
+        y += 1
 
     if player_facing == "right":
         current_player_img = idle_right_frames[current_frame]

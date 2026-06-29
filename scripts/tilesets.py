@@ -9,168 +9,81 @@ def resource_path(relative_path):
         base_path = os.path.dirname(os.path.dirname(__file__))
     return os.path.join(base_path, relative_path)
 
-class SunriseTileset():
-    def __init__(self, image):
-        self.sheet = image
-    
-    def get_image(self, rect, scale=1.0, color=(255, 255, 255)):
-        x, y, width, height = rect
-
-        image = pygame.Surface((width, height), pygame.SRCALPHA).convert_alpha()
-        image.blit(self.sheet, (0, 0), (x, y, width, height))
-
-        image = pygame.transform.scale(image, (int(width * scale), int(height * scale)))
-
-        image.set_colorkey(color)
-        return image
-    
-def Render_Sunrise_Tileset():
-    sheet_img = pygame.image.load(resource_path("data/sunrise_tileset.png")).convert_alpha()
-    SpriteSheet = SunriseTileset(sheet_img)
-
-    scale = 1.0
-    colorkey = (255, 255, 255)
-
-    tile_14 = pygame.image.load(resource_path("data/grass_tileset_dpad.png")).convert_alpha()
-    tile_15 = pygame.image.load(resource_path("data/grass_tileset_dpad2.png")).convert_alpha()
-
-    sprites = {
-        "tile_1": (0, 0, 48, 48),
-
-        "tile_2": (48, 0, 16, 16),
-        "tile_3": (96, 0, 16, 16),
-        "tile_4": (48, 48, 16, 16),
-        "tile_5": (96, 48, 16, 16), 
-
-        "tile_6": (0, 48, 16, 16),
-        "tile_7": (48, 32, 16, 16),
-
-        "tile_9": (0, 80, 16, 16),
-        "tile_10": (32, 80, 16, 16),
-        "tile_11": (96, 16, 16, 16),
-        "tile_12": (96, 32, 16, 16),
-
-        "tile_13": (119, 0, 24, 48),
-
-        "tile_14": tile_14,
-        "tile_15": tile_15
+# TODO [27-06-26]: Tilesets new import calls
+def Load_Sunrise_Tileset():
+    return {
+        "sun_1": sunrise_img1 := pygame.image.load(resource_path("tiles/sunrise_tile1.png")).convert_alpha(), sunrise_img1.set_colorkey((255, 255, 255))),
+        "sun_2": sunrise_img2 := pygame.image.load(resource_path("tiles/sunrise_tile2.png")).convert_alpha(), sunrise_img2.set_colorkey((255, 255, 255))),
+        "sun_3": sunrise_img3 := pygame.image.load(resource_path("tiles/sunrise_tile3.png")).convert_alpha(), sunrise_img3.set_colorkey((255, 255, 255))),
+        "sun_4": sunrise_img4 := pygame.image.load(resource_path("tiles/sunrise_tile4.png")).convert_alpha(), sunrise_img4.set_colorkey((255, 255, 255))),
+        "sun_5": sunrise_img5 := pygame.image.load(resource_path("tiles/sunrise_tile5.png")).convert_alpha(), sunrise_img5.set_colorkey((255, 255, 255))),
+        "sun_6": sunrise_img6 := pygame.image.load(resource_path("tiles/sunrise_tile6.png")).convert_alpha(), sunrise_img6.set_colorkey((255, 255, 255))),
+        "sun_7": sunrise_img7 := pygame.image.load(resource_path("tiles/sunrise_tile7.png")).convert_alpha(), sunrise_img7.set_colorkey((255, 255, 255))),
+        "sun_8": sunrise_img8 := pygame.image.load(resource_path("tiles/sunrise_tile8.png")).convert_alpha(), sunrise_img8.set_colorkey((255, 255, 255))),
+        "sun_9": sunrise_img9 := pygame.image.load(resource_path("tiles/sunrise_tile9.png")).convert_alpha(), sunrise_img9.set_colorkey((255, 255, 255))),
+        "sun_10": sunrise_img10 := pygame.image.load(resource_path("tiles/sunrise_tile10.png")).convert_alpha(), sunrise_img10.set_colorkey((255, 255, 255))),
+        "sun_11": sunrise_img11 := pygame.image.load(resource_path("tiles/sunrise_tile11.png")).convert_alpha(), sunrise_img11.set_colorkey((255, 255, 255))),
+        "sun_12": sunrise_img12 := pygame.image.load(resource_path("tiles/sunrise_tile12.png")).convert_alpha(), sunrise_img12.set_colorkey((255, 255, 255)))
     }
 
-    sprite_images = {}
-
-    for name, data in sprites.items():
-        if isinstance(data, tuple):
-            sprite_images[name] = SpriteSheet.get_image(data, scale, colorkey)
-        else:
-            sprite_images[name] = data
-
-    return sprite_images
-
-class DungeonTileset():
-    def __init__(self, image):
-        self.sheet = image
-    
-    def get_image(self, rect, scale=1.0, color=(255, 255, 255)):
-        x, y, width, height = rect
-
-        image = pygame.Surface((width, height), pygame.SRCALPHA).convert_alpha()
-        image.blit(self.sheet, (0, 0), (x, y, width, height))
-
-        image = pygame.transform.scale(image, (int(width * scale), int(height * scale)))
-
-        image.set_colorkey(color)
-        return image
-    
-def Render_Dungeon_Tileset():
-    sheet_img = pygame.image.load(resource_path("data/dungeon_tileset.png")).convert_alpha()
-    SpriteSheet = DungeonTileset(sheet_img)
-
-    scale = 1.0
-    colorkey = (255, 255, 255)
-
-    # dpad like structures that would be added later :D
-    tile_12 = pygame.image.load(resource_path("data/dungeon_tileset_dpad.png")).convert_alpha()
-
-    sprites = {
-        "tile_1": (0, 0, 48, 48),
-
-        "tile_2": (48, 0, 16, 16),
-        "tile_3": (96, 0, 16, 16),
-        "tile_4": (48, 48, 16, 16),
-        "tile_5": (96, 48, 16, 16),
-
-        "tile_6": (46, 95, 16, 17),
-        "tile_7": (68, 99, 6, 6),
-        "tile_8": (15, 95, 16, 16),
-
-        "tile_9": (86, 64, 14, 45),
-        "tile_10": (48, 0, 47, 46),
-        "tile_11": (65, 48, 30, 27),
-        "tile_12": tile_12
+def Load_Dungeon_Tileset():
+    return {
+        "dungeon_1": dungeon_img1 := pygame.image.load(resource_path("tiles/dungeon_tile1.png")).convert_alpha(), dungeon_img1.set_colorkey((255, 255, 255))),
+        "dungeon_2": dungeon_img2 := pygame.image.load(resource_path("tiles/dungeon_tile2.png")).convert_alpha(), dungeon_img2.set_colorkey((255, 255, 255))),
+        "dungeon_3": dungeon_img3 := pygame.image.load(resource_path("tiles/dungeon_tile3.png")).convert_alpha(), dungeon_img3.set_colorkey((255, 255, 255))),
+        "dungeon_4": dungeon_img4 := pygame.image.load(resource_path("tiles/dungeon_tile4.png")).convert_alpha(), dungeon_img4.set_colorkey((255, 255, 255))),
+        "dungeon_5": dungeon_img5 := pygame.image.load(resource_path("tiles/dungeon_tile5.png")).convert_alpha(), dungeon_img5.set_colorkey((255, 255, 255))),
+        "dungeon_6": dungeon_img6 := pygame.image.load(resource_path("tiles/dungeon_tile6.png")).convert_alpha(), dungeon_img6.set_colorkey((255, 255, 255))),
+        "dungeon_7": dungeon_img7 := pygame.image.load(resource_path("tiles/dungeon_tile7.png")).convert_alpha(), dungeon_img7.set_colorkey((255, 255, 255))),
+        "dungeon_8": dungeon_img8 := pygame.image.load(resource_path("tiles/dungeon_tile8.png")).convert_alpha(), dungeon_img8.set_colorkey((255, 255, 255))),
+        "dungeon_9": dungeon_img9 := pygame.image.load(resource_path("tiles/dungeon_tile9.png")).convert_alpha(), dungeon_img9.set_colorkey((255, 255, 255))),
+        "dungeon_10": dungeon_img10 := pygame.image.load(resource_path("tiles/dungeon_tile10.png")).convert_alpha(), dungeon_img10.set_colorkey((255, 255, 255))),
+        "dungeon_11": dungeon_img11 := pygame.image.load(resource_path("tiles/dungeon_tile11.png")).convert_alpha(), dungeon_img11.set_colorkey((255, 255, 255))),
+        "dungeon_12": dungeon_img12 := pygame.image.load(resource_path("tiles/dungeon_tile12.png")).convert_alpha(), dungeon_img12.set_colorkey((255, 255, 255)))
     }
 
-    sprite_images = {}
-
-    for name, data in sprites.items():
-        if isinstance(data, tuple):
-            sprite_images[name] = SpriteSheet.get_image(data, scale, colorkey)
-        else:
-            sprite_images[name] = data
-
-    return sprite_images
-
-class VoidTileset():
-     def __init__(self, image):
-        self.sheet = image
-    
-     def get_image(self, rect, scale=1.0, color=(255, 255, 255)):
-        x, y, width, height = rect
-
-        image = pygame.Surface((width, height), pygame.SRCALPHA).convert_alpha()
-        image.blit(self.sheet, (0, 0), (x, y, width, height))
-
-        image = pygame.transform.scale(image, (int(width * scale), int(height * scale)))
-
-        image.set_colorkey(color)
-        return image
-    
-def Render_Void_Tileset():
-    sheet_img = pygame.image.load(resource_path("data/void_tileset.png")).convert_alpha()
-    SpriteSheet = VoidTileset(sheet_img)
-
-    scale = 1.0
-    colorkey = (0, 0, 0)
-
-    tile_6 = pygame.image.load(resource_path("data/void_tileset2_dpad.png")).convert_alpha()
-    tile_13 = pygame.image.load(resource_path("data/void_tileset2_area.png")).convert_alpha()
-
-    sprites = {
-        "tile_1": (0, 0, 48, 48),
-        "tile_2": (48, 3, 16, 16),
-        "tile_3": (96, 0, 16, 16),
-        
-        "tile_4": (48, 22, 16, 18),
-        "tile_5": (96, 22, 16, 18),
-        "tile_6": tile_6,
-
-        "tile_7": (0, 48, 16, 16),
-        "tile_8": (15, 48, 16, 16),
-        "tile_9": (32, 48, 16, 16),
-        "tile_10": (48, 48, 16, 16),
-
-        "tile_11": (0, 64, 16, 16),
-        "tile_12": (16, 64, 32, 16),
-        "tile_13": tile_13,
-
-        "tile_14": (0, 80, 32, 16)
+def Load_Void_Tileset():
+        void_img1 := pygame.image.load(resource_path("tiles/void_tile1.png")).convert_alpha(),
+        void_img1.set_colorkey((255, 255, 255)),
+        void_img2 := pygame.image.load(resource_path("tiles/void_tile2.png")).convert_alpha(),
+        void_img2.set_colorkey((255, 255, 255)),
+        void_img3 := pygame.image.load(resource_path("tiles/void_tile3.png")).convert_alpha(),
+        void_img3.set_colorkey((255, 255, 255)),
+        void_img4 := pygame.image.load(resource_path("tiles/void_tile4.png")).convert_alpha(),
+        void_img4.set_colorkey((255, 255, 255)),
+        void_img5 := pygame.image.load(resource_path("tiles/void_tile5.png")).convert_alpha(),
+        void_img5.set_colorkey((255, 255, 255)),
+        void_img6 := pygame.image.load(resource_path("tiles/void_tile6.png")).convert_alpha(),
+        void_img6.set_colorkey((255, 255, 255)),
+        void_img7 := pygame.image.load(resource_path("tiles/void_tile7.png")).convert_alpha(),
+        void_img7.set_colorkey((255, 255, 255)),
+        void_img8 := pygame.image.load(resource_path("tiles/void_tile8.png")).convert_alpha(),
+        void_img8.set_colorkey((255, 255, 255)),
+        void_img9 := pygame.image.load(resource_path("tiles/void_tile9.png")).convert_alpha(),
+        void_img9.set_colorkey((255, 255, 255)),
+        void_img10 := pygame.image.load(resource_path("tiles/void_tile10.png")).convert_alpha(), 
+        void_img10.set_colorkey((255, 255, 255)),
+        void_img11 := pygame.image.load(resource_path("tiles/void_tile11.png")).convert_alpha(), 
+        void_img11.set_colorkey((255, 255, 255)),
+        void_img12 := pygame.image.load(resource_path("tiles/void_tile12.png")).convert_alpha(), 
+        void_img12.set_colorkey((255, 255, 255)),
+        void_img13 := pygame.image.load(resource_path("tiles/void_tile13.png")).convert_alpha(), 
+        void_img13.set_colorkey((255, 255, 255)),
+        void_img14 := pygame.image.load(resource_path("tiles/void_tile14.png")).convert_alpha(), 
+        void_img14.set_colorkey((255, 255, 255))
+    return {
+        "void_1"
+        "void_2"
+        "void_3"
+        "void_4"
+        "void_5"
+        "void_6"
+        "void_7"
+        "void_8"
+        "void_9"
+        "void_10
+        "void_11
+        "void_12
+        "void_13
+        "void_14
     }
-
-    sprite_images = {}
-
-    for name, data in sprites.items():
-        if isinstance(data, tuple):
-            sprite_images[name] = SpriteSheet.get_image(data, scale, colorkey)
-        else:
-            sprite_images[name] = data
-
-    return sprite_images
