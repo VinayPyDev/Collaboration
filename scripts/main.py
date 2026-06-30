@@ -315,6 +315,7 @@ while running:
     for row in game_map:
         x = 0
         for tile in row:
+            # SUNRISE TILES
             if tile == "1":
                 screen.blit(sunrise_tiles["sun_1"], (x * 48, y * 48))
                 tile_rects.append(pygame.Rect(x * 48, y * 48, 48, 48))
@@ -333,6 +334,106 @@ while running:
             elif tile == "6":
                 screen.blit(sunrise_tiles["sun_6"], (x * 18, y * 18))
                 tile_rects.append(pygame.Rect(x * 18, y * 18, 18, 18))
+            elif tile == "7":
+                screen.blit(sunrise_tiles["sun_7"], (x * 17, y * 18))
+                tile_rects.append(pygame.Rect(x * 17, y * 18, 17, 18))
+            elif tile == "8":
+                screen.blit(sunrise_tiles["sun_8"], (x * 17, y * 18))
+                tile_rects.append(pygame.Rect(x * 17, y * 18, 17, 18))
+            elif tile == "9":
+                screen.blit(sunrise_tiles["sun_9"], (x * 17, y * 18))
+                tile_rects.append(pygame.Rect(x * 17, y * 18, 17, 18))
+            elif tile == "10":
+                screen.blit(sunrise_tiles["sun_10"], (x * 17, y * 18))
+                tile_rects.append(pygame.Rect(x * 17, y * 18, 17, 18))
+            elif tile == "11":
+                screen.blit(sunrise_tiles["sun_11"], (x * 65, y * 64))
+                tile_rects.append(pygame.Rect(x * 65, y * 64, 65, 64))    
+            elif tile == "12":
+                screen.blit(sunrise_tiles["sun_12"], (x * 49, y * 47))
+                tile_rects.append(pygame.Rect(x * 49, y * 47, 49, 47)) 
+
+            # DUNGEON TILES
+            elif tile == "13":
+                screen.blit(dungeon_tiles["dungeon_1"], (x * 49, y * 49))
+                tile_rects.append(pygame.Rect(x * 49, y * 49, 49, 49))
+            elif tile == "14":
+                screen.blit(dungeon_tiles["dungeon_2"], (x * 16, y * 16))
+                tile_rects.append(pygame.Rect(x * 16, y * 16, 16, 16))
+            elif tile == "15":
+                screen.blit(dungeon_tiles["dungeon_3"], (x * 16, y * 16))
+                tile_rects.append(pygame.Rect(x * 16, y * 16, 16, 16))
+            elif tile == "16":
+                screen.blit(dungeon_tiles["dungeon_4"], (x * 20, y * 18))
+                tile_rects.append(pygame.Rect(x * 20, y * 18, 20, 18))
+            elif tile == "17":
+                screen.blit(dungeon_tiles["dungeon_5"], (x * 32, y * 32))
+                tile_rects.append(pygame.Rect(x * 32, y * 32, 32, 32))
+            elif tile == "18":
+                screen.blit(dungeon_tiles["dungeon_6"], (x * 15, y * 47))
+                tile_rects.append(pygame.Rect(x * 15, y * 47, 15, 47))
+            elif tile == "19":
+                screen.blit(dungeon_tiles["dungeon_7"], (x * 48, y * 46))
+                tile_rects.append(pygame.Rect(x * 48, y * 46, 48, 46))
+            elif tile == "20":
+                screen.blit(dungeon_tiles["dungeon_8"], (x * 16, y * 16))
+                tile_rects.append(pygame.Rect(x * 16, y * 16, 16, 16))
+            elif tile == "21":
+                screen.blit(dungeon_tiles["dungeon_9"], (x * 16, y * 16))
+                tile_rects.append(pygame.Rect(x * 16, y * 16, 16, 16))
+            elif tile == "22":
+                screen.blit(dungeon_tiles["dungeon_10"], (x * 16, y * 16))
+                tile_rects.append(pygame.Rect(x * 16, y * 16, 16, 16))
+            elif tile == "23":
+                screen.blit(dungeon_tiles["dungeon_11"], (x * 16, y * 16))
+                tile_rects.append(pygame.Rect(x * 16, y * 16, 16, 16))    
+            elif tile == "24":
+                screen.blit(dungeon_tiles["dungeon_12"], (x * 63, y * 65))
+                tile_rects.append(pygame.Rect(x * 63, y * 65, 63, 65))          
+            
+            # VOID TILES
+            elif tile == "25":
+                screen.blit(void_tiles["void_1"], (x * 48, y * 42))
+                tile_rects.append(pygame.Rect(x * 48, y * 42, 48, 42))
+            elif tile == "26":
+                screen.blit(void_tiles["void_2"], (x * 16, y * 16))
+                tile_rects.append(pygame.Rect(x * 16, y * 16, 16, 16))
+            elif tile == "27":
+                screen.blit(void_tiles["void_3"], (x * 16, y * 16))
+                tile_rects.append(pygame.Rect(x * 16, y * 16, 16, 16))
+            elif tile == "28":
+                screen.blit(void_tiles["void_4"], (x * 16, y * 16))
+                tile_rects.append(pygame.Rect(x * 16, y * 16, 16, 16))
+            elif tile == "29":
+                screen.blit(void_tiles["void_5"], (x * 16, y * 16))
+                tile_rects.append(pygame.Rect(x * 16, y * 16, 16, 16))
+            elif tile == "30":
+                screen.blit(void_tiles["void_6"], (x * 16, y * 16))
+                tile_rects.append(pygame.Rect(x * 16, y * 16, 16, 16))
+            elif tile == "31":
+                screen.blit(void_tiles["void_7"], (x * 16, y * 16))
+                tile_rects.append(pygame.Rect(x * 16, y * 16, 16, 16))
+            elif tile == "32":
+                screen.blit(void_tiles["void_8"], (x * 16, y * 16))
+                tile_rects.append(pygame.Rect(x * 16, y * 16, 16, 16))
+            elif tile == "33":
+                screen.blit(void_tiles["void_9"], (x * 65, y * 16))
+                tile_rects.append(pygame.Rect(x * 65, y * 16, 65, 16))
+            elif tile == "34":
+                screen.blit(void_tiles["void_10"], (x * 16, y * 16))
+                tile_rects.append(pygame.Rect(x * 16, y * 16, 16, 16))
+            elif tile == "35":
+                screen.blit(void_tiles["void_11"], (x * 16, y * 16))
+                tile_rects.append(pygame.Rect(x * 16, y * 16, 16, 16))    
+            elif tile == "36":
+                screen.blit(void_tiles["void_12"], (x * 16, y * 16))
+                tile_rects.append(pygame.Rect(x * 16, y * 16, 16, 16))
+            elif tile == "37":
+                screen.blit(void_tiles["void_13"], (x * 16, y * 16))
+                tile_rects.append(pygame.Rect(x * 16, y * 16, 16, 16))    
+            elif tile == "38":
+                screen.blit(void_tiles["void_14"], (x * 66, y * 65))
+                tile_rects.append(pygame.Rect(x * 66, y * 65, 66, 65))
             x += 1
         y += 1
 
