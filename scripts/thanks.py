@@ -29,8 +29,8 @@ def ThanksToDevsScreenText():
 
     sprite0 = pygame.image.load(resource_path("thanks sprites/sprites.png")).convert_alpha()
     sprite1 = pygame.image.load(resource_path("thanks sprites/sprites2.png")).convert_alpha()
-    sprite2 = pygame.image.load(resource_path("thanks sprites/sprites3.png")).convert_alpha()
-    sprite3 = pygame.image.load(resource_path("thanks sprites/sprites4.png")).convert_alpha()
+    sprite2 = pygame.image.load(resource_path("thanks sprites/sprites4.png")).convert_alpha()
+    sprite3 = pygame.image.load(resource_path("thanks sprites/sprites3.png")).convert_alpha()
     sprite4 = pygame.image.load(resource_path("thanks sprites/sprites5.png")).convert_alpha()
     sprite5 = pygame.image.load(resource_path("thanks sprites/sprites6.png")).convert_alpha()
     sprite6 = pygame.image.load(resource_path("thanks sprites/sprites7.png")).convert_alpha()
@@ -39,9 +39,9 @@ def ThanksToDevsScreenText():
     screen.blit(sprite0, (100, 80))
     screen.blit(sprite1, (500, 80))
     screen.blit(sprite2, (900, 80))
-    screen.blit(sprite3, (100, 210))
+    screen.blit(sprite3, (100, 205))
     screen.blit(sprite4, (400, 210))
-    screen.blit(sprite5, (900, 210))
+    screen.blit(sprite5, (860, 210))
     screen.blit(sprite6, (100, 340))
 
 def ThanksToDevsScreen():
@@ -61,7 +61,7 @@ def ThanksToDevsScreen():
             show_key = True
 
         if show_key:
-            press_text = get_font_BOLD(45).render("Press any key to continue", True, (255, 255, 255))
+            press_text = get_font_BOLD(45).render("Press E key to continue", True, (255, 255, 255))
             screen.blit(press_text, press_text.get_rect(center=(600, 650)))
 
         for event in pygame.event.get():

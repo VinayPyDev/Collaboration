@@ -48,7 +48,7 @@ def disclaimer_screen():
             show_key = True
 
         if show_key:
-            press_text = get_font_BOLD(45).render("Press any key to continue", True, "#FFFFFF")
+            press_text = get_font_BOLD(45).render("Press E to continue", True, "#FFFFFF")
             screen.blit(press_text, press_text.get_rect(center=(390, 650)))
 
         for event in pygame.event.get():
