@@ -44,7 +44,7 @@ def disclaimer_screen():
         Disclaimer_text()
 
         current_time = pygame.time.get_ticks()
-        if current_time - start_time >= 3000:
+        if current_time - start_time >= 1000:
             show_key = True
 
         if show_key:

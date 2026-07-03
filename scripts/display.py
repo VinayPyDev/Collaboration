@@ -71,7 +71,7 @@ def render_key4(screen, art):
 
 # Transition bgs
 def RenderSunsetToDungeon(screen, art, camera_x):
-    screen.blit(art["sunset_to_dungeon"], (5500 - camera_x, -150))
+    screen.blit(art["sunset_to_dungeon"], (5750 - camera_x, -150))
     
 def RenderDungeonToVoid(screen, art, camera_x):
     screen.blit(art["dungeon_to_void"], (11650 - camera_x, -150))

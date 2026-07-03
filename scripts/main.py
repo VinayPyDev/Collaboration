@@ -154,7 +154,7 @@ in_sunset = True
 in_sunset_2 = True
 in_void = True
 
-player_speed = 1050
+player_speed = 150
 move_left = False
 move_right = False
 
@@ -261,7 +261,7 @@ while running:
         player_x = player_x + 10
         minigame1_started = True
 
-    if player_x >= 4200 and not minigame2_started:
+    if player_x >= 6120 and not minigame2_started:
         game2()
         player_x = player_x + 10
         minigame2_started = True
