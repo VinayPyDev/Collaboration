@@ -11,7 +11,12 @@ def resource_path(relative_path):
         base_path = os.path.dirname(os.path.dirname(__file__))
     return os.path.join(base_path, relative_path)
 
+def get_font_BOLD(size):
+    return pygame.font.Font(resource_path("font/PixeloidSans-Bold.ttf"), size)
+
 def game3():       
+    global get_font_BOLD
+
     WIDTH, HEIGHT = 1280, 720
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     clock = pygame.time.Clock()
@@ -27,36 +32,40 @@ def game3():
     tile_size = 32
     game_map = load_map("TestData/map")
 
+    jumpscare_img = pygame.transform.scale(pygame.image.load(resource_path("TestData/jumpscaer.png")).convert_alpha(), (1280, 720))
+
     player_sprite = pygame.transform.scale(pygame.image.load(resource_path("TestData/testcase.png")).convert_alpha(), (100, 100))
     player_x = 640
-    player_y = 50 * tile_size
+    player_y = 3000
     player_rect = pygame.Rect(player_x, player_y, 100, 100)
-    player_speed = 400
+    player_speed = 340
 
     wall1 = pygame.transform.scale(pygame.image.load(resource_path("TestData/tile1.png")).convert_alpha(), (64, 64))
     wall2 = pygame.transform.scale(pygame.image.load(resource_path("TestData/tile2.png")).convert_alpha(), (64, 64))
 
+    text = get_font_BOLD(80).render("RUN!!!", True, (255, 255, 255))
+
     while True:
         screen.fill((0, 0, 0))
         dt = clock.tick(60) / 1000
+
+        screen.blit(text, (500, 3300 - camera_y))
 
         tile_rects = []
         y = 0
         for row in game_map:
             x = 0
             for tile in row:
-                draw_x = x * tile_size
-                draw_y = y * tile_size - camera_y
+                world_x = x * tile_size
+                world_y = y  * tile_size
                 if tile == '0':
-                    screen.blit(wall1, (draw_x, draw_y))
-                    tile_rects.append(pygame.Rect(draw_x, draw_y, tile_size, tile_size))
+                    screen.blit(wall1, (world_x, world_y - camera_y))
+                    tile_rects.append(pygame.Rect(world_x, world_y, tile_size, tile_size))
                 elif tile == '1':
-                    screen.blit(wall2, (draw_x, draw_y))
-                    tile_rects.append(pygame.Rect(draw_x, draw_y, tile_size, tile_size))
+                    screen.blit(wall2, (world_x, world_y - camera_y))
+                    tile_rects.append(pygame.Rect(world_x, world_y, tile_size, tile_size))
                 x += 1
             y += 1
-
-        # print(player_rect.y)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -72,14 +81,16 @@ def game3():
         if keys[pygame.K_s]:
             player_rect.y += player_speed * dt
 
-        for tile_rect in tile_rects:
-            if player_rect.colliderect(tile_rect):
-                if keys[pygame.K_s]:
-                    player_rect.bottom = tile_rect.top
-                if keys[pygame.K_w]:
-                    player_rect.top = tile_rect.bottom
+        if player_rect.y >= 3073:
+            player_rect.y = 3073
 
         screen.blit(player_sprite, (player_rect.x, player_rect.y - camera_y))
+        
+        if player_rect.y <= 55:
+            player_rect.y = 55
+            player_speed = 0
+            screen.blit(jumpscare_img, (0, 0))
+            print("Get Jumpscared BOZO")
 
         pygame.display.update()
     
