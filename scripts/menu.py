@@ -112,7 +112,7 @@ def options():
                 if back.check_input(mouse_pos):
                     return
 
-        pygame.display.update()
+        pygame.display.flip()
 
 def main_menu():
     on_youtube_button = None
@@ -725,4 +725,4 @@ def main_menu():
                     pygame.quit()
                     sys.exit()
 
-        pygame.display.update()
+        pygame.display.flip()

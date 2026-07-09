@@ -156,3 +156,9 @@ def Transition_backgrounds():
         "sunset_to_dungeon": pygame.transform.scale(pygame.image.load(resource_path("data/transition_bg.png")).convert_alpha(), (1280, 720)),
         "dungeon_to_void": pygame.transform.scale(pygame.image.load(resource_path("data/transition_2_bg.png")).convert_alpha(), (1280, 720))
     }
+
+# Page 
+def LoadCollisionPage():
+    return {
+        "page_pick": pygame.image.load(pygame.image.load(resource_path("data/page.png")).convert_alpha())
+    }

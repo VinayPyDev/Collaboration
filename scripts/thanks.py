@@ -72,5 +72,5 @@ def ThanksToDevsScreen():
             if show_key and event.type == pygame.KEYDOWN:
                 running = False
 
-        pygame.display.update()
+        pygame.display.flip()
         clock.tick(60)
