@@ -160,5 +160,11 @@ def Transition_backgrounds():
 # Page 
 def LoadCollisionPage():
     return {
-        "page_pick": pygame.image.load(pygame.image.load(resource_path("data/page.png")).convert_alpha())
+        "page_pick": pygame.image.load(resource_path("data/page.png")).convert_alpha()
+    }
+
+def LoadPage():
+    return {
+        "page_1": pygame.image.load(resource_path("data/page1.png")).convert_alpha(),
+        "page_2": pygame.iamge.load(resource_path("data/page2.png")).convert_alpha()
     }

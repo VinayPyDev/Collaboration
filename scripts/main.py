@@ -18,6 +18,9 @@ from tilesets import Load_Sunrise_Tileset, Load_Dungeon_Tileset, Load_Void_Tiles
 from font import get_font
 from text import Start_text
 
+# Jumpscares
+from jumpscare import Render_jumpscare_1, Render_jumpscare_2
+
 from pathlib import Path
 sys.path.append(str(Path(__file__).parent.parent))
 
@@ -76,6 +79,20 @@ text_timer = 0
 text_surf = None
 
 current_bg = "sunset"
+
+# Jumpscare anim vars
+Jumpscare1_frames = Render_jumpscare_1()
+frame_j = 0
+last_update = pygame.time.get_ticks()
+animation_cooldown = 100
+
+Jumpscare2_frames = Render_jumpscare_2()
+frame_j2 = 0
+last_update = pygame.time.get_ticks()
+animation_cooldown = 100
+
+j1_trigger = False
+j2_trigger = False
 
 Memory_1_frames = Render_memory_1()
 frame = 0
@@ -199,6 +216,9 @@ while running:
         frame8 += 1
         frame9 += 1
 
+        frame_j += 1
+        frame_j2 += 1
+
         if frame >= len(Memory_1_frames):
             frame = 0
         if frame2 >= len(Memory_2_frames):
@@ -217,6 +237,13 @@ while running:
             frame8 = 0
         if frame9 >= len(Memory_9_frames):
             frame9 = 0
+
+        if frame_j >= len(Jumpscare1_frames) and j1_trigger == False:
+            frame_j = 0
+            j1_trigger = False
+        if frame_j2 >= len(Jumpscare2_frames) and j2_trigger == False:
+            j2_trigger = False
+            frame_j2 = 0
 
     if move_left:
         player_x -= player_speed * dt
@@ -274,6 +301,11 @@ while running:
         move_right = False
         move_left = False
         # minigame2_started = False
+
+    if not j1_trigger and player_x > 8210:
+        j1_trigger = True
+    if not j2_trigger and player_x > 5798:
+        j2_trigger = True
 
     if not memory1Trigger and player_x >= 1300:
         memory1Trigger = True
@@ -447,6 +479,15 @@ while running:
         current_player_img = move_right_frames[current_frame]
     elif player_facing == "left" and move_left:
         current_player_img = move_left_frames[current_frame]
+
+    if j1_trigger:
+        move_left = False
+        move_right = False
+        Render_jumpscare_1(screen, Jumpscare1_frames[frame_j], camera_x)
+    if j2_trigger:
+        move_left = False
+        move_right = False
+        Render_jumpscare_2(screen, Jumpscare2_frames[frame_j2], camera_x)
 
     if memory1Trigger:
         render_memory_1(screen, Memory_1_frames[frame], camera_x)
