@@ -25,7 +25,7 @@ def Render_jumpscare_1():
     SpriteSheet = jumpscare_1(jumpscare_img_1)
     frames = 51
     width, height = 150, 150
-    scale = 1.0
+    scale = 6.0
     colorkey = (255, 255, 255)
 
     animation_list = []
@@ -50,7 +50,7 @@ def Render_jumpscare_2():
     SpriteSheet = jumpscare_2(jumpscare_img_2)
     frames = 32
     width, height = 150, 150
-    scale = 1.0
+    scale = 6.0
     colorkey = (0, 0, 255)
 
     animation_list = []
@@ -58,3 +58,10 @@ def Render_jumpscare_2():
         animation_list.append(SpriteSheet.get_image(i, width, height, scale, colorkey))
 
     return animation_list
+
+# Load calls
+def LoadJumpscare1(screen, frame, pos):
+    screen.blit(frame, pos)
+    
+def LoadJumpscare2(screen, frame, pos):
+    screen.blit(frame, pos)

@@ -88,6 +88,10 @@ def options():
         screen.fill("black")
         mouse_pos = pygame.mouse.get_pos()
         
+        text12 = get_font_BOLD(60).render("CREDITS", True, "White")
+        rect2 = text12.get_rect(center=(WIDTH // 2, 50))
+        screen.blit(text12, rect2)
+
         text = get_font_BOLD(45).render("Made by VinayPyDev, Lucas_art, Rusty9q1,", True, "White")
         rect = text.get_rect(center=(WIDTH // 2, 260))
         screen.blit(text, rect)
@@ -187,7 +191,7 @@ def main_menu():
         screen.blit(title, (80, 40))
 
         play = BUTTON(None, (640, 250), "PLAY", get_font(80), "#636363", "#FFFFFF")
-        options_btn = BUTTON(None, (640, 400), "OPTIONS", get_font(80), "#636363", "#FFFFFF")
+        options_btn = BUTTON(None, (640, 400), "CREDITS", get_font(80), "#636363", "#FFFFFF")
         quit_btn = BUTTON(None, (640, 550), "QUIT", get_font(80), "#636363", "#FFFFFF")
 
         for btn in [play, options_btn, quit_btn]:

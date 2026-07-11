@@ -19,7 +19,7 @@ from font import get_font
 from text import Start_text
 
 # Jumpscares
-from jumpscare import Render_jumpscare_1, Render_jumpscare_2
+from jumpscare import Render_jumpscare_1, Render_jumpscare_2, LoadJumpscare1, LoadJumpscare2
 
 from pathlib import Path
 sys.path.append(str(Path(__file__).parent.parent))
@@ -83,17 +83,21 @@ current_bg = "sunset"
 # Jumpscare anim vars
 Jumpscare1_frames = Render_jumpscare_1()
 frame_j = 0
-last_update = pygame.time.get_ticks()
-animation_cooldown = 100
+last_updatej = pygame.time.get_ticks()
+animation_cooldownj = 400
 
 Jumpscare2_frames = Render_jumpscare_2()
 frame_j2 = 0
-last_update = pygame.time.get_ticks()
-animation_cooldown = 100
+last_updatej = pygame.time.get_ticks()
+animation_cooldownj = 400
 
 j1_trigger = False
 j2_trigger = False
 
+j1_started = False
+j2_started = False
+
+# memory anim vars
 Memory_1_frames = Render_memory_1()
 frame = 0
 last_update = pygame.time.get_ticks()
@@ -171,7 +175,7 @@ in_sunset = True
 in_sunset_2 = True
 in_void = True
 
-player_speed = 150
+player_speed = 1500
 move_left = False
 move_right = False
 
@@ -216,9 +220,6 @@ while running:
         frame8 += 1
         frame9 += 1
 
-        frame_j += 1
-        frame_j2 += 1
-
         if frame >= len(Memory_1_frames):
             frame = 0
         if frame2 >= len(Memory_2_frames):
@@ -238,13 +239,23 @@ while running:
         if frame9 >= len(Memory_9_frames):
             frame9 = 0
 
-        if frame_j >= len(Jumpscare1_frames) and j1_trigger == False:
-            frame_j = 0
-            j1_trigger = False
-        if frame_j2 >= len(Jumpscare2_frames) and j2_trigger == False:
-            j2_trigger = False
-            frame_j2 = 0
+    current_time = pygame.time.get_ticks()
 
+    if current_time - last_updatej >= animation_cooldownj:
+        last_updatej = current_time
+
+        if j1_trigger:
+            frame_j += 1
+            if frame_j >= len(Jumpscare1_frames):
+                frame_j = 0
+                j1_trigger = False
+
+        if j2_trigger:
+            frame_j2 += 1
+            if frame_j2 >= len(Jumpscare2_frames):
+                frame_j2 = 0
+                j2_trigger = False
+                
     if move_left:
         player_x -= player_speed * dt
         player_facing = "left"
@@ -302,10 +313,13 @@ while running:
         move_left = False
         # minigame2_started = False
 
-    if not j1_trigger and player_x > 8210:
+    if not j1_started and player_x > 8210:
         j1_trigger = True
-    if not j2_trigger and player_x > 5798:
+        j1_started = True
+
+    if not j2_started and player_x > 5798:
         j2_trigger = True
+        j2_started = True
 
     if not memory1Trigger and player_x >= 1300:
         memory1Trigger = True
@@ -483,11 +497,15 @@ while running:
     if j1_trigger:
         move_left = False
         move_right = False
-        Render_jumpscare_1(screen, Jumpscare1_frames[frame_j], camera_x)
+        LoadJumpscare1(screen, Jumpscare1_frames[frame_j], (50, 0))
+        if frame_j == 50:
+            j1_trigger = False
     if j2_trigger:
         move_left = False
         move_right = False
-        Render_jumpscare_2(screen, Jumpscare2_frames[frame_j2], camera_x)
+        LoadJumpscare2(screen, Jumpscare2_frames[frame_j2], (50, 0))
+        if frame_j2 == 31:
+            j2_trigger = False
 
     if memory1Trigger:
         render_memory_1(screen, Memory_1_frames[frame], camera_x)
@@ -522,7 +540,7 @@ while running:
         current_bg = "dusk"
         sunset_fade_triggered = True
 
-    if player_x >= 5645 and current_bg == "dusk" and in_sunset_2 and not dusk_fade_triggered:
+    if player_x >= 6250 and current_bg == "dusk" and in_sunset_2 and not dusk_fade_triggered:
         transition_text_surface = get_font(45).render(dusk_to_dungeon, True, (244, 244, 244))
         transition_text_surface_2 = get_font(45).render(dusk_to_dungeon_2, True, (244, 244, 244))
         text_timer = 8000
@@ -531,7 +549,7 @@ while running:
         current_bg = "dungeon"
         dusk_fade_triggered = True
     
-    if player_x >= 8700 and current_bg == "dungeon" and in_dungeon and not dungeon_fade_triggered:
+    if player_x >= 9700 and current_bg == "dungeon" and in_dungeon and not dungeon_fade_triggered:
         transition_text_surface = get_font(45).render(dungeon_to_void, True, (244, 244, 244))
         transition_text_surface_2 = get_font(45).render(dungeon_to_void_2, True, (244, 244, 244))
         text_timer = 8000
