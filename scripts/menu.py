@@ -99,10 +99,6 @@ def options():
         text = get_font_BOLD(45).render("Toasty, Kaan, DVD,", True, "White")
         rect = text.get_rect(center=(WIDTH // 2, 460))
         screen.blit(text, rect)
-        
-        # text = get_font_BOLD(45).render("VinayPyDev, Lucas_art, Rusty9q1.", True, "White")
-        # rect = text.get_rect(center=(WIDTH // 2, 260))
-        # screen.blit(text, rect)
 
         back = BUTTON(None, (WIDTH // 2, 560), "BACK", get_font(75), "Green", "White")
         back.switch_color(mouse_pos)

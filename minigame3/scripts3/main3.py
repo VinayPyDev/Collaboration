@@ -40,6 +40,9 @@ def game3():
     player_rect = pygame.Rect(player_x, player_y, 100, 100)
     player_speed = 340
 
+    entity_rect = pygame.Rect(640, 1000, 100, 100)
+    entity_speed = 60
+
     wall1 = pygame.transform.scale(pygame.image.load(resource_path("TestData/tile1.png")).convert_alpha(), (64, 64))
     wall2 = pygame.transform.scale(pygame.image.load(resource_path("TestData/tile2.png")).convert_alpha(), (64, 64))
 
@@ -48,6 +51,8 @@ def game3():
     while True:
         screen.fill((0, 0, 0))
         dt = clock.tick(60) / 1000
+
+        entity_rect.y -= entity_speed * dt
 
         screen.blit(text, (500, 3300 - camera_y))
 
@@ -74,6 +79,7 @@ def game3():
 
         camera_y = player_rect.centery - HEIGHT // 2
         print(player_rect.y)
+        pygame.draw.rect(screen, "black", entity_rect)
 
         keys = pygame.key.get_pressed()
         if keys[pygame.K_w]:
@@ -87,11 +93,13 @@ def game3():
         screen.blit(player_sprite, (player_rect.x, player_rect.y - camera_y))
         
         if player_rect.y <= 55:
-            player_rect.y = 55
+            player_speed = 0
+        if player_rect.y == entity_rect.y:
+            entity_speed = 0
             player_speed = 0
             screen.blit(jumpscare_img, (0, 0))
             print("Get Jumpscared BOZO")
-
+        
         pygame.display.update()
     
 game3()
