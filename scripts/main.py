@@ -555,6 +555,11 @@ while running:
         screen.blit(transition_text_surface_2, (10, 460))
         text_timer -= int(dt * 1000)
 
+    render_key1(screen, art) 
+    render_key2(screen, art)
+    render_key3(screen, art)
+    render_key4(screen, art)
+
     if j1_trigger:
         screen.fill((0, 0, 0))
         move_left = False
@@ -569,11 +574,6 @@ while running:
         LoadJumpscare2(screen, Jumpscare2_frames[frame_j2], (400, 0))
         if frame_j2 == 31:
             j2_trigger = False
-
-    render_key1(screen, art) 
-    render_key2(screen, art)
-    render_key3(screen, art)
-    render_key4(screen, art)
 
     pygame.display.update()
 
