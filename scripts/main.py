@@ -313,11 +313,11 @@ while running:
         move_left = False
         # minigame2_started = False
 
-    if not j1_started and player_x > 8210:
+    if not j1_started and player_x > 9820:
         j1_trigger = True
         j1_started = True
 
-    if not j2_started and player_x > 5798:
+    if not j2_started and player_x > 8210:
         j2_trigger = True
         j2_started = True
 
@@ -494,19 +494,6 @@ while running:
     elif player_facing == "left" and move_left:
         current_player_img = move_left_frames[current_frame]
 
-    if j1_trigger:
-        move_left = False
-        move_right = False
-        LoadJumpscare1(screen, Jumpscare1_frames[frame_j], (50, 0))
-        if frame_j == 50:
-            j1_trigger = False
-    if j2_trigger:
-        move_left = False
-        move_right = False
-        LoadJumpscare2(screen, Jumpscare2_frames[frame_j2], (50, 0))
-        if frame_j2 == 31:
-            j2_trigger = False
-
     if memory1Trigger:
         render_memory_1(screen, Memory_1_frames[frame], camera_x)
     if memory2Trigger:
@@ -534,17 +521,17 @@ while running:
     if player_x >= 2600 and current_bg == "sunset" and in_sunset and not sunset_fade_triggered:
         transition_text_surface = get_font(45).render(sunset_to_dusk, True, (244, 244, 244))
         transition_text_surface_2 = get_font(45).render(" ", True, (244, 244, 244))
-        text_timer = 3000
-        fade.start(3000, reverse=False) 
+        text_timer = 6400
+        fade.start(1500, reverse=False) 
         fade_out_started = True
         current_bg = "dusk"
         sunset_fade_triggered = True
 
-    if player_x >= 6250 and current_bg == "dusk" and in_sunset_2 and not dusk_fade_triggered:
+    if player_x >= 6400 and current_bg == "dusk" and in_sunset_2 and not dusk_fade_triggered:
         transition_text_surface = get_font(45).render(dusk_to_dungeon, True, (244, 244, 244))
         transition_text_surface_2 = get_font(45).render(dusk_to_dungeon_2, True, (244, 244, 244))
-        text_timer = 8000
-        fade.start(3000, reverse=False)
+        text_timer = 4000
+        fade.start(1500, reverse=False)
         fade_out_started = True
         current_bg = "dungeon"
         dusk_fade_triggered = True
@@ -552,8 +539,8 @@ while running:
     if player_x >= 9700 and current_bg == "dungeon" and in_dungeon and not dungeon_fade_triggered:
         transition_text_surface = get_font(45).render(dungeon_to_void, True, (244, 244, 244))
         transition_text_surface_2 = get_font(45).render(dungeon_to_void_2, True, (244, 244, 244))
-        text_timer = 8000
-        fade.start(3000, reverse=False)
+        text_timer = 4000
+        fade.start(1500, reverse=False)
         fade_out_started = True
         current_bg = "void"
         dungeon_fade_triggered = True
@@ -567,6 +554,21 @@ while running:
     if text_displayed and text_timer > 0 and transition_text_surface_2 is not None:
         screen.blit(transition_text_surface_2, (10, 460))
         text_timer -= int(dt * 1000)
+
+    if j1_trigger:
+        screen.fill((0, 0, 0))
+        move_left = False
+        move_right = False
+        LoadJumpscare1(screen, Jumpscare1_frames[frame_j], (400, 0))
+        if frame_j == 50:
+            j1_trigger = False
+    if j2_trigger:
+        screen.fill((0, 0, 0))
+        move_left = False
+        move_right = False
+        LoadJumpscare2(screen, Jumpscare2_frames[frame_j2], (400, 0))
+        if frame_j2 == 31:
+            j2_trigger = False
 
     render_key1(screen, art) 
     render_key2(screen, art)

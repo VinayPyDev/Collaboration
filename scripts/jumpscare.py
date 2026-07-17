@@ -25,7 +25,7 @@ def Render_jumpscare_1():
     SpriteSheet = jumpscare_1(jumpscare_img_1)
     frames = 51
     width, height = 150, 150
-    scale = 6.0
+    scale = 4.5
     colorkey = (255, 255, 255)
 
     animation_list = []
@@ -50,7 +50,7 @@ def Render_jumpscare_2():
     SpriteSheet = jumpscare_2(jumpscare_img_2)
     frames = 32
     width, height = 150, 150
-    scale = 6.0
+    scale = 4.5
     colorkey = (0, 0, 255)
 
     animation_list = []
