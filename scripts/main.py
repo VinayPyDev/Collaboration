@@ -2,9 +2,10 @@ import pygame
 import sys
 import os
 
+# [Function imports]
 from art import load_sunset_bg_full, load_dungeon_bg_full, load_sunset_bg_2_full, load_sunset_extra, load_keys, load_void_bg_full
 from art import RenderPlayerIdleLeft, RenderPlayerIdleRight, RenderPlayerMoveLeft, RenderPlayerMoveRight
-from art import Transition_backgrounds
+from art import Transition_backgrounds, LoadPage, LoadCollisionPage
 
 from display import draw_sunset_bg_full, draw_dungeon_bg_full, draw_sunset_bg_2_full, render_memory_1, render_memory_2, render_memory_3, render_memory_4, render_memory_5, render_memory_6, render_memory_7, render_memory_8, render_memory_9
 from display import draw_sunset_bg_extra_full, render_key1, render_key2, render_key3, render_key4, draw_dungeon_bg_full_2, draw_void_bg_full, draw_void_bg_2_full
@@ -33,10 +34,6 @@ WIDTH, HEIGHT = 1280, 720
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 clock = pygame.time.Clock()
 
-# sunset_tilesets = Render_Sunrise_Tileset()
-# dungeon_tilesets = Render_Dungeon_Tileset()
-# void_tilesets = Render_Void_Tileset()
-
 sunrise_tiles = Load_Sunrise_Tileset()
 dungeon_tiles = Load_Dungeon_Tileset()
 void_tiles = Load_Void_Tileset()
@@ -57,6 +54,8 @@ art.update(load_dungeon_bg_full())
 art.update(load_void_bg_full())
 art.update(load_keys())
 art.update(Transition_backgrounds())
+art.update(LoadCollisionPage())
+art.update(LoadPage())
 
 # minigames
 minigame1_started = False
@@ -79,6 +78,9 @@ text_timer = 0
 text_surf = None
 
 current_bg = "sunset"
+
+# page vars
+page_pick = art["page_pick"]
 
 # Jumpscare anim vars
 Jumpscare1_frames = Render_jumpscare_1()
@@ -153,6 +155,7 @@ memory7Trigger = False
 memory8Trigger = False
 memory9Trigger = False
 
+# player vars
 player_x = 640
 player_y = 386
 
@@ -168,6 +171,7 @@ current_player_img = idle_right_frames[0]
 move_right_frames = RenderPlayerMoveRight()
 move_left_frames = RenderPlayerMoveLeft()
 
+# world vars
 camera_x = 0
 
 in_dungeon = True

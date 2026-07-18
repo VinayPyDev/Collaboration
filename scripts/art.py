@@ -166,5 +166,9 @@ def LoadCollisionPage():
 def LoadPage():
     return {
         "page_1": pygame.image.load(resource_path("data/page1.png")).convert_alpha(),
-        "page_2": pygame.iamge.load(resource_path("data/page2.png")).convert_alpha()
+        "page_2": pygame.image.load(resource_path("data/page2.png")).convert_alpha(),
+        "page_3": pygame.image.load(resource_path("data/page3.png")).convert_alpha(),
+        "page_4": pygame.image.load(resource_path("data/page4.png")).convert_alpha(),
+        "page_5": pygame.image.load(resource_path("data/page5.png")).convert_alpha(),
+        "page_6": pygame.image.load(resource_path("data/page6.png")).convert_alpha()
     }
