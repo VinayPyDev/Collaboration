@@ -38,10 +38,11 @@ def game3():
     player_x = 640
     player_y = 3000
     player_rect = pygame.Rect(player_x, player_y, 100, 100)
-    player_speed = 340
+    player_speed = 0
 
-    entity_rect = pygame.Rect(640, 1000, 100, 100)
-    entity_speed = 60
+    entity_rect = pygame.Rect(640, 4000, 100, 100)
+    entity_speed = 340
+    if_entity_near = False
 
     wall1 = pygame.transform.scale(pygame.image.load(resource_path("TestData/tile1.png")).convert_alpha(), (64, 64))
     wall2 = pygame.transform.scale(pygame.image.load(resource_path("TestData/tile2.png")).convert_alpha(), (64, 64))
@@ -53,6 +54,11 @@ def game3():
         dt = clock.tick(60) / 1000
 
         entity_rect.y -= entity_speed * dt
+
+        if entity_rect.y <= player_y + 350:
+            if_entity_near = True
+        if if_entity_near:
+            player_speed = 340
 
         screen.blit(text, (500, 3300 - camera_y))
 
@@ -78,23 +84,22 @@ def game3():
                 sys.exit()
 
         camera_y = player_rect.centery - HEIGHT // 2
-        print(player_rect.y)
-        pygame.draw.rect(screen, "black", entity_rect)
 
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_w]:
+        if keys[pygame.K_w] and if_entity_near:
             player_rect.y -= player_speed * dt      
-        if keys[pygame.K_s]:
+        if keys[pygame.K_s] and if_entity_near:
             player_rect.y += player_speed * dt
 
-        if player_rect.y >= 3073:
+        if player_rect.y >= 3073 and if_entity_near:
             player_rect.y = 3073
 
         screen.blit(player_sprite, (player_rect.x, player_rect.y - camera_y))
+        pygame.draw.rect(screen, "black", (entity_rect.x, entity_rect.y - camera_y, entity_rect.width, entity_rect.height))
         
-        if player_rect.y <= 55:
+        if player_rect.y <= 55 and if_entity_near:
             player_speed = 0
-        if player_rect.y == entity_rect.y:
+        if player_rect.colliderect(entity_rect):
             entity_speed = 0
             player_speed = 0
             screen.blit(jumpscare_img, (0, 0))

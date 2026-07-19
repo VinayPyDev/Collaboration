@@ -66,7 +66,7 @@ sunset_to_dusk = "The sun has descended and dusk holds its crown"
 dusk_to_dungeon = "The dusk faded away and now night is in its "
 dusk_to_dungeon_2 = "prime"
 dungeon_to_void = "The innocence has been stabbed and has turned"
-dungeon_to_void_2 = " to the path of vengeance"
+dungeon_to_void_2 = " to the path of corruption"
 
 sunset_fade_triggered = False
 dusk_fade_triggered = False
@@ -81,6 +81,28 @@ current_bg = "sunset"
 
 # page vars
 page_pick = art["page_pick"]
+not_picked = True
+
+page_pick_pos = [
+    (100, 386),
+    (740, 386),
+    (1160, 386),
+    (1946, 386),
+    (2632, 386),
+    (3204, 386),
+]
+
+for pos in page_pick_pos:
+    if not not_picked:
+        break        
+    page_pick_rect = page_pick.get_rect(center=pos)
+
+page_1 = art["page_1"].get_rect(center=page_pick_pos[0])
+page_2 = art["page_2"].get_rect(center=page_pick_pos[1])
+page_3 = art["page_3"].get_rect(center=page_pick_pos[2])
+page_4 = art["page_4"].get_rect(center=page_pick_pos[3])
+page_5 = art["page_5"].get_rect(center=page_pick_pos[4])
+page_6 = art["page_6"].get_rect(center=page_pick_pos[5])
 
 # Jumpscare anim vars
 Jumpscare1_frames = Render_jumpscare_1()
