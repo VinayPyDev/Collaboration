@@ -92,17 +92,31 @@ page_pick_pos = [
     (3204, 386),
 ]
 
-for pos in page_pick_pos:
-    if not not_picked:
-        break        
-    page_pick_rect = page_pick.get_rect(center=pos)
+picked_page_1 = False
+picked_page_2 = False
+picked_page_3 = False
+picked_page_4 = False
+picked_page_5 = False
+picked_page_6 = False
 
-page_1 = art["page_1"].get_rect(center=page_pick_pos[0])
-page_2 = art["page_2"].get_rect(center=page_pick_pos[1])
-page_3 = art["page_3"].get_rect(center=page_pick_pos[2])
-page_4 = art["page_4"].get_rect(center=page_pick_pos[3])
-page_5 = art["page_5"].get_rect(center=page_pick_pos[4])
-page_6 = art["page_6"].get_rect(center=page_pick_pos[5])
+page_pick_rects = []
+
+for pos in page_pick_pos:
+    page_pick_rects.append(page_pick.get_rect(center=pos))
+
+page_1 = art["page_1"]
+page_2 = art["page_2"]
+page_3 = art["page_3"]
+page_4 = art["page_4"]
+page_5 = art["page_5"]
+page_6 = art["page_6"]
+
+page_1_rect = page_pick_rects[0]
+page_2_rect = page_pick_rects[1]
+page_3_rect = page_pick_rects[2]
+page_4_rect = page_pick_rects[3]
+page_5_rect = page_pick_rects[4]
+page_6_rect = page_pick_rects[5]
 
 # Jumpscare anim vars
 Jumpscare1_frames = Render_jumpscare_1()
@@ -189,6 +203,7 @@ current_frame = 0
 frame_timer = 0
 frame_cooldown = 100
 current_player_img = idle_right_frames[0]
+player_rect = current_player_img.get_rect(topleft=(player_x, player_y))
 
 move_right_frames = RenderPlayerMoveRight()
 move_left_frames = RenderPlayerMoveLeft()
@@ -281,7 +296,20 @@ while running:
             if frame_j2 >= len(Jumpscare2_frames):
                 frame_j2 = 0
                 j2_trigger = False
-                
+
+    if player_rect.colliderect(page_pick_rects[0]):
+        picked_page_1 = True
+    if player_rect.colliderect(page_pick_rects[1]):
+        picked_page_2 = True
+    if player_rect.colliderect(page_pick_rects[2]):
+        picked_page_3 = True
+    if player_rect.colliderect(page_pick_rects[3]):
+        picked_page_4 = True
+    if player_rect.colliderect(page_pick_rects[4]):
+        picked_page_5 = True
+    if player_rect.colliderect(page_pick_rects[5]):
+        picked_page_6 = True
+
     if move_left:
         player_x -= player_speed * dt
         player_facing = "left"
@@ -379,6 +407,32 @@ while running:
         RenderDungeonToVoid(screen, art, camera_x)
         draw_void_bg_full(screen, art, camera_x)
         draw_void_bg_2_full(screen, art, camera_x)
+
+    if not picked_page_1:
+        screen.blit(page_pick, (page_pick_rects[0].x - camera_x, page_pick_rects[0].y))
+    if not picked_page_2:
+        screen.blit(page_pick, (page_pick_rects[1].x - camera_x, page_pick_rects[1].y))
+    if not picked_page_3:
+        screen.blit(page_pick, (page_pick_rects[2].x - camera_x, page_pick_rects[2].y))
+    if not picked_page_4:
+        screen.blit(page_pick, (page_pick_rects[3].x - camera_x, page_pick_rects[0].y))
+    if not picked_page_5:
+        screen.blit(page_pick, (page_pick_rects[4].x - camera_x, page_pick_rects[0].y))
+    if not picked_page_6:
+        screen.blit(page_pick, (page_pick_rects[5].x - camera_x, page_pick_rects[0].y))
+
+    if picked_page_1:
+        screen.blit(page_1, (0, 0))
+    if picked_page_2:
+        screen.blit(page_2, (0, 0))
+    if picked_page_3:
+        screen.blit(page_3, (0, 0))
+    if picked_page_4:
+        screen.blit(page_4, (0, 0))
+    if picked_page_5:
+        screen.blit(page_5, (0, 0))
+    if picked_page_6:
+        screen.blit(page_6, (0, 0))
 
     if current_bg == "sunset":
         Start_text()   
