@@ -84,12 +84,12 @@ page_pick = art["page_pick"]
 not_picked = True
 
 page_pick_pos = [
-    (100, 386),
-    (740, 386),
-    (1160, 386),
-    (1946, 386),
-    (2632, 386),
-    (3204, 386),
+    (1000, 580),
+    (1740, 580),
+    (2160, 580),
+    (3946, 580),
+    (4632, 580),
+    (6204, 580),
 ]
 
 picked_page_1 = False
@@ -98,6 +98,13 @@ picked_page_3 = False
 picked_page_4 = False
 picked_page_5 = False
 picked_page_6 = False
+
+text_of_page_1 = False
+text_of_page_2 = False
+text_of_page_3 = False
+text_of_page_4 = False
+text_of_page_5 = False
+text_of_page_6 = False
 
 page_pick_rects = []
 
@@ -117,6 +124,9 @@ page_3_rect = page_pick_rects[2]
 page_4_rect = page_pick_rects[3]
 page_5_rect = page_pick_rects[4]
 page_6_rect = page_pick_rects[5]
+
+# text
+pick_txt = get_font(45).render("Press E", True, (0, 0, 0))
 
 # Jumpscare anim vars
 Jumpscare1_frames = Render_jumpscare_1()
@@ -240,13 +250,38 @@ while running:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 main_menu()
-
+            if event.key == pygame.K_e and text_of_page_1:
+                picked_page_1 = True
+            if event.key == pygame.K_e and text_of_page_2:
+                picked_page_2 = True
+            if event.key == pygame.K_e and text_of_page_3:
+                picked_page_3 = True
+            if event.key == pygame.K_e and text_of_page_4:
+                picked_page_4 = True
+            if event.key == pygame.K_e and text_of_page_5:
+                picked_page_5 = True
+            if event.key == pygame.K_e and text_of_page_6:
+                picked_page_6 = True
+    
     keys = pygame.key.get_pressed()
     if keys[pygame.K_a]:
         player_x -= player_speed * dt
 
     if keys[pygame.K_d]:
         player_x += player_speed * dt
+
+    if text_of_page_1:
+        screen.blit(pick_txt, (player_x - camera_x, player_y - 100))
+    if text_of_page_2:
+        screen.blit(pick_txt, (player_x - camera_x, player_y - 100))
+    if text_of_page_3:
+        screen.blit(pick_txt, (player_x - camera_x, player_y - 100))
+    if text_of_page_4:
+        screen.blit(pick_txt, (player_x - camera_x, player_y - 100))
+    if text_of_page_5:
+        screen.blit(pick_txt, (player_x - camera_x, player_y - 100))
+    if text_of_page_6:
+        screen.blit(pick_txt, (player_x - camera_x, player_y - 100))
 
     current_time = pygame.time.get_ticks()
     if current_time - last_update >= animation_cooldown:
@@ -296,19 +331,21 @@ while running:
             if frame_j2 >= len(Jumpscare2_frames):
                 frame_j2 = 0
                 j2_trigger = False
-
-    if player_rect.colliderect(page_pick_rects[0]):
-        picked_page_1 = True
-    if player_rect.colliderect(page_pick_rects[1]):
-        picked_page_2 = True
-    if player_rect.colliderect(page_pick_rects[2]):
-        picked_page_3 = True
-    if player_rect.colliderect(page_pick_rects[3]):
-        picked_page_4 = True
-    if player_rect.colliderect(page_pick_rects[4]):
-        picked_page_5 = True
-    if player_rect.colliderect(page_pick_rects[5]):
-        picked_page_6 = True
+                
+    player_rect.topleft = (player_x, player_y)
+    
+    if player_rect.colliderect(page_pick_rects[0]) and not picked_page_1:
+        text_of_page_1 = True
+    if player_rect.colliderect(page_pick_rects[1]) and not picked_page_2:    
+        text_of_page_2 = True
+    if player_rect.colliderect(page_pick_rects[2]) and not picked_page_3:
+        text_of_page_3 = True
+    if player_rect.colliderect(page_pick_rects[3]) and not picked_page_4:
+        text_of_page_4 = True
+    if player_rect.colliderect(page_pick_rects[4]) and not picked_page_5:
+        text_of_page_5 = True
+    if player_rect.colliderect(page_pick_rects[5]) and not picked_page_6:
+        text_of_page_6 = True
 
     if move_left:
         player_x -= player_speed * dt
@@ -415,11 +452,11 @@ while running:
     if not picked_page_3:
         screen.blit(page_pick, (page_pick_rects[2].x - camera_x, page_pick_rects[2].y))
     if not picked_page_4:
-        screen.blit(page_pick, (page_pick_rects[3].x - camera_x, page_pick_rects[0].y))
+        screen.blit(page_pick, (page_pick_rects[3].x - camera_x, page_pick_rects[3].y))
     if not picked_page_5:
-        screen.blit(page_pick, (page_pick_rects[4].x - camera_x, page_pick_rects[0].y))
+        screen.blit(page_pick, (page_pick_rects[4].x - camera_x, page_pick_rects[4].y))
     if not picked_page_6:
-        screen.blit(page_pick, (page_pick_rects[5].x - camera_x, page_pick_rects[0].y))
+        screen.blit(page_pick, (page_pick_rects[5].x - camera_x, page_pick_rects[5].y))
 
     if picked_page_1:
         screen.blit(page_1, (0, 0))
