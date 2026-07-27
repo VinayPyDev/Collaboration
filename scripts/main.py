@@ -99,6 +99,8 @@ picked_page_4 = False
 picked_page_5 = False
 picked_page_6 = False
 
+page_opened = 0
+
 text_of_page_1 = False
 text_of_page_2 = False
 text_of_page_3 = False
@@ -252,17 +254,28 @@ while running:
                 main_menu()
             if event.key == pygame.K_e and text_of_page_1:
                 picked_page_1 = True
+                page_opened = 0 if page_opened == 1 else 1
+
             if event.key == pygame.K_e and text_of_page_2:
                 picked_page_2 = True
+                page_opened = 0 if page_opened == 2 else 2
+
             if event.key == pygame.K_e and text_of_page_3:
                 picked_page_3 = True
+                page_opened = 0 if page_opened == 3 else 3
+
             if event.key == pygame.K_e and text_of_page_4:
                 picked_page_4 = True
+                page_opened = 0 if page_opened == 4 else 4
+
             if event.key == pygame.K_e and text_of_page_5:
                 picked_page_5 = True
+                page_opened = 0 if page_opened == 5 else 5
+
             if event.key == pygame.K_e and text_of_page_6:
                 picked_page_6 = True
-    
+                page_opened = 0 if page_opened == 6 else 6
+
     keys = pygame.key.get_pressed()
     if keys[pygame.K_a]:
         player_x -= player_speed * dt
@@ -458,17 +471,17 @@ while running:
     if not picked_page_6:
         screen.blit(page_pick, (page_pick_rects[5].x - camera_x, page_pick_rects[5].y))
 
-    if picked_page_1:
+    if page_opened == 1:
         screen.blit(page_1, (0, 0))
-    if picked_page_2:
+    if page_opened == 2:
         screen.blit(page_2, (0, 0))
-    if picked_page_3:
+    if page_opened == 3:
         screen.blit(page_3, (0, 0))
-    if picked_page_4:
+    if page_opened == 4:
         screen.blit(page_4, (0, 0))
-    if picked_page_5:
+    if page_opened == 5:
         screen.blit(page_5, (0, 0))
-    if picked_page_6:
+    if page_opened == 6:
         screen.blit(page_6, (0, 0))
 
     if current_bg == "sunset":
