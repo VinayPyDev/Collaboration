@@ -252,29 +252,27 @@ while running:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 main_menu()
-            if event.key == pygame.K_e and text_of_page_1:
-                picked_page_1 = True
-                page_opened = 0 if page_opened == 1 else 1
-
-            if event.key == pygame.K_e and text_of_page_2:
-                picked_page_2 = True
-                page_opened = 0 if page_opened == 2 else 2
-
-            if event.key == pygame.K_e and text_of_page_3:
-                picked_page_3 = True
-                page_opened = 0 if page_opened == 3 else 3
-
-            if event.key == pygame.K_e and text_of_page_4:
-                picked_page_4 = True
-                page_opened = 0 if page_opened == 4 else 4
-
-            if event.key == pygame.K_e and text_of_page_5:
-                picked_page_5 = True
-                page_opened = 0 if page_opened == 5 else 5
-
-            if event.key == pygame.K_e and text_of_page_6:
-                picked_page_6 = True
-                page_opened = 0 if page_opened == 6 else 6
+            if event.key == pygame.K_e:
+                if page_opened != 0:
+                    page_opened = 0
+                elif text_of_page_1:
+                    picked_page_1 = True
+                    page_opened = 1
+                elif text_of_page_2:
+                    picked_page_2 = True
+                    page_opened = 2
+                elif text_of_page_3:
+                    picked_page_3 = True
+                    page_opened = 3
+                elif text_of_page_4:
+                    picked_page_4 = True
+                    page_opened = 4
+                elif text_of_page_5:
+                    picked_page_5 = True
+                    page_opened = 5
+                elif text_of_page_6:
+                    picked_page_6 = True
+                    page_opened = 6
 
     keys = pygame.key.get_pressed()
     if keys[pygame.K_a]:
