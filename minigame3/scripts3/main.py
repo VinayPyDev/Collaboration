@@ -106,5 +106,3 @@ def game3():
             print("Get Jumpscared BOZO")
         
         pygame.display.update()
-    
-game3()

@@ -16,7 +16,7 @@ from memory_render import Render_memory_1, Render_memory_2, Render_memory_3, Ren
 from transition import TransitionObj, fade
 # from tilesets import Render_Sunrise_Tileset, Render_Dungeon_Tileset, Render_Void_Tileset
 from tilesets import Load_Sunrise_Tileset, Load_Dungeon_Tileset, Load_Void_Tileset
-from font import get_font
+from font import *
 from text import Start_text
 
 # Jumpscares
@@ -28,11 +28,23 @@ sys.path.append(str(Path(__file__).parent.parent))
 # minigames
 from minigame1.scripts1.main import game1
 from minigame2.scripts2.main import game2
+from minigame3.scripts3.main import game3
+
+def resource_path(relative_path):
+    try:
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.dirname(os.path.dirname(__file__))
+    return os.path.join(base_path, relative_path)
 
 pygame.init()
 WIDTH, HEIGHT = 1280, 720
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 clock = pygame.time.Clock()
+
+# [Font re-implementation due to some file issues]
+def get_font_BOLD(size):
+    return pygame.font.Font(resource_path("font/PixeloidSans-Bold.ttf"), size)
 
 sunrise_tiles = Load_Sunrise_Tileset()
 dungeon_tiles = Load_Dungeon_Tileset()
@@ -43,7 +55,7 @@ def load_map(path):
         data = f.read().splitlines()
     return [list(row) for row in data]
 
-game_map = load_map("map/map")
+game_map = load_map("map/map2")
 
 art = {}
 
@@ -60,6 +72,7 @@ art.update(LoadPage())
 # minigames
 minigame1_started = False
 minigame2_started = False
+minigame3_started = False
 
 transition_text = ""
 sunset_to_dusk = "The sun has descended and dusk holds its crown"
@@ -101,12 +114,12 @@ picked_page_6 = False
 
 page_opened = 0
 
-text_of_page_1 = False
-text_of_page_2 = False
-text_of_page_3 = False
-text_of_page_4 = False
-text_of_page_5 = False
-text_of_page_6 = False
+# text_of_page_1 = False
+# text_of_page_2 = False
+# text_of_page_3 = False
+# text_of_page_4 = False
+# text_of_page_5 = False
+# text_of_page_6 = False
 
 page_pick_rects = []
 
@@ -128,7 +141,7 @@ page_5_rect = page_pick_rects[4]
 page_6_rect = page_pick_rects[5]
 
 # text
-pick_txt = get_font(45).render("Press E", True, (0, 0, 0))
+pick_txt = get_font_BOLD(45).render("Press E", True, (0, 0, 0))
 
 # Jumpscare anim vars
 Jumpscare1_frames = Render_jumpscare_1()
@@ -245,6 +258,12 @@ while running:
     mouse_pos = pygame.mouse.get_pos()
     screen.fill((10, 10, 10))
 
+    current_page = 0
+    for i, rect in enumerate(page_pick_rects):
+        if player_rect.colliderect(rect):
+            current_page = i + 1
+            break
+
     dt = clock.tick(60) / 1000
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -255,24 +274,8 @@ while running:
             if event.key == pygame.K_e:
                 if page_opened != 0:
                     page_opened = 0
-                elif text_of_page_1:
-                    picked_page_1 = True
-                    page_opened = 1
-                elif text_of_page_2:
-                    picked_page_2 = True
-                    page_opened = 2
-                elif text_of_page_3:
-                    picked_page_3 = True
-                    page_opened = 3
-                elif text_of_page_4:
-                    picked_page_4 = True
-                    page_opened = 4
-                elif text_of_page_5:
-                    picked_page_5 = True
-                    page_opened = 5
-                elif text_of_page_6:
-                    picked_page_6 = True
-                    page_opened = 6
+                elif current_page != 0:
+                    page_opened = current_page
 
     keys = pygame.key.get_pressed()
     if keys[pygame.K_a]:
@@ -280,19 +283,6 @@ while running:
 
     if keys[pygame.K_d]:
         player_x += player_speed * dt
-
-    if text_of_page_1:
-        screen.blit(pick_txt, (player_x - camera_x, player_y - 100))
-    if text_of_page_2:
-        screen.blit(pick_txt, (player_x - camera_x, player_y - 100))
-    if text_of_page_3:
-        screen.blit(pick_txt, (player_x - camera_x, player_y - 100))
-    if text_of_page_4:
-        screen.blit(pick_txt, (player_x - camera_x, player_y - 100))
-    if text_of_page_5:
-        screen.blit(pick_txt, (player_x - camera_x, player_y - 100))
-    if text_of_page_6:
-        screen.blit(pick_txt, (player_x - camera_x, player_y - 100))
 
     current_time = pygame.time.get_ticks()
     if current_time - last_update >= animation_cooldown:
@@ -406,6 +396,11 @@ while running:
         player_x = player_x + 10
         minigame2_started = True
 
+    if player_x >= 8800 and not minigame3_started:
+        game3()
+        player_x = player_x + 10
+        minigame3_started = True
+
     if minigame1_started:
         move_right = False
         move_left = False
@@ -414,6 +409,9 @@ while running:
         move_right = False
         move_left = False
         # minigame2_started = False
+    if minigame3_started:
+        move_right = False
+        move_left = False
 
     if not j1_started and player_x > 9820:
         j1_trigger = True
@@ -437,7 +435,7 @@ while running:
         memory6Trigger = True
     if not memory7Trigger and player_x >= 8450:
         memory7Trigger = True
-    if not memory8Trigger and player_x >= 9523:
+    if not memory8Trigger and player_x >= 9323:
         memory8Trigger = True 
     if not memory9Trigger and player_x >= 10750:
         memory9Trigger = True
@@ -469,20 +467,7 @@ while running:
     if not picked_page_6:
         screen.blit(page_pick, (page_pick_rects[5].x - camera_x, page_pick_rects[5].y))
 
-    if page_opened == 1:
-        screen.blit(page_1, (0, 0))
-    if page_opened == 2:
-        screen.blit(page_2, (0, 0))
-    if page_opened == 3:
-        screen.blit(page_3, (0, 0))
-    if page_opened == 4:
-        screen.blit(page_4, (0, 0))
-    if page_opened == 5:
-        screen.blit(page_5, (0, 0))
-    if page_opened == 6:
-        screen.blit(page_6, (0, 0))
-
-    if current_bg == "sunset":
+    if current_bg == "sunset" or current_bg == "dusk" or current_bg == "dungeon" or current_bg == "void":
         Start_text()   
 
     tile_rects = []
@@ -647,8 +632,8 @@ while running:
     fade.draw(screen)
     # Done(TODO): remove the 3000, reverse=True and add a auto-reversal to TransitionObj in trasition.py
     if player_x >= 2600 and current_bg == "sunset" and in_sunset and not sunset_fade_triggered:
-        transition_text_surface = get_font(45).render(sunset_to_dusk, True, (244, 244, 244))
-        transition_text_surface_2 = get_font(45).render(" ", True, (244, 244, 244))
+        transition_text_surface = get_font_BOLD(45).render(sunset_to_dusk, True, (244, 244, 244))
+        transition_text_surface_2 = get_font_BOLD(45).render(" ", True, (244, 244, 244))
         text_timer = 6400
         fade.start(1500, reverse=False) 
         fade_out_started = True
@@ -656,8 +641,8 @@ while running:
         sunset_fade_triggered = True
 
     if player_x >= 6400 and current_bg == "dusk" and in_sunset_2 and not dusk_fade_triggered:
-        transition_text_surface = get_font(45).render(dusk_to_dungeon, True, (244, 244, 244))
-        transition_text_surface_2 = get_font(45).render(dusk_to_dungeon_2, True, (244, 244, 244))
+        transition_text_surface = get_font_BOLD(45).render(dusk_to_dungeon, True, (244, 244, 244))
+        transition_text_surface_2 = get_font_BOLD(45).render(dusk_to_dungeon_2, True, (244, 244, 244))
         text_timer = 4000
         fade.start(1500, reverse=False)
         fade_out_started = True
@@ -665,8 +650,8 @@ while running:
         dusk_fade_triggered = True
     
     if player_x >= 9700 and current_bg == "dungeon" and in_dungeon and not dungeon_fade_triggered:
-        transition_text_surface = get_font(45).render(dungeon_to_void, True, (244, 244, 244))
-        transition_text_surface_2 = get_font(45).render(dungeon_to_void_2, True, (244, 244, 244))
+        transition_text_surface = get_font_BOLD(45).render(dungeon_to_void, True, (244, 244, 244))
+        transition_text_surface_2 = get_font_BOLD(45).render(dungeon_to_void_2, True, (244, 244, 244))
         text_timer = 4000
         fade.start(1500, reverse=False)
         fade_out_started = True
@@ -687,6 +672,35 @@ while running:
     render_key2(screen, art)
     render_key3(screen, art)
     render_key4(screen, art)
+
+    if page_opened == 1:
+        screen.blit(page_1, (0, 0))
+    if page_opened == 2:
+        screen.blit(page_2, (0, 0))
+    if page_opened == 3:
+        screen.blit(page_3, (0, 0))
+    if page_opened == 4:
+        screen.blit(page_4, (0, 0))
+    if page_opened == 5:
+        screen.blit(page_5, (0, 0))
+    if page_opened == 6:
+        screen.blit(page_6, (0, 0))
+
+    # if text_of_page_1:
+    #     screen.blit(pick_txt, (player_x - camera_x, player_y - 100))
+    # if text_of_page_2:
+    #     screen.blit(pick_txt, (player_x - camera_x, player_y - 100))
+    # if text_of_page_3:
+    #     screen.blit(pick_txt, (player_x - camera_x, player_y - 100))
+    # if text_of_page_4:
+    #     screen.blit(pick_txt, (player_x - camera_x, player_y - 100))
+    # if text_of_page_5:
+    #     screen.blit(pick_txt, (player_x - camera_x, player_y - 100))
+    # if text_of_page_6:
+    #     screen.blit(pick_txt, (player_x - camera_x, player_y - 100))
+
+    if current_page != 0 and page_opened == 0:
+        screen.blit(pick_txt, (player_x - camera_x, player_y - 100))
 
     if j1_trigger:
         screen.fill((0, 0, 0))
