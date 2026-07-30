@@ -75,7 +75,8 @@ minigame2_started = False
 minigame3_started = False
 
 transition_text = ""
-sunset_to_dusk = "The sun has descended and dusk holds its crown"
+sunset_to_dusk = "The sun has descended and dusk holds i"
+sunset_to_dusk_2 = "- ts crown"
 dusk_to_dungeon = "The dusk faded away and now night is in its "
 dusk_to_dungeon_2 = "prime"
 dungeon_to_void = "The innocence has been stabbed and has turned"
@@ -97,12 +98,12 @@ page_pick = art["page_pick"]
 not_picked = True
 
 page_pick_pos = [
-    (1000, 580),
-    (1740, 580),
-    (2160, 580),
-    (3946, 580),
-    (4632, 580),
-    (6204, 580),
+    (1000, 540),
+    (1740, 540),
+    (2160, 540),
+    (3946, 540),
+    (4632, 540),
+    (6204, 540),
 ]
 
 picked_page_1 = False
@@ -113,13 +114,6 @@ picked_page_5 = False
 picked_page_6 = False
 
 page_opened = 0
-
-# text_of_page_1 = False
-# text_of_page_2 = False
-# text_of_page_3 = False
-# text_of_page_4 = False
-# text_of_page_5 = False
-# text_of_page_6 = False
 
 page_pick_rects = []
 
@@ -633,8 +627,8 @@ while running:
     # Done(TODO): remove the 3000, reverse=True and add a auto-reversal to TransitionObj in trasition.py
     if player_x >= 2600 and current_bg == "sunset" and in_sunset and not sunset_fade_triggered:
         transition_text_surface = get_font_BOLD(45).render(sunset_to_dusk, True, (244, 244, 244))
-        transition_text_surface_2 = get_font_BOLD(45).render(" ", True, (244, 244, 244))
-        text_timer = 6400
+        transition_text_surface_2 = get_font_BOLD(45).render(sunset_to_dusk_2, True, (244, 244, 244))
+        text_timer = 3000
         fade.start(1500, reverse=False) 
         fade_out_started = True
         current_bg = "dusk"
@@ -643,7 +637,7 @@ while running:
     if player_x >= 6400 and current_bg == "dusk" and in_sunset_2 and not dusk_fade_triggered:
         transition_text_surface = get_font_BOLD(45).render(dusk_to_dungeon, True, (244, 244, 244))
         transition_text_surface_2 = get_font_BOLD(45).render(dusk_to_dungeon_2, True, (244, 244, 244))
-        text_timer = 4000
+        text_timer = 5000
         fade.start(1500, reverse=False)
         fade_out_started = True
         current_bg = "dungeon"
@@ -662,10 +656,10 @@ while running:
         text_displayed = True
 
     if text_displayed and text_timer > 0 and transition_text_surface is not None:
-        screen.blit(transition_text_surface, (10, 360))
+        screen.blit(transition_text_surface, (10, 260))
         text_timer -= int(dt * 1000)
     if text_displayed and text_timer > 0 and transition_text_surface_2 is not None:
-        screen.blit(transition_text_surface_2, (10, 460))
+        screen.blit(transition_text_surface_2, (100, 360))
         text_timer -= int(dt * 1000)
 
     render_key1(screen, art) 
@@ -685,19 +679,6 @@ while running:
         screen.blit(page_5, (0, 0))
     if page_opened == 6:
         screen.blit(page_6, (0, 0))
-
-    # if text_of_page_1:
-    #     screen.blit(pick_txt, (player_x - camera_x, player_y - 100))
-    # if text_of_page_2:
-    #     screen.blit(pick_txt, (player_x - camera_x, player_y - 100))
-    # if text_of_page_3:
-    #     screen.blit(pick_txt, (player_x - camera_x, player_y - 100))
-    # if text_of_page_4:
-    #     screen.blit(pick_txt, (player_x - camera_x, player_y - 100))
-    # if text_of_page_5:
-    #     screen.blit(pick_txt, (player_x - camera_x, player_y - 100))
-    # if text_of_page_6:
-    #     screen.blit(pick_txt, (player_x - camera_x, player_y - 100))
 
     if current_page != 0 and page_opened == 0:
         screen.blit(pick_txt, (player_x - camera_x, player_y - 100))

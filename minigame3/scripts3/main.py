@@ -25,10 +25,10 @@ def game3():
     camera_y = 0
 
     def load_map(path):
-        with open(path + '.txt', 'r') as f:
+        with open(resource_path(path + ".txt"), "r") as f:
             data = f.read().splitlines()
         return [list(row) for row in data]
-    
+
     tile_size = 32
     game_map = load_map("TestData/map")
 
