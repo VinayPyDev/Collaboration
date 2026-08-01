@@ -26,8 +26,8 @@ def RenderKeyA():
     Spritesheet = KeyA(key_a)
     frames = 5
     width, height = 32, 32
-    x_offset = 19
-    scale = 2.0
+    x_offset = 0
+    scale = 4.0
     colorkey = (10, 10, 10)
 
     animation_list = []
@@ -53,8 +53,8 @@ def RenderKeyS():
     Spritesheet = KeyS(key_s)
     frames = 5
     width, height = 32, 32
-    x_offset = 19
-    scale = 2.0
+    x_offset = 0
+    scale = 4.0
     colorkey = (10, 10, 10)
 
     animation_list = []
@@ -80,8 +80,8 @@ def RenderKeyD():
     Spritesheet = KeyD(key_d)
     frames = 5
     width, height = 32, 32
-    x_offset = 19
-    scale = 2.0
+    x_offset = 0
+    scale = 4.0
     colorkey = (10, 10, 10)
 
     animation_list = []
@@ -107,8 +107,8 @@ def RenderKeyW():
     Spritesheet = KeyW(key_w)
     frames = 5
     width, height = 32, 32
-    x_offset = 19
-    scale = 2.0
+    x_offset = 0
+    scale = 4.0
     colorkey = (10, 10, 10)
 
     animation_list = []
@@ -116,3 +116,13 @@ def RenderKeyW():
         animation_list.append(Spritesheet.get_image(i, width, height, scale, colorkey, x_offset))
 
     return animation_list
+
+# [Key Render Functions]
+def LoadKeyA(screen, frame, pos):
+    screen.blit(frame, pos)
+def LoadKeyS(screen, frame, pos):
+    screen.blit(frame, pos)
+def LoadKeyD(screen, frame, pos):
+    screen.blit(frame, pos)
+def LoadKeyW(screen, frame, pos):
+    screen.blit(frame, pos)

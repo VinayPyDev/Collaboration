@@ -19,6 +19,8 @@ from tilesets import Load_Sunrise_Tileset, Load_Dungeon_Tileset, Load_Void_Tiles
 from font import *
 from text import Start_text
 
+from key import RenderKeyA, RenderKeyS, RenderKeyD, RenderKeyW, LoadKeyA, LoadKeyD, LoadKeyS, LoadKeyW
+
 # Jumpscares
 from jumpscare import Render_jumpscare_1, Render_jumpscare_2, LoadJumpscare1, LoadJumpscare2
 
@@ -136,6 +138,32 @@ page_6_rect = page_pick_rects[5]
 
 # text
 pick_txt = get_font_BOLD(45).render("Press E", True, (0, 0, 0))
+
+# [Key anim vars]
+KeyA = RenderKeyA()
+frame_key_a = 0
+last_update_key = pygame.time.get_ticks()
+animation_cooldown_key = 500
+
+KeyS = RenderKeyS()
+frame_key_s = 0
+last_update_key = pygame.time.get_ticks()
+animation_cooldown_key = 500
+
+KeyD = RenderKeyD()
+frame_key_d = 0
+last_update_key = pygame.time.get_ticks()
+animation_cooldown_key = 500
+
+KeyW = RenderKeyW()
+frame_key_w = 0
+last_update_key = pygame.time.get_ticks()
+animation_cooldown_key = 500
+
+key_pressed_a = False
+key_pressed_s = False
+key_pressed_d = False
+key_pressed_w = False
 
 # Jumpscare anim vars
 Jumpscare1_frames = Render_jumpscare_1()
@@ -274,9 +302,15 @@ while running:
     keys = pygame.key.get_pressed()
     if keys[pygame.K_a]:
         player_x -= player_speed * dt
-
+        key_pressed_a = True
     if keys[pygame.K_d]:
         player_x += player_speed * dt
+        key_pressed_d = True
+
+    if keys[pygame.K_s]:
+        key_pressed_s = True
+    if keys[pygame.K_w]:
+        key_pressed_w = True
 
     current_time = pygame.time.get_ticks()
     if current_time - last_update >= animation_cooldown:
@@ -311,7 +345,6 @@ while running:
             frame9 = 0
 
     current_time = pygame.time.get_ticks()
-
     if current_time - last_updatej >= animation_cooldownj:
         last_updatej = current_time
 
@@ -327,6 +360,24 @@ while running:
                 frame_j2 = 0
                 j2_trigger = False
                 
+    current_time = pygame.time.get_ticks()
+    if current_time - last_update_key >= animation_cooldown_key:
+        last_update_key = current_time
+
+        frame_key_a += 1
+        frame_key_s += 1
+        frame_key_d += 1
+        frame_key_w += 1
+
+        if frame_key_a >= len(KeyA):
+            frame_key_a = 0
+        if frame_key_s >= len(KeyS):
+            frame_key_s = 0
+        if frame_key_d >= len(KeyD):
+            frame_key_d = 0
+        if frame_key_w >= len(KeyW):
+            frame_key_w = 0
+
     player_rect.topleft = (player_x, player_y)
     
     if player_rect.colliderect(page_pick_rects[0]) and not picked_page_1:
@@ -666,6 +717,15 @@ while running:
     render_key2(screen, art)
     render_key3(screen, art)
     render_key4(screen, art)
+
+    if key_pressed_a:
+        LoadKeyA(screen, KeyA[frame_key_a], (10, 65-35))
+    if key_pressed_s:
+        LoadKeyS(screen, KeyS[frame_key_s], (105-28, 65-35))
+    if key_pressed_d:
+        LoadKeyD(screen, KeyD[frame_key_d], (150-10, 65-35))
+    if key_pressed_w:
+        LoadKeyW(screen, KeyW[frame_key_w], (105-30, 0-35))
 
     if page_opened == 1:
         screen.blit(page_1, (0, 0))
