@@ -10,6 +10,7 @@ from mediabutton import RenderHoverBar5, RenderHoverBar6, RenderHoverBar7, Rende
 from mediabutton import RenderClickYoutube, RenderClickInstagram, RenderClickTwitter, RenderClickFacebook, RenderClickItchIo, RenderClickTiktok, RenderClickSteam, RenderClickTwitch
 from mediabutton import LoadClickingYoutube, LoadClickingInstagram, LoadClickingFacebook, LoadClickingTwitter, LoadClickingItchIo, LoadClickingSteam, LoadClickingTiktok, LoadClickingTwitch
 from thanks import ThanksToDevsScreen
+from music import MenuTrack, StopMenuTrack
 
 pygame.init()
 
@@ -485,13 +486,14 @@ def main_menu():
             on_tiktok_button = False
         if on_twitch_button is None:
             on_twitch_button = False
-            
+                
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-
             # print(mouse_pos)
+            MenuTrack()
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if youtube_btn_rect.collidepoint(mouse_pos):
@@ -717,6 +719,7 @@ def main_menu():
                     pygame.time.wait(100)
                     ThanksToDevsScreen()
                     disclaimer_screen()
+                    StopMenuTrack()
                     return "PLAY"
                 if options_btn.check_input(mouse_pos):
                     options()

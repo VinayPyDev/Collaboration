@@ -9,7 +9,7 @@ def resource_path(relative_path):
         base_path = os.path.dirname(os.path.dirname(__file__))
     return os.path.join(base_path, relative_path)
 
-breathing_sound = pygame.mixer.load("music/Sounds and music/Breathing (1).mp3")
+breathing_sound = pygame.mixer.Sound("music/Sounds and music/Breathing (1).mp3")
 def Breathing():
     breathing_sound.play()
 
@@ -38,6 +38,14 @@ def Void_background_track():
     pygame.mixer_music.load("music/Sounds and music/Distraction.mp3")
     pygame.mixer_music.set_volume(0.4)
     pygame.mixer_music.play()
+
+def MenuTrack():
+    pygame.mixer_music.load("music/Sounds and music/VoSS Main Menu.wav")
+    pygame.mixer_music.set_volume(0.8)
+    pygame.mixer_music.play()
+
+def StopMenuTrack():
+    pygame.mixer_music.stop()
 
 def Final_text():
     pygame.mixer_music.load("music/Sounds and music/Bully.mp3")
