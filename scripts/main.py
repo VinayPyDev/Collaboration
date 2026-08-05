@@ -56,7 +56,6 @@ def load_map(path):
     with open(path + '.txt', 'r') as f:
         data = f.read().splitlines()
     return [list(row) for row in data]
-
 game_map = load_map("map/map2")
 
 art = {}
@@ -285,6 +284,8 @@ while running:
         if player_rect.colliderect(rect):
             current_page = i + 1
             break
+
+    player_rect.topleft = (player_x, player_y)
 
     dt = clock.tick(60) / 1000
     for event in pygame.event.get():
