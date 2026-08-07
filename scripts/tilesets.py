@@ -9,11 +9,11 @@ def resource_path(relative_path):
         base_path = os.path.dirname(os.path.dirname(__file__))
     return os.path.join(base_path, relative_path)
 
-# TODO [27-06-26]: Tilesets new import calls
+# Done(TODO) [27-06-26]: Tilesets new import calls
 def Load_Sunrise_Tileset():
     sunrise_img1 = pygame.image.load(resource_path("tiles/Sunrise/sunrise_tile1.png"))
     sunrise_img1.set_colorkey((255, 255, 255))
-    sunrise_img1 = pygame.transform.scale(sunrise_img1, (100, 100))
+    sunrise_img1 = pygame.transform.scale(sunrise_img1, (200, 200))
     sunrise_img2 = pygame.image.load(resource_path("tiles/Sunrise/sunrise_tile2.png"))
     sunrise_img2.set_colorkey((255, 255, 255))
     sunrise_img2 = pygame.transform.scale(sunrise_img2, (100, 100))
