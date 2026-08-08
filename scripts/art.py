@@ -172,3 +172,12 @@ def LoadPage():
         "page_5": pygame.image.load(resource_path("data/page5.png")).convert_alpha(),
         "page_6": pygame.image.load(resource_path("data/page6.png")).convert_alpha()
     }
+
+def PauseImg():
+    return {
+        "img": pygame.image.load(resource_path("data 2/pause.png")).convert_alpha()
+    }
+def PauseMenu():
+    return {
+        "paused_menu": pygame.image.load(resource_path("data 2/paused_menu.png")).convert_alpha()
+    }
