@@ -21,7 +21,9 @@ from text import Start_text
 
 from key import RenderKeyA, RenderKeyS, RenderKeyD, RenderKeyW, LoadKeyA, LoadKeyD, LoadKeyS, LoadKeyW
 from art import PauseImg, PauseMenu
-from display import RenderPauseBtn, RenderPausedMenu
+from display import RenderPausedMenu
+
+from music import MenuTrack
 
 # Jumpscares
 from jumpscare import Render_jumpscare_1, Render_jumpscare_2, LoadJumpscare1, LoadJumpscare2
@@ -50,7 +52,7 @@ clock = pygame.time.Clock()
 def get_font_BOLD(size):
     return pygame.font.Font(resource_path("font/PixeloidSans-Bold.ttf"), size)
 def get_font_BKANT(size):
-    return pygame.font.Font(resource_path("font\BKANT.TTF"), size)
+    return pygame.font.Font(resource_path("font/BKANT.TTF"), size)
 
 sunrise_tiles = Load_Sunrise_Tileset()
 dungeon_tiles = Load_Dungeon_Tileset()
@@ -269,7 +271,7 @@ in_sunset_2 = True
 in_void = True
 
 # pause button var
-pause_btn_rect = art["img"].get_rect(center=(1100 - camera_x, 150))
+pause_btn_rect = art["img"].get_rect(center=(1230 - camera_x, 50))
 paused = False
 
 player_speed = 1500
@@ -769,27 +771,30 @@ while running:
         screen.blit(pick_txt, (player_x - camera_x, player_y - 100))
 
     if paused:
-
         left_click = pygame.mouse.get_pressed()[0]
+        RenderPausedMenu(screen, art)
 
-        RenderPausedMenu(screen, art, camera_x)
-        Resume_text = get_font_BKANT(60).render("RESUME", True, ("#E2DFDF"))
-        resume_rect = Resume_text.get_rect(center=(350, 200))
+        Resume_text = get_font_BKANT(100).render("RESUME", True, ("#C0BEBE"))
+        resume_rect = Resume_text.get_rect(center=(665, 300))
 
-        quit_text = get_font_BKANT(60).render("QUIT", True, ("#E2DFDF"))
-        quit_rect = quit_text.get_rect(center=(350, 200))
+        quit_text = get_font_BKANT(100).render("QUIT", True, ("#C0BEBE"))
+        quit_rect = quit_text.get_rect(center=(650, 550))
 
-        if mouse_pos.colliderect(resume_rect):
-            Resume_text = get_font_BKANT(60).render("RESUME", True, ("#FFFFFF"))            
-        elif mouse_pos.colliderect(quit_rect):
-            quit_text = get_font_BKANT(60).render("QUIT", True, ("#FFFFFF"))
+        if resume_rect.collidepoint(mouse_pos):
+            Resume_text = get_font_BKANT(100).render("RESUME", True, ("#FFFFFF"))
+        elif quit_rect.collidepoint(mouse_pos):
+            quit_text = get_font_BKANT(100).render("QUIT", True, ("#FFFFFF"))
+
+        screen.blit(Resume_text, resume_rect)
+        screen.blit(quit_text, quit_rect)
 
         if resume_rect.collidepoint(mouse_pos) and left_click:
             paused = False
-        elif quit_rect.collidepoint(mouse_pos) and left_click:
-            pygame.quit()
-            sys.exit()
 
+        elif quit_rect.collidepoint(mouse_pos) and left_click:
+            main_menu()
+            MenuTrack()
+            
     if j1_trigger:
         screen.fill((0, 0, 0))
         move_left = False

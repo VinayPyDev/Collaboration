@@ -78,6 +78,6 @@ def RenderDungeonToVoid(screen, art, camera_x):
 
 # pause button
 def RenderPauseBtn(screen, art, camera_x):
-    screen.blit(art["img"], (1100 - camera_x, -150))
-def RenderPausedMenu(screen, art, camera_x):
-    screen.blit(art["paused_menu"], (100 - camera_x, -150))
+    screen.blit(art["img"], (1200 - camera_x, 0))
+def RenderPausedMenu(screen, art):
+    screen.blit(art["paused_menu"], (0, 0))
