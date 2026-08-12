@@ -45,7 +45,12 @@ def resource_path(relative_path):
 
 pygame.init()
 WIDTH, HEIGHT = 1280, 720
-screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
+
+# Display window surface
+display_surface = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
+
+# Canvas target used across all render functions
+screen = pygame.Surface((1280, 720))
 clock = pygame.time.Clock()
 
 # [Font re-implementation due to some file issues]
@@ -272,8 +277,8 @@ in_sunset = True
 in_sunset_2 = True
 in_void = True
 
-# pause button var
-pause_btn_rect = art["img"].get_rect(center=(1230 - camera_x, 50))
+# Fixed top-right pause button placement on virtual 1280 canvas
+pause_btn_rect = art["img"].get_rect(topright=(1280 - 20, 20))
 paused = False
 
 player_speed = 1500
@@ -287,12 +292,15 @@ text_displayed = False
 
 main_menu()
 
-screen2 = pygame.Surface((1280, 720))
-
 running = True
 while running:
-    
-    mouse_pos = pygame.mouse.get_pos()
+    # Scale mouse position from actual window resolution back to virtual canvas resolution (1280x720)
+    raw_mouse_pos = pygame.mouse.get_pos()
+    mouse_pos = (
+        int(raw_mouse_pos[0] * (1280 / max(1, WIDTH))),
+        int(raw_mouse_pos[1] * (720 / max(1, HEIGHT)))
+    )
+
     screen.fill((10, 10, 10))
 
     current_page = 0
@@ -308,14 +316,15 @@ while running:
         if event.type == pygame.QUIT:
             running = False
         if event.type == pygame.MOUSEBUTTONDOWN:
-            if pause_btn_rect.collidepoint(event.pos):
+            # Check collisions using virtual mouse position
+            if pause_btn_rect.collidepoint(mouse_pos):
                 paused = True
             if event.button == 1:
                 print(mouse_pos)
                 print(player_x)
         elif event.type == pygame.VIDEORESIZE:
             WIDTH, HEIGHT = event.w, event.h
-            screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
+            display_surface = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
@@ -458,7 +467,8 @@ while running:
             if current_frame >= len(move_left_frames):
                 current_frame = 0
 
-    camera_x = player_x - WIDTH // 2
+    # Camera centered on virtual 1280 screen
+    camera_x = player_x - 1280 // 2
 
     if camera_x < 0:
         camera_x = 0
@@ -491,11 +501,9 @@ while running:
     if minigame1_started:
         move_right = False
         move_left = False
-        # minigame1_started = False
     if minigame2_started:
         move_right = False
         move_left = False
-        # minigame2_started = False
     if minigame3_started:
         move_right = False
         move_left = False
@@ -719,7 +727,7 @@ while running:
 
     fade.update(dt)
     fade.draw(screen)
-    # Done(TODO): remove the 3000, reverse=True and add a auto-reversal to TransitionObj in trasition.py
+
     if player_x >= 3480 and current_bg == "sunset" and in_sunset and not sunset_fade_triggered:
         transition_text_surface = get_font_BOLD(45).render(sunset_to_dusk, True, (244, 244, 244))
         transition_text_surface_2 = get_font_BOLD(45).render(sunset_to_dusk_2, True, (244, 244, 244))
@@ -783,18 +791,20 @@ while running:
     if current_page != 0 and page_opened == 0:
         screen.blit(pick_txt, (player_x - camera_x, player_y - 100))
 
+    # Pause UI centering on 1280 canvas space
     if paused:
         left_click = pygame.mouse.get_pressed()[0]
         RenderPausedMenu(screen, art)
 
         paused_text = get_font_BOLD(100).render("Paused", True, ("#C0BEBE"))
-        screen.blit(paused_text, (440, 14))
+        paused_rect = paused_text.get_rect(center=(640, 150))
+        screen.blit(paused_text, paused_rect)
 
         Resume_text = get_font(100).render("RESUME", True, ("#C0BEBE"))
-        resume_rect = Resume_text.get_rect(center=(665, 300))
+        resume_rect = Resume_text.get_rect(center=(640, 320))
 
         quit_text = get_font(100).render("QUIT", True, ("#C0BEBE"))
-        quit_rect = quit_text.get_rect(center=(650, 550))
+        quit_rect = quit_text.get_rect(center=(640, 480))
 
         if resume_rect.collidepoint(mouse_pos):
             Resume_text = get_font(100).render("RESUME", True, ("#FFFFFF"))
@@ -826,8 +836,9 @@ while running:
         if frame_j2 == 31:
             j2_trigger = False
 
+    # Render virtual canvas to display surface and update
     scaled_surface = pygame.transform.scale(screen, (WIDTH, HEIGHT))
-    screen.blit(scaled_surface, (0, 0))
+    display_surface.blit(scaled_surface, (0, 0))
 
     pygame.display.update()
 
