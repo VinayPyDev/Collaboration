@@ -45,13 +45,10 @@ def resource_path(relative_path):
 
 pygame.init()
 WIDTH, HEIGHT = 1280, 720
-
-# Display window surface
-display_surface = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
-
-# Canvas target used across all render functions
-screen = pygame.Surface((1280, 720))
+screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
 clock = pygame.time.Clock()
+
+WIDTH2, HEIGHT2 = 1280, 720
 
 # [Font re-implementation due to some file issues]
 def get_font_BOLD(size):
@@ -277,8 +274,8 @@ in_sunset = True
 in_sunset_2 = True
 in_void = True
 
-# Fixed top-right pause button placement on virtual 1280 canvas
-pause_btn_rect = art["img"].get_rect(topright=(1280 - 20, 20))
+# pause button var
+pause_btn_rect = art["img"].get_rect(center=(1230 - camera_x, 50))
 paused = False
 
 player_speed = 1500
@@ -292,16 +289,17 @@ text_displayed = False
 
 main_menu()
 
+screen2 = pygame.Surface((WIDTH2, HEIGHT2))
+
 running = True
 while running:
-    # Scale mouse position from actual window resolution back to virtual canvas resolution (1280x720)
-    raw_mouse_pos = pygame.mouse.get_pos()
-    mouse_pos = (
-        int(raw_mouse_pos[0] * (1280 / max(1, WIDTH))),
-        int(raw_mouse_pos[1] * (720 / max(1, HEIGHT)))
-    )
-
-    screen.fill((10, 10, 10))
+    raw_mouse = pygame.mouse.get_pos()
+    scale_x = WIDTH2 / WIDTH
+    scale_y = HEIGHT2 / HEIGHT
+    mouse_pos = (raw_mouse[0] * scale_x, raw_mouse[1] * scale_y)
+    
+    mouse_pos = pygame.mouse.get_pos()
+    screen2.fill((10, 10, 10))
 
     current_page = 0
     for i, rect in enumerate(page_pick_rects):
@@ -316,15 +314,14 @@ while running:
         if event.type == pygame.QUIT:
             running = False
         if event.type == pygame.MOUSEBUTTONDOWN:
-            # Check collisions using virtual mouse position
-            if pause_btn_rect.collidepoint(mouse_pos):
+            if pause_btn_rect.collidepoint(event.pos):
                 paused = True
             if event.button == 1:
                 print(mouse_pos)
                 print(player_x)
         elif event.type == pygame.VIDEORESIZE:
             WIDTH, HEIGHT = event.w, event.h
-            display_surface = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
+            screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
@@ -467,8 +464,7 @@ while running:
             if current_frame >= len(move_left_frames):
                 current_frame = 0
 
-    # Camera centered on virtual 1280 screen
-    camera_x = player_x - 1280 // 2
+    camera_x = player_x - WIDTH2 // 2
 
     if camera_x < 0:
         camera_x = 0
@@ -501,9 +497,11 @@ while running:
     if minigame1_started:
         move_right = False
         move_left = False
+        # minigame1_started = False
     if minigame2_started:
         move_right = False
         move_left = False
+        # minigame2_started = False
     if minigame3_started:
         move_right = False
         move_left = False
@@ -536,31 +534,31 @@ while running:
         memory9Trigger = True
 
     if in_dungeon:
-        draw_dungeon_bg_full(screen, art, camera_x)
-        draw_dungeon_bg_full_2(screen, art, camera_x)
+        draw_dungeon_bg_full(screen2, art, camera_x)
+        draw_dungeon_bg_full_2(screen2, art, camera_x)
     if in_sunset:
-        draw_sunset_bg_full(screen, art, camera_x)
-        draw_sunset_bg_extra_full(screen, art, camera_x)
+        draw_sunset_bg_full(screen2, art, camera_x)
+        draw_sunset_bg_extra_full(screen2, art, camera_x)
     if in_sunset_2:
-        draw_sunset_bg_2_full(screen, art, camera_x)
-        RenderSunsetToDungeon(screen, art, camera_x)
+        draw_sunset_bg_2_full(screen2, art, camera_x)
+        RenderSunsetToDungeon(screen2, art, camera_x)
     if in_void:
-        RenderDungeonToVoid(screen, art, camera_x)
-        draw_void_bg_full(screen, art, camera_x)
-        draw_void_bg_2_full(screen, art, camera_x)
+        RenderDungeonToVoid(screen2, art, camera_x)
+        draw_void_bg_full(screen2, art, camera_x)
+        draw_void_bg_2_full(screen2, art, camera_x)
 
     if not picked_page_1:
-        screen.blit(page_pick, (page_pick_rects[0].x - camera_x, page_pick_rects[0].y))
+        screen2.blit(page_pick, (page_pick_rects[0].x - camera_x, page_pick_rects[0].y))
     if not picked_page_2:
-        screen.blit(page_pick, (page_pick_rects[1].x - camera_x, page_pick_rects[1].y))
+        screen2.blit(page_pick, (page_pick_rects[1].x - camera_x, page_pick_rects[1].y))
     if not picked_page_3:
-        screen.blit(page_pick, (page_pick_rects[2].x - camera_x, page_pick_rects[2].y))
+        screen2.blit(page_pick, (page_pick_rects[2].x - camera_x, page_pick_rects[2].y))
     if not picked_page_4:
-        screen.blit(page_pick, (page_pick_rects[3].x - camera_x, page_pick_rects[3].y))
+        screen2.blit(page_pick, (page_pick_rects[3].x - camera_x, page_pick_rects[3].y))
     if not picked_page_5:
-        screen.blit(page_pick, (page_pick_rects[4].x - camera_x, page_pick_rects[4].y))
+        screen2.blit(page_pick, (page_pick_rects[4].x - camera_x, page_pick_rects[4].y))
     if not picked_page_6:
-        screen.blit(page_pick, (page_pick_rects[5].x - camera_x, page_pick_rects[5].y))
+        screen2.blit(page_pick, (page_pick_rects[5].x - camera_x, page_pick_rects[5].y))
 
     if current_bg == "sunset" or current_bg == "dusk" or current_bg == "dungeon" or current_bg == "void":
         Start_text()   
@@ -572,122 +570,122 @@ while running:
         for tile in row:
             # SUNRISE TILES
             if tile == "1":
-                screen.blit(sunrise_tiles["sun_1"], (x * 48 - camera_x, y * 48))
+                screen2.blit(sunrise_tiles["sun_1"], (x * 48 - camera_x, y * 48))
                 tile_rects.append(pygame.Rect(x * 48, y * 48, 48, 48))
             elif tile == "2":
-                screen.blit(sunrise_tiles["sun_2"], (x * 50 - camera_x, y * 23))
+                screen2.blit(sunrise_tiles["sun_2"], (x * 50 - camera_x, y * 23))
                 tile_rects.append(pygame.Rect(x * 50, y * 23, 50, 23))
             elif tile == "3":
-                screen.blit(sunrise_tiles["sun_3"], (x * 18 - camera_x, y * 18))
+                screen2.blit(sunrise_tiles["sun_3"], (x * 18 - camera_x, y * 18))
                 tile_rects.append(pygame.Rect(x * 18, y * 18, 18, 18))
             elif tile == "4":
-                screen.blit(sunrise_tiles["sun_4"], (x * 18 - camera_x, y * 18))
+                screen2.blit(sunrise_tiles["sun_4"], (x * 18 - camera_x, y * 18))
                 tile_rects.append(pygame.Rect(x * 18, y * 18, 18, 18))
             elif tile == "5":
-                screen.blit(sunrise_tiles["sun_5"], (x * 18 - camera_x, y * 18))
+                screen2.blit(sunrise_tiles["sun_5"], (x * 18 - camera_x, y * 18))
                 tile_rects.append(pygame.Rect(x * 18, y * 18, 18, 18))
             elif tile == "6":
-                screen.blit(sunrise_tiles["sun_6"], (x * 18 - camera_x, y * 18))
+                screen2.blit(sunrise_tiles["sun_6"], (x * 18 - camera_x, y * 18))
                 tile_rects.append(pygame.Rect(x * 18, y * 18, 18, 18))
             elif tile == "7":
-                screen.blit(sunrise_tiles["sun_7"], (x * 17 - camera_x, y * 18))
+                screen2.blit(sunrise_tiles["sun_7"], (x * 17 - camera_x, y * 18))
                 tile_rects.append(pygame.Rect(x * 17, y * 18, 17, 18))
             elif tile == "8":
-                screen.blit(sunrise_tiles["sun_8"], (x * 17 - camera_x, y * 18))
+                screen2.blit(sunrise_tiles["sun_8"], (x * 17 - camera_x, y * 18))
                 tile_rects.append(pygame.Rect(x * 17, y * 18, 17, 18))
             elif tile == "9":
-                screen.blit(sunrise_tiles["sun_9"], (x * 17 - camera_x, y * 18))
+                screen2.blit(sunrise_tiles["sun_9"], (x * 17 - camera_x, y * 18))
                 tile_rects.append(pygame.Rect(x * 17, y * 18, 17, 18))
             elif tile == "10":
-                screen.blit(sunrise_tiles["sun_10"], (x * 17 - camera_x, y * 18))
+                screen2.blit(sunrise_tiles["sun_10"], (x * 17 - camera_x, y * 18))
                 tile_rects.append(pygame.Rect(x * 17, y * 18, 17, 18))
             elif tile == "11":
-                screen.blit(sunrise_tiles["sun_11"], (x * 65 - camera_x, y * 64))
+                screen2.blit(sunrise_tiles["sun_11"], (x * 65 - camera_x, y * 64))
                 tile_rects.append(pygame.Rect(x * 65, y * 64, 65, 64))    
             elif tile == "12":
-                screen.blit(sunrise_tiles["sun_12"], (x * 49 - camera_x, y * 47))
+                screen2.blit(sunrise_tiles["sun_12"], (x * 49 - camera_x, y * 47))
                 tile_rects.append(pygame.Rect(x * 49, y * 47, 49, 47)) 
 
             # DUNGEON TILES
             elif tile == "13":
-                screen.blit(dungeon_tiles["dungeon_1"], (x * 49 - camera_x, y * 49))
+                screen2.blit(dungeon_tiles["dungeon_1"], (x * 49 - camera_x, y * 49))
                 tile_rects.append(pygame.Rect(x * 49, y * 49, 49, 49))
             elif tile == "14":
-                screen.blit(dungeon_tiles["dungeon_2"], (x * 16 - camera_x, y * 16))
+                screen2.blit(dungeon_tiles["dungeon_2"], (x * 16 - camera_x, y * 16))
                 tile_rects.append(pygame.Rect(x * 16, y * 16, 16, 16))
             elif tile == "15":
-                screen.blit(dungeon_tiles["dungeon_3"], (x * 16 - camera_x, y * 16))
+                screen2.blit(dungeon_tiles["dungeon_3"], (x * 16 - camera_x, y * 16))
                 tile_rects.append(pygame.Rect(x * 16, y * 16, 16, 16))
             elif tile == "16":
-                screen.blit(dungeon_tiles["dungeon_4"], (x * 20 - camera_x, y * 18))
+                screen2.blit(dungeon_tiles["dungeon_4"], (x * 20 - camera_x, y * 18))
                 tile_rects.append(pygame.Rect(x * 20, y * 18, 20, 18))
             elif tile == "17":
-                screen.blit(dungeon_tiles["dungeon_5"], (x * 32 - camera_x, y * 32))
+                screen2.blit(dungeon_tiles["dungeon_5"], (x * 32 - camera_x, y * 32))
                 tile_rects.append(pygame.Rect(x * 32, y * 32, 32, 32))
             elif tile == "18":
-                screen.blit(dungeon_tiles["dungeon_6"], (x * 15 - camera_x, y * 47))
+                screen2.blit(dungeon_tiles["dungeon_6"], (x * 15 - camera_x, y * 47))
                 tile_rects.append(pygame.Rect(x * 15, y * 47, 15, 47))
             elif tile == "19":
-                screen.blit(dungeon_tiles["dungeon_7"], (x * 48 - camera_x, y * 46))
+                screen2.blit(dungeon_tiles["dungeon_7"], (x * 48 - camera_x, y * 46))
                 tile_rects.append(pygame.Rect(x * 48, y * 46, 48, 46))
             elif tile == "20":
-                screen.blit(dungeon_tiles["dungeon_8"], (x * 16 - camera_x, y * 16))
+                screen2.blit(dungeon_tiles["dungeon_8"], (x * 16 - camera_x, y * 16))
                 tile_rects.append(pygame.Rect(x * 16, y * 16, 16, 16))
             elif tile == "21":
-                screen.blit(dungeon_tiles["dungeon_9"], (x * 16 - camera_x, y * 16))
+                screen2.blit(dungeon_tiles["dungeon_9"], (x * 16 - camera_x, y * 16))
                 tile_rects.append(pygame.Rect(x * 16, y * 16, 16, 16))
             elif tile == "22":
-                screen.blit(dungeon_tiles["dungeon_10"], (x * 16 - camera_x, y * 16))
+                screen2.blit(dungeon_tiles["dungeon_10"], (x * 16 - camera_x, y * 16))
                 tile_rects.append(pygame.Rect(x * 16, y * 16, 16, 16))
             elif tile == "23":
-                screen.blit(dungeon_tiles["dungeon_11"], (x * 16 - camera_x, y * 16))
+                screen2.blit(dungeon_tiles["dungeon_11"], (x * 16 - camera_x, y * 16))
                 tile_rects.append(pygame.Rect(x * 16, y * 16, 16, 16))    
             elif tile == "24":
-                screen.blit(dungeon_tiles["dungeon_12"], (x * 63 - camera_x, y * 65))
+                screen2.blit(dungeon_tiles["dungeon_12"], (x * 63 - camera_x, y * 65))
                 tile_rects.append(pygame.Rect(x * 63, y * 65, 63, 65))          
             
             # VOID TILES
             elif tile == "25":
-                screen.blit(void_tiles["void_1"], (x * 48 - camera_x, y * 42))
+                screen2.blit(void_tiles["void_1"], (x * 48 - camera_x, y * 42))
                 tile_rects.append(pygame.Rect(x * 48, y * 42, 48, 42))
             elif tile == "26":
-                screen.blit(void_tiles["void_2"], (x * 16 - camera_x, y * 16))
+                screen2.blit(void_tiles["void_2"], (x * 16 - camera_x, y * 16))
                 tile_rects.append(pygame.Rect(x * 16, y * 16, 16, 16))
             elif tile == "27":
-                screen.blit(void_tiles["void_3"], (x * 16 - camera_x, y * 16))
+                screen2.blit(void_tiles["void_3"], (x * 16 - camera_x, y * 16))
                 tile_rects.append(pygame.Rect(x * 16, y * 16, 16, 16))
             elif tile == "28":
-                screen.blit(void_tiles["void_4"], (x * 16 - camera_x, y * 16))
+                screen2.blit(void_tiles["void_4"], (x * 16 - camera_x, y * 16))
                 tile_rects.append(pygame.Rect(x * 16, y * 16, 16, 16))
             elif tile == "29":
-                screen.blit(void_tiles["void_5"], (x * 16 - camera_x, y * 16))
+                screen2.blit(void_tiles["void_5"], (x * 16 - camera_x, y * 16))
                 tile_rects.append(pygame.Rect(x * 16, y * 16, 16, 16))
             elif tile == "30":
-                screen.blit(void_tiles["void_6"], (x * 16 - camera_x, y * 16))
+                screen2.blit(void_tiles["void_6"], (x * 16 - camera_x, y * 16))
                 tile_rects.append(pygame.Rect(x * 16, y * 16, 16, 16))
             elif tile == "31":
-                screen.blit(void_tiles["void_7"], (x * 16 - camera_x, y * 16))
+                screen2.blit(void_tiles["void_7"], (x * 16 - camera_x, y * 16))
                 tile_rects.append(pygame.Rect(x * 16, y * 16, 16, 16))
             elif tile == "32":
-                screen.blit(void_tiles["void_8"], (x * 16 - camera_x, y * 16))
+                screen2.blit(void_tiles["void_8"], (x * 16 - camera_x, y * 16))
                 tile_rects.append(pygame.Rect(x * 16, y * 16, 16, 16))
             elif tile == "33":
-                screen.blit(void_tiles["void_9"], (x * 65 - camera_x, y * 16))
+                screen2.blit(void_tiles["void_9"], (x * 65 - camera_x, y * 16))
                 tile_rects.append(pygame.Rect(x * 65, y * 16, 65, 16))
             elif tile == "34":
-                screen.blit(void_tiles["void_10"], (x * 16 - camera_x, y * 16))
+                screen2.blit(void_tiles["void_10"], (x * 16 - camera_x, y * 16))
                 tile_rects.append(pygame.Rect(x * 16, y * 16, 16, 16))
             elif tile == "35":
-                screen.blit(void_tiles["void_11"], (x * 16 - camera_x, y * 16))
+                screen2.blit(void_tiles["void_11"], (x * 16 - camera_x, y * 16))
                 tile_rects.append(pygame.Rect(x * 16, y * 16, 16, 16))    
             elif tile == "36":
-                screen.blit(void_tiles["void_12"], (x * 16 - camera_x, y * 16))
+                screen2.blit(void_tiles["void_12"], (x * 16 - camera_x, y * 16))
                 tile_rects.append(pygame.Rect(x * 16, y * 16, 16, 16))
             elif tile == "37":
-                screen.blit(void_tiles["void_13"], (x * 16 - camera_x, y * 16))
+                screen2.blit(void_tiles["void_13"], (x * 16 - camera_x, y * 16))
                 tile_rects.append(pygame.Rect(x * 16, y * 16, 16, 16))    
             elif tile == "38":
-                screen.blit(void_tiles["void_14"], (x * 66 - camera_x, y * 65))
+                screen2.blit(void_tiles["void_14"], (x * 66 - camera_x, y * 65))
                 tile_rects.append(pygame.Rect(x * 66, y * 65, 66, 65))
             x += 1
         y += 1
@@ -703,31 +701,31 @@ while running:
         current_player_img = move_left_frames[current_frame]
 
     if memory1Trigger:
-        render_memory_1(screen, Memory_1_frames[frame], camera_x)
+        render_memory_1(screen2, Memory_1_frames[frame], camera_x)
     if memory2Trigger:
-        render_memory_2(screen, Memory_2_frames[frame2], camera_x)
+        render_memory_2(screen2, Memory_2_frames[frame2], camera_x)
     if memory3Trigger:
-        render_memory_3(screen, Memory_3_frames[frame3], camera_x)
+        render_memory_3(screen2, Memory_3_frames[frame3], camera_x)
     if memory4Trigger:
-        render_memory_4(screen, Memory_4_frames[frame4], camera_x)
+        render_memory_4(screen2, Memory_4_frames[frame4], camera_x)
     if memory5Trigger:
-        render_memory_5(screen, Memory_5_frames[frame5], camera_x)
+        render_memory_5(screen2, Memory_5_frames[frame5], camera_x)
     if memory6Trigger:
-        render_memory_6(screen, Memory_6_frames[frame6], camera_x)
+        render_memory_6(screen2, Memory_6_frames[frame6], camera_x)
     if memory7Trigger:
-        render_memory_7(screen, Memory_7_frames[frame7], camera_x) 
+        render_memory_7(screen2, Memory_7_frames[frame7], camera_x) 
     if memory8Trigger:
-        render_memory_8(screen, Memory_8_frames[frame8], camera_x)
+        render_memory_8(screen2, Memory_8_frames[frame8], camera_x)
     if memory9Trigger:
-        render_memory_9(screen, Memory_9_frames[frame9], camera_x)   
+        render_memory_9(screen2, Memory_9_frames[frame9], camera_x)   
 
-    screen.blit(current_player_img, (int(player_x - camera_x), int(player_y)))
+    screen2.blit(current_player_img, (int(player_x - camera_x), int(player_y)))
 
-    screen.blit(art["img"], pause_btn_rect)
+    screen2.blit(art["img"], pause_btn_rect)
 
     fade.update(dt)
-    fade.draw(screen)
-
+    fade.draw(screen2)
+    # Done(TODO): remove the 3000, reverse=True and add a auto-reversal to TransitionObj in trasition.py
     if player_x >= 3480 and current_bg == "sunset" and in_sunset and not sunset_fade_triggered:
         transition_text_surface = get_font_BOLD(45).render(sunset_to_dusk, True, (244, 244, 244))
         transition_text_surface_2 = get_font_BOLD(45).render(sunset_to_dusk_2, True, (244, 244, 244))
@@ -759,60 +757,58 @@ while running:
         text_displayed = True
 
     if text_displayed and text_timer > 0 and transition_text_surface is not None:
-        screen.blit(transition_text_surface, (10, 260))
+        screen2.blit(transition_text_surface, (10, 260))
         text_timer -= int(dt * 1000)
     if text_displayed and text_timer > 0 and transition_text_surface_2 is not None:
-        screen.blit(transition_text_surface_2, (100, 360))
+        screen2.blit(transition_text_surface_2, (100, 360))
         text_timer -= int(dt * 1000)
 
-    render_key1(screen, art) 
-    render_key2(screen, art)
-    render_key3(screen, art)
-    render_key4(screen, art)
+    render_key1(screen2, art) 
+    render_key2(screen2, art)
+    render_key3(screen2, art)
+    render_key4(screen2, art)
 
-    LoadKeyA(screen, KeyA[frame_key_a if key_pressed_a else 0], (10, 30))
-    LoadKeyS(screen, KeyS[frame_key_s if key_pressed_s else 0], (77, 30))
-    LoadKeyD(screen, KeyD[frame_key_d if key_pressed_d else 0], (140, 30))
-    LoadKeyW(screen, KeyW[frame_key_w if key_pressed_w else 0], (75, -35))
+    LoadKeyA(screen2, KeyA[frame_key_a if key_pressed_a else 0], (10, 30))
+    LoadKeyS(screen2, KeyS[frame_key_s if key_pressed_s else 0], (77, 30))
+    LoadKeyD(screen2, KeyD[frame_key_d if key_pressed_d else 0], (140, 30))
+    LoadKeyW(screen2, KeyW[frame_key_w if key_pressed_w else 0], (75, -35))
 
     if page_opened == 1:
-        screen.blit(page_1, (0, 0))
+        screen2.blit(page_1, (0, 0))
     if page_opened == 2:
-        screen.blit(page_2, (0, 0))
+        screen2.blit(page_2, (0, 0))
     if page_opened == 3:
-        screen.blit(page_3, (0, 0))
+        screen2.blit(page_3, (0, 0))
     if page_opened == 4:
-        screen.blit(page_4, (0, 0))
+        screen2.blit(page_4, (0, 0))
     if page_opened == 5:
-        screen.blit(page_5, (0, 0))
+        screen2.blit(page_5, (0, 0))
     if page_opened == 6:
-        screen.blit(page_6, (0, 0))
+        screen2.blit(page_6, (0, 0))
 
     if current_page != 0 and page_opened == 0:
-        screen.blit(pick_txt, (player_x - camera_x, player_y - 100))
+        screen2.blit(pick_txt, (player_x - camera_x, player_y - 100))
 
-    # Pause UI centering on 1280 canvas space
     if paused:
         left_click = pygame.mouse.get_pressed()[0]
-        RenderPausedMenu(screen, art)
+        RenderPausedMenu(screen2, art)
 
         paused_text = get_font_BOLD(100).render("Paused", True, ("#C0BEBE"))
-        paused_rect = paused_text.get_rect(center=(640, 150))
-        screen.blit(paused_text, paused_rect)
+        screen2.blit(paused_text, (440, 14))
 
         Resume_text = get_font(100).render("RESUME", True, ("#C0BEBE"))
-        resume_rect = Resume_text.get_rect(center=(640, 320))
+        resume_rect = Resume_text.get_rect(center=(665, 300))
 
         quit_text = get_font(100).render("QUIT", True, ("#C0BEBE"))
-        quit_rect = quit_text.get_rect(center=(640, 480))
+        quit_rect = quit_text.get_rect(center=(650, 550))
 
         if resume_rect.collidepoint(mouse_pos):
             Resume_text = get_font(100).render("RESUME", True, ("#FFFFFF"))
         elif quit_rect.collidepoint(mouse_pos):
             quit_text = get_font(100).render("QUIT", True, ("#FFFFFF"))
 
-        screen.blit(Resume_text, resume_rect)
-        screen.blit(quit_text, quit_rect)
+        screen2.blit(Resume_text, resume_rect)
+        screen2.blit(quit_text, quit_rect)
 
         if resume_rect.collidepoint(mouse_pos) and left_click:
             paused = False
@@ -822,23 +818,22 @@ while running:
             MenuTrack()
             
     if j1_trigger:
-        screen.fill((0, 0, 0))
+        screen2.fill((0, 0, 0))
         move_left = False
         move_right = False
-        LoadJumpscare1(screen, Jumpscare1_frames[frame_j], (400, 0))
+        LoadJumpscare1(screen2, Jumpscare1_frames[frame_j], (400, 0))
         if frame_j == 50:
             j1_trigger = False
     if j2_trigger:
-        screen.fill((0, 0, 0))
+        screen2.fill((0, 0, 0))
         move_left = False
         move_right = False
-        LoadJumpscare2(screen, Jumpscare2_frames[frame_j2], (400, 0))
+        LoadJumpscare2(screen2, Jumpscare2_frames[frame_j2], (400, 0))
         if frame_j2 == 31:
             j2_trigger = False
 
-    # Render virtual canvas to display surface and update
-    scaled_surface = pygame.transform.scale(screen, (WIDTH, HEIGHT))
-    display_surface.blit(scaled_surface, (0, 0))
+    scaled_surface = pygame.transform.scale(screen2, (WIDTH, HEIGHT))
+    screen.blit(scaled_surface, (0, 0))
 
     pygame.display.update()
 

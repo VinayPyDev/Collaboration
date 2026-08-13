@@ -45,7 +45,7 @@ def resource_path(relative_path):
 
 pygame.init()
 WIDTH, HEIGHT = 1280, 720
-screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
 clock = pygame.time.Clock()
 
 # [Font re-implementation due to some file issues]
@@ -109,12 +109,12 @@ page_pick = art["page_pick"]
 not_picked = True
 
 page_pick_pos = [
-    (800, 540),
-    (2780, 540),
-    (4820, 540),
-    (6150, 540),
-    (8450, 540),
-    (9682, 540),
+    (1000, 540),
+    (1740, 540),
+    (2160, 540),
+    (3946, 540),
+    (4632, 540),
+    (6204, 540),
 ]
 
 picked_page_1 = False
@@ -248,7 +248,7 @@ memory8Trigger = False
 memory9Trigger = False
 
 # player vars
-player_x = 440
+player_x = 640
 player_y = 386
 
 idle_right_frames = RenderPlayerIdleRight()
@@ -287,8 +287,6 @@ text_displayed = False
 
 main_menu()
 
-screen2 = pygame.Surface((1280, 720))
-
 running = True
 while running:
     
@@ -310,13 +308,8 @@ while running:
         if event.type == pygame.MOUSEBUTTONDOWN:
             if pause_btn_rect.collidepoint(event.pos):
                 paused = True
-            if event.button == 1:
-                print(mouse_pos)
-                print(player_x)
-        elif event.type == pygame.VIDEORESIZE:
-            WIDTH, HEIGHT = event.w, event.h
-            screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
-
+            # if event.button == 1:
+            #     print(mouse_pos)
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 main_menu()
@@ -436,11 +429,9 @@ while running:
     if move_left:
         player_x -= player_speed * dt
         player_facing = "left"
-        print(player_x)
     if move_right:
         player_x += player_speed * dt
         player_facing = "right"
-        print(player_x)
 
     frame_timer += dt * 1000
     if frame_timer >= frame_cooldown:
@@ -473,7 +464,7 @@ while running:
     if player_y > ground_y - 150:
         player_y = ground_y - 150
 
-    if player_x >= 2480 and not minigame1_started:
+    if player_x >= 2400 and not minigame1_started:
         game1()
         player_x = player_x + 10
         minigame1_started = True
@@ -508,7 +499,7 @@ while running:
         j2_trigger = True
         j2_started = True
 
-    if not memory1Trigger and player_x >= 1180:
+    if not memory1Trigger and player_x >= 1300:
         memory1Trigger = True
     if not memory2Trigger and player_x >= 2700:
         memory2Trigger = True
@@ -720,7 +711,7 @@ while running:
     fade.update(dt)
     fade.draw(screen)
     # Done(TODO): remove the 3000, reverse=True and add a auto-reversal to TransitionObj in trasition.py
-    if player_x >= 3480 and current_bg == "sunset" and in_sunset and not sunset_fade_triggered:
+    if player_x >= 2600 and current_bg == "sunset" and in_sunset and not sunset_fade_triggered:
         transition_text_surface = get_font_BOLD(45).render(sunset_to_dusk, True, (244, 244, 244))
         transition_text_surface_2 = get_font_BOLD(45).render(sunset_to_dusk_2, True, (244, 244, 244))
         text_timer = 3000
@@ -825,9 +816,6 @@ while running:
         LoadJumpscare2(screen, Jumpscare2_frames[frame_j2], (400, 0))
         if frame_j2 == 31:
             j2_trigger = False
-
-    scaled_surface = pygame.transform.scale(screen, (WIDTH, HEIGHT))
-    screen.blit(scaled_surface, (0, 0))
 
     pygame.display.update()
 
