@@ -45,7 +45,7 @@ def resource_path(relative_path):
 
 pygame.init()
 WIDTH, HEIGHT = 1280, 720
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
+screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE | pygame.SCALED)
 clock = pygame.time.Clock()
 
 # [Font re-implementation due to some file issues]
@@ -308,6 +308,10 @@ while running:
         if event.type == pygame.MOUSEBUTTONDOWN:
             if pause_btn_rect.collidepoint(event.pos):
                 paused = True
+        if event.type == pygame.VIDEORESIZE:
+            WIDTH, HEIGHT = event.w, event.h
+            screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
+
             # if event.button == 1:
             #     print(mouse_pos)
         if event.type == pygame.KEYDOWN:
@@ -465,17 +469,17 @@ while running:
         player_y = ground_y - 150
 
     if player_x >= 2400 and not minigame1_started:
-        game1()
+        game1(screen)
         player_x = player_x + 10
         minigame1_started = True
 
     if player_x >= 6120 and not minigame2_started:
-        game2()
+        game2(screen)
         player_x = player_x + 10
         minigame2_started = True
 
     if player_x >= 8800 and not minigame3_started:
-        game3()
+        game3(screen)
         player_x = player_x + 10
         minigame3_started = True
 
