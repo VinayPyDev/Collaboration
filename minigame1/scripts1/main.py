@@ -5,9 +5,8 @@ from font import get_font
 
 pygame.init()
 
-def game1():
-    WIDTH, HEIGHT = 1280, 720
-    screen = pygame.display.set_mode((WIDTH, HEIGHT))
+def game1(screen):
+    WIDTH, HEIGHT = screen.get_size()
     clock = pygame.time.Clock()
     dt = 0
 
@@ -57,6 +56,9 @@ def game1():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+            if event.type == pygame.VIDEORESIZE:
+                WIDTH, HEIGHT = event.w, event.h
+                screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_f and water_scored > 0:
                     water_scored -= 1

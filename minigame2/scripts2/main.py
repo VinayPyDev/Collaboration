@@ -6,10 +6,8 @@ from font import get_font
 
 pygame.init()
 
-def game2():
-    WIDTH = 1280
-    HEIGHT = 720
-    screen = pygame.display.set_mode((WIDTH, HEIGHT))
+def game2(screen):
+    WIDTH, HEIGHT = screen.get_size()
     clock = pygame.time.Clock()
     dt = 0
 
@@ -102,6 +100,9 @@ def game2():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+            if event.type == pygame.VIDEORESIZE:
+                WIDTH, HEIGHT = event.w, event.h
+                screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
                     if rect_obj_1.collidepoint(event.pos):

@@ -14,11 +14,10 @@ def resource_path(relative_path):
 def get_font_BOLD(size):
     return pygame.font.Font(resource_path("font/PixeloidSans-Bold.ttf"), size)
 
-def game3():       
+def game3(screen):       
     global get_font_BOLD
 
-    WIDTH, HEIGHT = 1280, 720
-    screen = pygame.display.set_mode((WIDTH, HEIGHT))
+    WIDTH, HEIGHT = screen.get_size()
     clock = pygame.time.Clock()
     dt = 0 
         
@@ -82,6 +81,9 @@ def game3():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+            if event.type == pygame.VIDEORESIZE:
+                WIDTH, HEIGHT = event.w, event.h
+                screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
 
         camera_y = player_rect.centery - HEIGHT // 2
 
@@ -99,10 +101,13 @@ def game3():
         
         if player_rect.y <= 55 and if_entity_near:
             player_speed = 0
+            player_rect.y = 55
         if player_rect.colliderect(entity_rect):
             entity_speed = 0
             player_speed = 0
             screen.blit(jumpscare_img, (0, 0))
             print("Get Jumpscared BOZO")
+
+            return False
         
         pygame.display.update()
