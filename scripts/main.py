@@ -109,12 +109,12 @@ page_pick = art["page_pick"]
 not_picked = True
 
 page_pick_pos = [
-    (1000, 540),
-    (1740, 540),
-    (2160, 540),
-    (3946, 540),
-    (4632, 540),
-    (6204, 540),
+    (500, 540),
+    (1540, 540),
+    (3000, 540),
+    (4946, 540),
+    (6732, 540),
+    (7404, 540),
 ]
 
 picked_page_1 = False
@@ -248,7 +248,7 @@ memory8Trigger = False
 memory9Trigger = False
 
 # player vars
-player_x = 640
+player_x = 200
 player_y = 386
 
 idle_right_frames = RenderPlayerIdleRight()
@@ -503,21 +503,21 @@ while running:
         j2_trigger = True
         j2_started = True
 
-    if not memory1Trigger and player_x >= 1300:
+    if not memory1Trigger and player_x >= 1260:
         memory1Trigger = True
-    if not memory2Trigger and player_x >= 2700:
+    if not memory2Trigger and player_x >= 2650:
         memory2Trigger = True
     if not memory3Trigger and player_x >= 4000:
         memory3Trigger = True
-    if not memory4Trigger and player_x >= 5300:
+    if not memory4Trigger and player_x >= 5320:
         memory4Trigger = True
-    if not memory5Trigger and player_x >= 6400:
+    if not memory5Trigger and player_x >= 6440:
         memory5Trigger = True
-    if not memory6Trigger and player_x >= 7300:
+    if not memory6Trigger and player_x >= 7360:
         memory6Trigger = True
-    if not memory7Trigger and player_x >= 8450:
+    if not memory7Trigger and player_x >= 8458:
         memory7Trigger = True
-    if not memory8Trigger and player_x >= 9323:
+    if not memory8Trigger and player_x >= 9328:
         memory8Trigger = True 
     if not memory9Trigger and player_x >= 10750:
         memory9Trigger = True
