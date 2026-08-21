@@ -330,11 +330,18 @@ while running:
     key_pressed_d = keys[pygame.K_d]
     key_pressed_w = keys[pygame.K_w]
 
+    move_left = False
+    move_right = False
+
     if key_pressed_a:
         player_x -= player_speed * dt
+        move_left = True
+        player_facing = "left"
 
     if key_pressed_d:
         player_x += player_speed * dt
+        move_right = True
+        player_facing = "right"
 
     if key_pressed_s:
         pass
@@ -468,12 +475,12 @@ while running:
     if player_y > ground_y - 150:
         player_y = ground_y - 150
 
-    if player_x >= 2400 and not minigame1_started:
+    if player_x >= 2230 and not minigame1_started:
         game1(screen)
         player_x = player_x + 10
         minigame1_started = True
 
-    if player_x >= 6120 and not minigame2_started:
+    if player_x >= 6000 and not minigame2_started:
         game2(screen)
         player_x = player_x + 10
         minigame2_started = True
@@ -495,31 +502,31 @@ while running:
         move_right = False
         move_left = False
 
-    if not j1_started and player_x > 9820:
+    if not j1_started and player_x > 10120:
         j1_trigger = True
         j1_started = True
 
-    if not j2_started and player_x > 8210:
+    if not j2_started and player_x > 8000:
         j2_trigger = True
         j2_started = True
 
     if not memory1Trigger and player_x >= 1260:
         memory1Trigger = True
-    if not memory2Trigger and player_x >= 2650:
+    if not memory2Trigger and player_x >= 3450:
         memory2Trigger = True
     if not memory3Trigger and player_x >= 4000:
         memory3Trigger = True
-    if not memory4Trigger and player_x >= 5320:
+    if not memory4Trigger and player_x >= 5240:
         memory4Trigger = True
-    if not memory5Trigger and player_x >= 6440:
+    if not memory5Trigger and player_x >= 6234:
         memory5Trigger = True
-    if not memory6Trigger and player_x >= 7360:
+    if not memory6Trigger and player_x >= 7040:
         memory6Trigger = True
-    if not memory7Trigger and player_x >= 8458:
+    if not memory7Trigger and player_x >= 8158:
         memory7Trigger = True
     if not memory8Trigger and player_x >= 9328:
         memory8Trigger = True 
-    if not memory9Trigger and player_x >= 10750:
+    if not memory9Trigger and player_x >= 11750:
         memory9Trigger = True
 
     if in_dungeon:
@@ -727,7 +734,7 @@ while running:
     if player_x >= 6400 and current_bg == "dusk" and in_sunset_2 and not dusk_fade_triggered:
         transition_text_surface = get_font_BOLD(45).render(dusk_to_dungeon, True, (244, 244, 244))
         transition_text_surface_2 = get_font_BOLD(45).render(dusk_to_dungeon_2, True, (244, 244, 244))
-        text_timer = 5000
+        text_timer = 8000
         fade.start(1500, reverse=False)
         fade_out_started = True
         current_bg = "dungeon"

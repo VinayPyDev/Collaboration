@@ -77,7 +77,7 @@ class PlayerMoveRight():
         return image
 
 def RenderPlayerMoveRight():
-    Move_right_spritesheet = pygame.image.load(resource_path("player_animations/walk/moving_right.png")).convert_alpha()
+    Move_right_spritesheet = pygame.image.load(resource_path("player_animations/walk/playerwalknew.png")).convert_alpha()
     Spritesheet = PlayerMoveRight(Move_right_spritesheet)
     frames = 24
     width, height = 64, 86
@@ -104,7 +104,7 @@ class PlayerMoveLeft():
         return image
 
 def RenderPlayerMoveLeft():
-    Move_Left_spritesheet = pygame.image.load(resource_path("player_animations/walk/moving_left.png")).convert_alpha()
+    Move_Left_spritesheet = pygame.transform.flip(pygame.image.load(resource_path("player_animations/walk/playerwalknew.png")).convert_alpha(), True, False)
     Spritesheet = PlayerMoveLeft(Move_Left_spritesheet)
     frames = 24
     width, height = 64, 86
@@ -130,7 +130,7 @@ def load_sunset_extra():
 
 def load_sunset_bg_2_full():
     return {
-        "sunset_2": pygame.transform.scale(pygame.image.load(resource_path("data/sunset_bg_2.png")).convert_alpha(), (3000, 720))
+        "sunset_2": pygame.transform.scale(pygame.image.load(resource_path("data/fjkda;.png")).convert_alpha(), (3000, 720))
     }
 
 def load_dungeon_bg_full():
