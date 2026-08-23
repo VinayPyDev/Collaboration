@@ -79,8 +79,8 @@ class PlayerMoveRight():
 def RenderPlayerMoveRight():
     Move_right_spritesheet = pygame.image.load(resource_path("player_animations/walk/playerwalknew.png")).convert_alpha()
     Spritesheet = PlayerMoveRight(Move_right_spritesheet)
-    frames = 24
-    width, height = 64, 86
+    frames = 8
+    width, height = 96, 64
     x_offset = 19
     scale = 150 / 64
     colorkey = (10, 10, 10)
@@ -106,8 +106,8 @@ class PlayerMoveLeft():
 def RenderPlayerMoveLeft():
     Move_Left_spritesheet = pygame.transform.flip(pygame.image.load(resource_path("player_animations/walk/playerwalknew.png")).convert_alpha(), True, False)
     Spritesheet = PlayerMoveLeft(Move_Left_spritesheet)
-    frames = 24
-    width, height = 64, 86
+    frames = 8
+    width, height = 96, 64
     x_offset = 19
     scale = 150 / 64
     colorkey = (10, 10, 10)
@@ -125,7 +125,7 @@ def load_sunset_bg_full():
 
 def load_sunset_extra():
     return {
-        "sunset_ex": pygame.transform.scale(pygame.image.load(resource_path("data/sunset_extra.png")).convert_alpha(), (3000, 720))
+        "sunset_ex": pygame.transform.scale(pygame.image.load(resource_path("data/sunset_bg_2.png")).convert_alpha(), (3000, 720))
     }
 
 def load_sunset_bg_2_full():

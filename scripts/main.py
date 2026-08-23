@@ -8,7 +8,7 @@ from art import RenderPlayerIdleLeft, RenderPlayerIdleRight, RenderPlayerMoveLef
 from art import Transition_backgrounds, LoadPage, LoadCollisionPage
 
 from display import draw_sunset_bg_full, draw_dungeon_bg_full, draw_sunset_bg_2_full, render_memory_1, render_memory_2, render_memory_3, render_memory_4, render_memory_5, render_memory_6, render_memory_7, render_memory_8, render_memory_9
-from display import draw_sunset_bg_extra_full, render_key1, render_key2, render_key3, render_key4, draw_dungeon_bg_full_2, draw_void_bg_full, draw_void_bg_2_full
+from display import draw_sunset_bg_extra_full, render_key1, render_key2, render_key3, render_key4, draw_dungeon_bg_full_2, draw_void_bg_full, draw_void_bg_2_full, draw_void_bg_3_full
 from display import RenderSunsetToDungeon, RenderDungeonToVoid
 
 from menu import main_menu
@@ -281,7 +281,7 @@ move_left = False
 move_right = False
 
 ground_y = 600
-map_end_x = 11000
+map_end_x = 18600
 
 text_displayed = False
 
@@ -311,9 +311,6 @@ while running:
         if event.type == pygame.VIDEORESIZE:
             WIDTH, HEIGHT = event.w, event.h
             screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
-
-            # if event.button == 1:
-            #     print(mouse_pos)
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 main_menu()
@@ -342,6 +339,8 @@ while running:
         player_x += player_speed * dt
         move_right = True
         player_facing = "right"
+
+    print(round(player_x))
 
     if key_pressed_s:
         pass
@@ -480,12 +479,12 @@ while running:
         player_x = player_x + 10
         minigame1_started = True
 
-    if player_x >= 6000 and not minigame2_started:
+    if player_x >= 8343 and not minigame2_started:
         game2(screen)
         player_x = player_x + 10
         minigame2_started = True
 
-    if player_x >= 8800 and not minigame3_started:
+    if player_x >= 14296 and not minigame3_started:
         game3(screen)
         player_x = player_x + 10
         minigame3_started = True
@@ -502,11 +501,11 @@ while running:
         move_right = False
         move_left = False
 
-    if not j1_started and player_x > 10120:
+    if not j1_started and player_x > 16865:
         j1_trigger = True
         j1_started = True
 
-    if not j2_started and player_x > 8000:
+    if not j2_started and player_x > 8812:
         j2_trigger = True
         j2_started = True
 
@@ -542,6 +541,7 @@ while running:
         RenderDungeonToVoid(screen, art, camera_x)
         draw_void_bg_full(screen, art, camera_x)
         draw_void_bg_2_full(screen, art, camera_x)
+        draw_void_bg_3_full(screen, art, camera_x)
 
     if not picked_page_1:
         screen.blit(page_pick, (page_pick_rects[0].x - camera_x, page_pick_rects[0].y))
@@ -740,10 +740,10 @@ while running:
         current_bg = "dungeon"
         dusk_fade_triggered = True
     
-    if player_x >= 9700 and current_bg == "dungeon" and in_dungeon and not dungeon_fade_triggered:
+    if player_x >= 11578 and current_bg == "dungeon" and in_dungeon and not dungeon_fade_triggered:
         transition_text_surface = get_font_BOLD(45).render(dungeon_to_void, True, (244, 244, 244))
         transition_text_surface_2 = get_font_BOLD(45).render(dungeon_to_void_2, True, (244, 244, 244))
-        text_timer = 4000
+        text_timer = 11000
         fade.start(1500, reverse=False)
         fade_out_started = True
         current_bg = "void"

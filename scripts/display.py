@@ -14,10 +14,10 @@ def draw_sunset_bg_full(screen, art, camera_x):
     screen.blit(art["sunset"], (-camera_x, -150))
 
 def draw_sunset_bg_extra_full(screen, art, camera_x):
-    screen.blit(art["sunset_ex"], (3000 - camera_x, -150))
+    screen.blit(art["sunset_ex"], (4000 - camera_x, -150))
 
 def draw_sunset_bg_2_full(screen, art, camera_x):
-    screen.blit(art["sunset_2"], (4000 - camera_x, -150))
+    screen.blit(art["sunset_2"], (3000 - camera_x, -150))
 
 def draw_dungeon_bg_full(screen, art, camera_x):
     screen.blit(art["dungeon"], (6000 - camera_x, -150))
@@ -30,6 +30,9 @@ def draw_void_bg_full(screen, art, camera_x):
 
 def draw_void_bg_2_full(screen, art, camera_x):
     screen.blit(art["void"], (14932 - camera_x, -150))
+
+def draw_void_bg_3_full(screen, art, camera_x):
+    screen.blit(art["void"], (17768 - camera_x, -150))
 
 # Memories
 def render_memory_1(screen, frame_img, camera_x):
