@@ -478,28 +478,22 @@ while running:
         game1(screen)
         player_x = player_x + 10
         minigame1_started = True
+        move_left = False
+        move_right = False
 
     if player_x >= 8343 and not minigame2_started:
         game2(screen)
         player_x = player_x + 10
         minigame2_started = True
+        move_left = False
+        move_right = False
 
     if player_x >= 14296 and not minigame3_started:
         game3(screen)
         player_x = player_x + 10
         minigame3_started = True
-
-    if minigame1_started:
-        move_right = False
         move_left = False
-        # minigame1_started = False
-    if minigame2_started:
         move_right = False
-        move_left = False
-        # minigame2_started = False
-    if minigame3_started:
-        move_right = False
-        move_left = False
 
     if not j1_started and player_x > 16865:
         j1_trigger = True
@@ -715,7 +709,16 @@ while running:
     if memory9Trigger:
         render_memory_9(screen, Memory_9_frames[frame9], camera_x)   
 
-    screen.blit(current_player_img, (int(player_x - camera_x), int(player_y)))
+    if not move_left:
+        current_player_img != move_left_frames[current_frame]
+
+    if not move_right:
+        current_player_img != move_right_frames[current_frame]
+
+    if move_left or move_right:
+        screen.blit(current_player_img, (int(player_x - camera_x), int(player_y+35)))
+    else:
+        screen.blit(current_player_img, (int(player_x - camera_x), int(player_y)))
 
     screen.blit(art["img"], pause_btn_rect)
 
