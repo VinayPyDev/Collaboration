@@ -54,3 +54,24 @@ class TransitionObj:
         screen.blit(self.Surface, (0, 0))
 
 fade = TransitionObj((WIDTH, HEIGHT))
+
+def fadeout():
+    fade_surface = pygame.Surface((WIDTH, HEIGHT)).convert()
+    fade_surface.fill(black)
+    for i in range(0, 256, 2):
+        fade_surface.set_alpha(i)
+        screen.blit(fade_surface, (0, 0))
+        pygame.display.update()
+        pygame.time.delay(5)  
+
+def fadein(new_level_surface):
+    fade_surface = pygame.Surface((WIDTH, HEIGHT)).convert()
+    fade_surface.fill(black)
+    for i in range(0, 256, 2):
+        screen.blit(new_level_surface, (0, 0))
+        
+        fade_surface.set_alpha(255 - i)
+        screen.blit(fade_surface, (0, 0))
+        
+        pygame.display.update()
+        pygame.time.delay(5)
