@@ -1,11 +1,86 @@
 import pygame
 import sys
+import os
+import json
 
-from font import get_font
+def resource_path(relative_path):
+    try:
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.dirname(os.path.dirname(__file__))
+    return os.path.join(base_path, relative_path)
+
+def get_font(size):
+    return pygame.font.Font(resource_path("font/PixeloidSans.ttf"), size)
+
+def get_font_BOLD(size):
+    return pygame.font.Font(resource_path("font/PixeloidSans-Bold.ttf"), size)
 
 pygame.init()
 
-def game1(screen):
+tile_size = 32
+
+images = {
+    1: pygame.image.load(resource_path("data2/bottle.png")).convert_alpha(),
+    2: pygame.image.load(resource_path("data2/bowl.png")).convert_alpha(),
+    3: pygame.image.load(resource_path("data2/foodbag.png")).convert_alpha(),
+    4: pygame.image.load(resource_path("data2/trashbag.png")).convert_alpha(),
+    5: pygame.image.load(resource_path("data2/trashbin.png")).convert_alpha(),
+    6: pygame.image.load(resource_path("data2/wall.png")).convert_alpha(),
+    7: pygame.image.load(resource_path("data2/wall2.png")).convert_alpha()
+}
+
+def LoadTmj(filepath, tile_images, tile_width, tile_height):
+    with open(filepath, "r") as f:
+        tmj_data = json.load(f)
+
+    parsed_tiles = []
+    hitbox = []
+
+    for layer in tmj_data.get("layers", []):
+        if layer["type"] == "tilelayer":
+            width_tiles = layer["width"]
+            data = layer["data"]
+
+            for idx, gid in enumerate(data):
+                if gid == 0:
+                    continue
+
+                col = idx % width_tiles
+                row = idx % width_tiles
+                x = col * tile_width
+                y = row * tile_height
+
+                img = tile_images.get(gid)
+                if img:
+                    parsed_tiles.append({
+                        "image": img,
+                        "pos": (x, y)
+                    })
+        elif layer["type"] == "objectgroup":
+            for obj in layer.get("objects", []):
+                hitbox_rect = pygame.Rect(
+                    int(obj["x"]),
+                    int(obj["y"]),
+                    int(obj["width"]),
+                    int(obj["height"]),
+                )
+                properties = {
+                    prop["name"]: prop["value"]
+                    for prop in obj.get("properties", [])
+                }
+                hitbox.append({
+                    "name": obj.get("name", ""),
+                    "type": obj.get("type", ""),
+                    "rect": hitbox_rect,
+                    "properties": properties
+                })
+
+    return parsed_tiles, hitbox
+
+# print("---", __file__)
+
+def game1():
     WIDTH, HEIGHT = screen.get_size()
     clock = pygame.time.Clock()
     dt = 0
@@ -18,6 +93,10 @@ def game1(screen):
 
     food_scored = 0
     water_scored = 0
+
+    tiles, map_objs = LoadTmj(
+        "map.tmj", images, tile_width=32, tile_height=32
+    )
 
     rect2 = pygame.Rect(100, 300, 64, 64)
     rect3 = pygame.Rect(400, 200, 64, 64)
@@ -37,7 +116,7 @@ def game1(screen):
 
     while True:
         dt = clock.tick(60) / 1000
-        screen.fill((0, 0, 0))
+        screen.fill("#28396b")
 
         if not_picked1:
             pygame.draw.rect(screen, "blue", (rect2.x - camera_x, rect2.y - camera_y, rect2.width, rect2.height))
@@ -57,8 +136,8 @@ def game1(screen):
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.VIDEORESIZE:
-                WIDTH, HEIGHT = event.w, event.h
-                screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
+                screen = pygame.display.set_mode((event.w, event.h), pygame.RESIZABLE | pygame.SCALED)
+
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_f and water_scored > 0:
                     water_scored -= 1
@@ -69,15 +148,6 @@ def game1(screen):
 
         camera_x = rect.x - WIDTH // 2
         camera_y = rect.y - HEIGHT // 2
-            # if event.type == pygame.KEYDOWN:
-            #     if event.key == pygame.K_w:
-            #         rect.y -= speed * dt
-            #     if event.key == pygame.K_s:
-            #         rect.y += speed * dt
-            #     if event.key == pygame.K_a:
-            #         rect.x -= speed * dt
-            #     if event.key == pygame.K_d:
-            #         rect.x += speed * dt
 
         keys = pygame.key.get_pressed()
         if keys[pygame.K_a]:
@@ -112,11 +182,6 @@ def game1(screen):
             screen.blit(water_dog_needs, (700, 400))
             screen.blit(food_dog_needs, (700, 300))
 
-            # if keys[pygame.K_f]:
-            #     water_scored -= 1
-            # elif keys[pygame.K_e]:
-            #     food_scored -= 1
-
             if food_scored < 0:
                 food_scored = 0
             elif water_scored < 0:
@@ -137,4 +202,4 @@ def game1(screen):
         if food_needs == 0 and water_needs == 0:
             return False
 
-        pygame.display.update() 
+        pygame.display.update()
