@@ -2,6 +2,7 @@ import pygame
 import sys
 import os
 import json
+import xml.etree.ElementTree as ET
 
 def resource_path(relative_path):
     try:
@@ -18,69 +19,99 @@ def get_font_BOLD(size):
 
 pygame.init()
 
+screen = pygame.display.set_mode((1280, 720), pygame.RESIZABLE | pygame.SCALED)
+
+tileset = pygame.image.load(
+    resource_path("minigame_tileset1.png")
+).convert_alpha()
+mapx = -100
+mapy = -100
+
+images = {}
+
+scale = 2
 tile_size = 32
 
-images = {
-    1: pygame.image.load(resource_path("data2/bottle.png")).convert_alpha(),
-    2: pygame.image.load(resource_path("data2/bowl.png")).convert_alpha(),
-    3: pygame.image.load(resource_path("data2/foodbag.png")).convert_alpha(),
-    4: pygame.image.load(resource_path("data2/trashbag.png")).convert_alpha(),
-    5: pygame.image.load(resource_path("data2/trashbin.png")).convert_alpha(),
-    6: pygame.image.load(resource_path("data2/wall.png")).convert_alpha(),
-    7: pygame.image.load(resource_path("data2/wall2.png")).convert_alpha()
-}
+for gid in range(1, 8):
+    tile = tileset.subsurface(
+        ((gid - 1) * tile_size, 0, tile_size, tile_size)
+    ).copy()
+    images[gid] = pygame.transform.scale2x(tile)
 
-def LoadTmj(filepath, tile_images, tile_width, tile_height):
-    with open(filepath, "r") as f:
-        tmj_data = json.load(f)
+with open("minigame_tileset1.tsx", "r") as f:
+    tsx = f.read()
 
-    parsed_tiles = []
-    hitbox = []
+root = ET.fromstring(tsx)
+collisions = {}
+for tile in root.findall("tile"):
+    tile_id = int(tile.get("id"))
+    gid = tile_id + 1
 
-    for layer in tmj_data.get("layers", []):
-        if layer["type"] == "tilelayer":
-            width_tiles = layer["width"]
-            data = layer["data"]
+    objectgroup = tile.find("objectgroup")
 
-            for idx, gid in enumerate(data):
-                if gid == 0:
-                    continue
+    if objectgroup is None:
+        continue
 
-                col = idx % width_tiles
-                row = idx % width_tiles
-                x = col * tile_width
-                y = row * tile_height
+    collisions[gid] = []
 
-                img = tile_images.get(gid)
-                if img:
-                    parsed_tiles.append({
-                        "image": img,
-                        "pos": (x, y)
-                    })
-        elif layer["type"] == "objectgroup":
-            for obj in layer.get("objects", []):
-                hitbox_rect = pygame.Rect(
-                    int(obj["x"]),
-                    int(obj["y"]),
-                    int(obj["width"]),
-                    int(obj["height"]),
+    for obj in objectgroup.findall("object"):
+        rect = pygame.Rect(
+            float(obj.get("x", 0)),
+            float(obj.get("y", 0)),
+            float(obj.get("width", 0)),
+            float(obj.get("height", 0))
+        )
+
+        collisions[gid].append(rect)
+
+with open("map2.tmj", "r") as f:
+    map_data = json.load(f)
+
+map_tiles = []
+hitboxes = []
+for layer in map_data["layers"]:
+    if layer["type"] != "tilelayer":
+        continue
+    width = layer["width"]
+
+    for idx, gid in enumerate(layer["data"]):
+        if gid == 0:
+            continue
+
+        col = idx % width
+        row = idx // width
+        x = col * 64 + mapx
+        y = row * 64 + mapy
+
+        map_tiles.append({
+            "gid": gid,
+            "x": x, 
+            "y": y
+        })
+
+        for collision in collisions.get(gid, []):
+
+            hitboxes.append(
+                pygame.Rect(
+                    x + collision.x,
+                    y + collision.y,
+                    collision.width,
+                    collision.height
                 )
-                properties = {
-                    prop["name"]: prop["value"]
-                    for prop in obj.get("properties", [])
-                }
-                hitbox.append({
-                    "name": obj.get("name", ""),
-                    "type": obj.get("type", ""),
-                    "rect": hitbox_rect,
-                    "properties": properties
-                })
+            )
 
-    return parsed_tiles, hitbox
-
-# print("---", __file__)
+bottle_img = pygame.transform.scale(pygame.image.load(resource_path("data2/bottle.png")).convert_alpha(), (64, 64))
+foodbag_img = pygame.transform.scale(pygame.image.load(resource_path("data2/foodbag.png")).convert_alpha(), (64, 64))
+bowl_img = pygame.transform.scale(pygame.image.load(resource_path("data2/bowl.png")).convert_alpha(), (64, 64))
 
 def game1():
+    global screen
+    global tsx, map_tiles, map_data, mapx, mapy
+    global collisions, collision, hitboxes, root, images, tileset, gid
+    global objectgroup, tile, tile_id, idx, col, row, width
+
+    global bottle_img, foodbag_img, bowl_img
+
     WIDTH, HEIGHT = screen.get_size()
     clock = pygame.time.Clock()
     dt = 0
@@ -93,10 +124,6 @@ def game1():
 
     food_scored = 0
     water_scored = 0
-
-    tiles, map_objs = LoadTmj(
-        "map.tmj", images, tile_width=32, tile_height=32
-    )
 
     rect2 = pygame.Rect(100, 300, 64, 64)
     rect3 = pygame.Rect(400, 200, 64, 64)
@@ -119,17 +146,18 @@ def game1():
         screen.fill("#28396b")
 
         if not_picked1:
-            pygame.draw.rect(screen, "blue", (rect2.x - camera_x, rect2.y - camera_y, rect2.width, rect2.height))
+            screen.blit(foodbag_img, (rect2.x - camera_x, rect2.y - camera_y))
         if not_picked2:
-            pygame.draw.rect(screen, "yellow", (rect3.x - camera_x, rect3.y - camera_y, rect3.width, rect3.height))
+            screen.blit(bottle_img, (rect3.x - camera_x, rect3.y - camera_y))
         if not_picked3:
-            pygame.draw.rect(screen, "blue", (rect4.x - camera_x, rect4.y - camera_y, rect4.width, rect4.height))
+            screen.blit(foodbag_img, (rect4.x - camera_x, rect4.y - camera_y))
         if not_picked4:
-            pygame.draw.rect(screen, "yellow", (rect5.x - camera_x, rect5.y - camera_y, rect5.width, rect5.height))
+            screen.blit(bottle_img, (rect5.x - camera_x, rect5.y - camera_y))
         if not_picked5:
-            pygame.draw.rect(screen, "blue", (rect6.x - camera_x, rect6.y - camera_y, rect6.width, rect6.height))
+            screen.blit(foodbag_img, (rect6.x - camera_x, rect6.y - camera_y))
 
         pygame.draw.rect(screen, "green", (dog_rect.x - camera_x, dog_rect.y - camera_y, dog_rect.width, dog_rect.height))
+        screen.blit(bowl_img, (800 - camera_x, 600 - camera_y))
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -192,6 +220,19 @@ def game1():
             if water_needs < 0:
                 water_needs = 0
 
+        for hitbox in hitboxes:
+            if rect.colliderect(hitbox):
+                if rect.x > 0:
+                    rect.bottom = hitbox.top
+                elif rect.y < 0:
+                    rect.top = hitbox.bottom
+
+        for tile in map_tiles:
+            image = images[tile["gid"]]
+            screen.blit(
+                image, (tile["x"] - camera_x, tile["y"] - camera_y)   
+            )
+
         text1 = get_font(50).render(f"Food: {food_scored}", True, (255, 255, 255))
         text2 = get_font(50).render(f"Water: {water_scored}", True, (255, 255, 255))
         screen.blit(text1, (0, 0))
@@ -203,3 +244,5 @@ def game1():
             return False
 
         pygame.display.update()
+
+game1()

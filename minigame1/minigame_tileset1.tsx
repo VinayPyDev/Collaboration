@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tileset version="1.10" tiledversion="1.12.2" name="minigame_tileset1" tilewidth="32" tileheight="32" tilecount="7" columns="7">
- <image source="C:/Users/Tanvi Technology/Documents/minigame_tileset1.png" width="224" height="32"/>
+ <image source="minigame_tileset1.png" width="224" height="32"/>
  <tile id="3">
   <objectgroup draworder="index" id="2">
    <object id="1" x="8.10625" y="13.7727" width="15.1894" height="14.0876"/>

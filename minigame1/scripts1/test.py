@@ -2,6 +2,7 @@ import json
 import pygame
 import os
 import sys
+import xml.etree.ElementTree as ET
 
 pygame.init()
 
@@ -19,10 +20,8 @@ tileset = pygame.image.load(
     resource_path("minigame_tileset1.png")
 ).convert_alpha()
 
-# mapx = -24
-# mapy = -960
-mapx = 0
-mapy = 0
+mapx = -100
+mapy = -100
 
 images = {}
 
@@ -33,8 +32,6 @@ for gid in range(1, 8):
 
 with open("minigame_tileset1.tsx", "r") as f:
     tsx = f.read()
-
-import xml.etree.ElementTree as ET
 
 root = ET.fromstring(tsx)
 
@@ -61,52 +58,43 @@ for tile in root.findall("tile"):
 
         collisions[gid].append(rect)
 
-with open("map.tmj", "r") as f:
+with open("map2.tmj", "r") as f:
     map_data = json.load(f)
 
 map_tiles = []
 hitboxes = []
-
 for layer in map_data["layers"]:
-
     if layer["type"] != "tilelayer":
         continue
+    width = layer["width"]
 
-    for chunk in layer.get("chunks", []):
+    for idx, gid in enumerate(layer["data"]):
+        if gid == 0:
+            continue
 
-        chunk_x = chunk["x"]
-        chunk_y = chunk["y"]
-        chunk_width = chunk["width"]
+        col = idx % width
+        row = idx // width
+        x = col * 32 + mapx
+        y = row * 32 + mapy
 
-        for index, gid in enumerate(chunk["data"]):
+        map_tiles.append({
+            "gid": gid,
+            "x": x, 
+            "y": y
+        })
 
-            if gid == 0:
-                continue
+        for collision in collisions.get(gid, []):
 
-            col = index % chunk_width
-            row = index // chunk_width
-
-            x = (chunk_x + col) * 32 + mapx
-            y = (chunk_y + row) * 32 + mapy
-            map_tiles.append(
-                {
-                    "gid": gid,
-                    "x": x,
-                    "y": y
-                }
-            )
-            for collision in collisions.get(gid, []):
-
-                hitboxes.append(
-                    pygame.Rect(
-                        x + collision.x,
-                        y + collision.y,
-                        collision.width,
-                        collision.height
-                    )
+            hitboxes.append(
+                pygame.Rect(
+                    x + collision.x,
+                    y + collision.y,
+                    collision.width,
+                    collision.height
                 )
+            )
 
-player = pygame.Rect(300, 300, 24, 24)
+player = pygame.Rect(640, 360, 24, 24)
 running = True
 
 while running:
@@ -172,14 +160,14 @@ while running:
             (tile["x"], tile["y"])
         )
 
-    for hitbox in hitboxes:
+    # for hitbox in hitboxes:
 
-        pygame.draw.rect(
-            screen,
-            (255, 0, 0),
-            hitbox,
-            1
-        )
+    #     pygame.draw.rect(
+    #         screen,
+    #         (255, 0, 0),
+    #         hitbox,
+    #         1
+    #     )
 
     pygame.draw.rect(
         screen,
