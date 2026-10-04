@@ -1,258 +1,287 @@
-import json
-import os
-import sys
+import json, os, math
+import xml.etree.ElementTree as ET
 import pygame
-from font import get_font
-
-pygame.init()
 
 
-def resource_path(relative_path):
-    try:
-        base_path = sys._MEIPASS
-    except Exception:
-        base_path = os.path.dirname(os.path.dirname(__file__))
-    return os.path.join(base_path, relative_path)
+# ═══════════════════════════════════════════════════════════════
+# TSX PARSER
+# ═══════════════════════════════════════════════════════════════
 
+def _parse_tsx(path):
+    """Parse a .tsx (XML) tileset into a dict matching the JSON schema."""
+    tree = ET.parse(path)
+    root = tree.getroot()
 
-def load_tmj(filepath, tile_images):
-    with open(filepath, "r") as f:
-        tmj_data = json.load(f)
-
-    tile_width = tmj_data["tilewidth"]
-    tile_height = tmj_data["tileheight"]
-
-    parsed_tiles = []
-    hitboxes = []
-
-    def parse_layers(layers_list):
-        for layer in layers_list:
-            if layer.get("type") == "group":
-                parse_layers(layer.get("layers", []))
-
-            elif layer.get("type") == "tilelayer":
-                data = layer.get("data", [])
-                width_in_tiles = layer.get("width", 0)
-
-                for index, gid in enumerate(data):
-                    if gid == 0:
-                        continue
-
-                    col = index % width_in_tiles
-                    row = index // width_in_tiles
-                    x = col * tile_width
-                    y = row * tile_height
-
-                    image = tile_images.get(gid)
-                    if image:
-                        parsed_tiles.append(
-                            {
-                                "image": image,
-                                "pos": (x, y),
-                                "gid": gid,
-                                "rect": pygame.Rect(
-                                    x, y, tile_width, tile_height
-                                ),
-                            }
-                        )
-
-            elif layer.get("type") == "objectgroup":
-                for obj in layer.get("objects", []):
-                    hitbox_rect = pygame.Rect(
-                        int(obj["x"]),
-                        int(obj["y"]),
-                        int(obj.get("width", tile_width)),
-                        int(obj.get("height", tile_height)),
-                    )
-                    properties = {
-                        prop["name"]: prop["value"]
-                        for prop in obj.get("properties", [])
-                    }
-
-                    hitboxes.append(
-                        {
-                            "name": obj.get("name", ""),
-                            "type": obj.get("type", ""),
-                            "gid": obj.get("gid"),
-                            "rect": hitbox_rect,
-                            "properties": properties,
-                        }
-                    )
-
-    parse_layers(tmj_data.get("layers", []))
-    return parsed_tiles, hitboxes
-
-
-def game1(screen):
-    WIDTH, HEIGHT = screen.get_size()
-    clock = pygame.time.Clock()
-
-    images = {
-        1: pygame.image.load(resource_path("data2/bottle.png")).convert_alpha(),
-        2: pygame.image.load(resource_path("data2/bowl.png")).convert_alpha(),
-        3: pygame.image.load(resource_path("data2/foodbag.png")).convert_alpha(),
-        4: pygame.image.load(resource_path("data2/trashbag.png")).convert_alpha(),
-        5: pygame.image.load(resource_path("data2/trashbin.png")).convert_alpha(),
-        6: pygame.image.load(resource_path("data2/wall.png")).convert_alpha(),
-        7: pygame.image.load(resource_path("data2/wall2.png")).convert_alpha(),
+    result = {
+        "name": root.get("name", ""),
+        "tilewidth": int(root.get("tilewidth", 0)),
+        "tileheight": int(root.get("tileheight", 0)),
+        "columns": int(root.get("columns", 0)),
+        "tilecount": int(root.get("tilecount", 0)),
+        "spacing": int(root.get("spacing", 0)),
+        "margin": int(root.get("margin", 0)),
     }
 
-    tiles, map_objects = load_tmj("map.tmj", images)
+    img_el = root.find("image")
+    if img_el is not None:
+        result["image"] = img_el.get("source", "")
 
-    pickup_items = []
-    dog_rect = pygame.Rect(800, 500, 100, 100)
+    tiles = []
+    for tile_el in root.findall("tile"):
+        tile_def = {"id": int(tile_el.get("id", 0))}
 
-    for obj in map_objects:
-        if obj["type"] == "food":
-            pickup_items.append(
-                {"rect": obj["rect"], "gid": 3, "type": "food"}
-            )
-        elif obj["type"] == "water":
-            pickup_items.append(
-                {"rect": obj["rect"], "gid": 1, "type": "water"}
-            )
-        elif obj["type"] == "dog":
-            dog_rect = obj["rect"]
+        og_el = tile_el.find("objectgroup")
+        if og_el is not None:
+            objects = []
+            for obj_el in og_el.findall("object"):
+                obj = {}
+                for attr in ("x", "y", "width", "height"):
+                    val = obj_el.get(attr)
+                    if val is not None:
+                        obj[attr] = int(float(val))
+                if "width" in obj and "height" in obj:
+                    objects.append(obj)
+            if objects:
+                tile_def["objectgroup"] = {"objects": objects}
 
-    wall_gids = {6, 7}
-    wall_rects = [tile["rect"] for tile in tiles if tile["gid"] in wall_gids]
+        tile_img = tile_el.find("image")
+        if tile_img is not None:
+            tile_def["image"] = tile_img.get("source", "")
 
-    player_rect = pygame.Rect(640, 360, 100, 100)
-    player_pos_x = float(player_rect.x)
-    player_pos_y = float(player_rect.y)
-    speed = 500
+        tiles.append(tile_def)
 
-    food_scored = 0
-    water_scored = 0
-    water_needs = 2
-    food_needs = 3
+    if tiles:
+        result["tiles"] = tiles
 
-    while True:
-        dt = clock.tick(60) / 1000
-        screen.fill((0, 0, 0))
+    return result
 
+
+# ═══════════════════════════════════════════════════════════════
+# COLLISION EXTRACTOR
+# ═══════════════════════════════════════════════════════════════
+
+def _extract_tile_collision(first_gid, tile_def, collisions):
+    og = tile_def.get("objectgroup")
+    if not og:
+        return
+    gid = first_gid + tile_def["id"]
+    rects = []
+    for obj in og.get("objects", []):
+        if "width" in obj and "height" in obj:
+            rects.append((obj["x"], obj["y"], obj["width"], obj["height"]))
+    if rects:
+        collisions[gid] = rects
+
+
+# ═══════════════════════════════════════════════════════════════
+# MAIN LOADER
+# ═══════════════════════════════════════════════════════════════
+
+def load_infinite_tiled(path):
+    """
+    Parse a .tmj infinite map.
+    Returns (tile_w, tile_h, tile_images, layers, collisions).
+    """
+    map_dir = os.path.dirname(os.path.abspath(path))
+
+    with open(path, "r") as f:
+        raw = json.load(f)
+
+    tile_w = raw["tilewidth"]
+    tile_h = raw["tileheight"]
+    tile_images = {}
+    collisions = {}
+
+    for ts in raw.get("tilesets", []):
+        first_gid = ts.get("firstgid", 1)
+
+        # ── Resolve external tileset ────────────────────────────
+        if "source" in ts:
+            src_path = os.path.join(map_dir, ts["source"])
+            if ts["source"].endswith((".json", ".tsj")):
+                with open(src_path, "r") as f2:
+                    ts_data = json.load(f2)
+            else:
+                ts_data = _parse_tsx(src_path)
+            # Merge: external data takes priority, keep firstgid from map
+            ts = {**ts_data, "firstgid": first_gid}
+            ts["_ts_dir"] = os.path.dirname(os.path.abspath(src_path))
+
+        # ── Image collection (per-tile PNGs) ────────────────────
+        if "image" not in ts and "tiles" in ts:
+            for tile_def in ts["tiles"]:
+                if "image" not in tile_def:
+                    continue
+                base = ts.get("_ts_dir", map_dir)
+                full = os.path.join(base, tile_def["image"])
+                surf = pygame.image.load(full).convert_alpha()
+                tile_images[first_gid + tile_def["id"]] = surf
+                _extract_tile_collision(first_gid, tile_def, collisions)
+            continue
+
+        # ── Single-image tileset (sprite sheet) ─────────────────
+        if "image" not in ts:
+            continue
+
+        base = ts.get("_ts_dir", map_dir)
+        full = os.path.join(base, ts["image"])
+        img = pygame.image.load(full).convert_alpha()
+
+        cols = ts.get("columns", 0)
+        if cols == 0:
+            cols = max(1, math.ceil(math.sqrt(ts.get("tilecount", 1))))
+        spacing = ts.get("spacing", 0)
+        margin  = ts.get("margin", 0)
+        count   = ts.get("tilecount", 0)
+
+        for i in range(count):
+            gid = first_gid + i
+            sx  = margin + (i % cols) * (tile_w + spacing)
+            sy  = margin + (i // cols) * (tile_h + spacing)
+            if sx + tile_w <= img.get_width() and sy + tile_h <= img.get_height():
+                tile_images[gid] = img.subsurface(sx, sy, tile_w, tile_h)
+
+        for tile_def in ts.get("tiles", []):
+            _extract_tile_collision(first_gid, tile_def, collisions)
+
+    # ── Layers & chunks ─────────────────────────────────────────
+    layers = []
+    for layer in raw.get("layers", []):
+        if layer.get("type") != "tilelayer" or not layer.get("visible", True):
+            continue
+        chunks = [
+            (c["x"], c["y"], c["width"], c["height"], c["data"])
+            for c in layer.get("chunks", [])
+        ]
+        if chunks:
+            layers.append((layer.get("name", ""), chunks))
+
+    return tile_w, tile_h, tile_images, layers, collisions
+
+
+# ═══════════════════════════════════════════════════════════════
+# MAP
+# ═══════════════════════════════════════════════════════════════
+
+class InfiniteMap:
+    def __init__(self, path):
+        (self.tile_w, self.tile_h,
+         self.tile_images, self.layers, self.collisions) = load_infinite_tiled(path)
+
+    def get_tile_at(self, tx, ty):
+        for _, chunks in self.layers:
+            for cx, cy, cw, ch, data in chunks:
+                lx, ly = tx - cx, ty - cy
+                if 0 <= lx < cw and 0 <= ly < ch:
+                    return data[ly * cw + lx]
+        return 0
+
+    def render(self, screen, cam_x, cam_y, sw, sh):
+        min_cx = math.floor(cam_x / self.tile_w)
+        min_cy = math.floor(cam_y / self.tile_h)
+        max_cx = math.ceil((cam_x + sw) / self.tile_w)
+        max_cy = math.ceil((cam_y + sh) / self.tile_h)
+
+        for _, chunks in self.layers:
+            for cx, cy, cw, ch, data in chunks:
+                if cx + cw <= min_cx or cx >= max_cx:
+                    continue
+                if cy + ch <= min_cy or cy >= max_cy:
+                    continue
+                for row in range(ch):
+                    for col in range(cw):
+                        gid = data[row * cw + col]
+                        if gid == 0:
+                            continue
+                        tile = self.tile_images.get(gid)
+                        if tile is None:
+                            continue
+                        screen.blit(tile, (
+                            int((cx + col) * self.tile_w - cam_x),
+                            int((cy + row) * self.tile_h - cam_y),
+                        ))
+
+
+# ═══════════════════════════════════════════════════════════════
+# PLAYER
+# ═══════════════════════════════════════════════════════════════
+
+class Player:
+    def __init__(self, x, y, w, h, speed=3):
+        self.x, self.y, self.w, self.h = x, y, w, h
+        self.speed = speed
+
+    def update(self, keys, game_map):
+        dx = dy = 0
+        if keys[pygame.K_LEFT]:  dx -= self.speed
+        if keys[pygame.K_RIGHT]: dx += self.speed
+        if keys[pygame.K_UP]:    dy -= self.speed
+        if keys[pygame.K_DOWN]:  dy += self.speed
+
+        self.x += dx
+        if self._collides(game_map):
+            self.x -= dx
+
+        self.y += dy
+        if self._collides(game_map):
+            self.y -= dy
+
+    def _collides(self, m):
+        min_tx = int(self.x // m.tile_w)
+        max_tx = int((self.x + self.w - 1) // m.tile_w)
+        min_ty = int(self.y // m.tile_h)
+        max_ty = int((self.y + self.h - 1) // m.tile_h)
+
+        for ty in range(min_ty, max_ty + 1):
+            for tx in range(min_tx, max_tx + 1):
+                gid = m.get_tile_at(tx, ty)
+                if gid == 0 or gid not in m.collisions:
+                    continue
+                for cx, cy, cw, ch in m.collisions[gid]:
+                    rx = tx * m.tile_w + cx
+                    ry = ty * m.tile_h + cy
+                    if (self.x < rx + cw and self.x + self.w > rx and
+                        self.y < ry + ch and self.y + self.h > ry):
+                        return True
+        return False
+
+    def rect(self):
+        return pygame.Rect(int(self.x), int(self.y), self.w, self.h)
+
+
+# ═══════════════════════════════════════════════════════════════
+# MAIN
+# ═══════════════════════════════════════════════════════════════
+
+def main():
+    pygame.init()
+    screen = pygame.display.set_mode((800, 600))
+    clock = pygame.time.Clock()
+
+    game_map = InfiniteMap("map.tmj")
+    player = Player(64, 64, 24, 24)
+
+    running = True
+    while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            if event.type == pygame.VIDEORESIZE:
-                WIDTH, HEIGHT = event.w, event.h
-                screen = pygame.display.set_mode(
-                    (WIDTH, HEIGHT), pygame.RESIZABLE
-                )
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_f and water_scored > 0:
-                    water_scored -= 1
-                    water_needs = max(0, water_needs - 1)
-                elif event.key == pygame.K_e and food_scored > 0:
-                    food_scored -= 1
-                    food_needs = max(0, food_needs - 1)
+                running = False
 
         keys = pygame.key.get_pressed()
+        player.update(keys, game_map)
 
-        dx = 0
-        dy = 0
-        if keys[pygame.K_a]:
-            dx -= speed * dt
-        if keys[pygame.K_d]:
-            dx += speed * dt
-        if keys[pygame.K_s]:
-            dy += speed * dt
-        if keys[pygame.K_w]:
-            dy -= speed * dt
+        cam_x = int(player.x - screen.get_width()  / 2)
+        cam_y = int(player.y - screen.get_height() / 2)
 
-        player_pos_x += dx
-        player_rect.x = round(player_pos_x)
-        for wall in wall_rects:
-            if player_rect.colliderect(wall):
-                if dx > 0:
-                    player_rect.right = wall.left
-                elif dx < 0:
-                    player_rect.left = wall.right
-                player_pos_x = float(player_rect.x)
+        screen.fill((0, 0, 0))
+        game_map.render(screen, cam_x, cam_y, screen.get_width(), screen.get_height())
+        pygame.draw.rect(screen, (255, 0, 0), player.rect())
 
-        player_pos_y += dy
-        player_rect.y = round(player_pos_y)
-        for wall in wall_rects:
-            if player_rect.colliderect(wall):
-                if dy > 0:
-                    player_rect.bottom = wall.top
-                elif dy < 0:
-                    player_rect.top = wall.bottom
-                player_pos_y = float(player_rect.y)
+        pygame.display.flip()
+        clock.tick(60)
 
-        camera_x = player_rect.x - WIDTH // 2
-        camera_y = player_rect.y - HEIGHT // 2
-
-        for tile in tiles:
-            tile_x = tile["pos"][0] - camera_x
-            tile_y = tile["pos"][1] - camera_y
-            screen.blit(tile["image"], (tile_x, tile_y))
-
-        for item in pickup_items[:]:
-            item_rect = item["rect"]
-            item_image = images.get(item["gid"])
-
-            if item_image:
-                screen.blit(
-                    item_image,
-                    (item_rect.x - camera_x, item_rect.y - camera_y),
-                )
-
-            if player_rect.colliderect(item_rect):
-                if item["type"] == "food":
-                    food_scored += 1
-                elif item["type"] == "water":
-                    water_scored += 1
-                pickup_items.remove(item)
-
-        pygame.draw.rect(
-            screen,
-            "green",
-            (
-                dog_rect.x - camera_x,
-                dog_rect.y - camera_y,
-                dog_rect.width,
-                dog_rect.height,
-            ),
-        )
-
-        if player_rect.colliderect(dog_rect):
-            water_dog_needs = get_font(40).render(
-                f"E to feed: {food_needs}", True, (255, 255, 255)
-            )
-            food_dog_needs = get_font(40).render(
-                f"F to water: {water_needs}", True, (255, 255, 255)
-            )
-            screen.blit(water_dog_needs, (700, 400))
-            screen.blit(food_dog_needs, (700, 300))
-
-        pygame.draw.rect(
-            screen,
-            (255, 0, 0),
-            (
-                player_rect.x - camera_x,
-                player_rect.y - camera_y,
-                player_rect.width,
-                player_rect.height,
-            ),
-        )
-
-        text1 = get_font(50).render(
-            f"Food: {food_scored}", True, (255, 255, 255)
-        )
-        text2 = get_font(50).render(
-            f"Water: {water_scored}", True, (255, 255, 255)
-        )
-        screen.blit(text1, (0, 0))
-        screen.blit(text2, (0, 100))
-
-        if food_needs == 0 and water_needs == 0:
-            return False
-
-        pygame.display.update()
+    pygame.quit()
 
 
 if __name__ == "__main__":
-    main_screen = pygame.display.set_mode((1280, 720), pygame.RESIZABLE)
-    game1(main_screen)
+    main()   
