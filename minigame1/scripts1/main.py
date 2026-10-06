@@ -1,4 +1,5 @@
 import pygame
+import random
 import sys
 import os
 import json
@@ -24,19 +25,19 @@ screen = pygame.display.set_mode((1280, 720), pygame.RESIZABLE | pygame.SCALED)
 tileset = pygame.image.load(
     resource_path("minigame_tileset1.png")
 ).convert_alpha()
-mapx = -100
-mapy = -100
+mapx = -1000
+mapy = -1000
 
 images = {}
 
-scale = 2
+scale = 3
 tile_size = 32
 
 for gid in range(1, 8):
     tile = tileset.subsurface(
         ((gid - 1) * tile_size, 0, tile_size, tile_size)
     ).copy()
-    images[gid] = pygame.transform.scale2x(tile)
+    images[gid] = pygame.transform.scale(tile, (tile_size*scale, tile_size*scale))
 
 with open("minigame_tileset1.tsx", "r") as f:
     tsx = f.read()
@@ -80,8 +81,8 @@ for layer in map_data["layers"]:
 
         col = idx % width
         row = idx // width
-        x = col * 64 + mapx
-        y = row * 64 + mapy
+        x = col * 96 + mapx
+        y = row * 96 + mapy
 
         map_tiles.append({
             "gid": gid,
@@ -100,9 +101,9 @@ for layer in map_data["layers"]:
                 )
             )
 
-bottle_img = pygame.transform.scale(pygame.image.load(resource_path("data2/bottle.png")).convert_alpha(), (64, 64))
-foodbag_img = pygame.transform.scale(pygame.image.load(resource_path("data2/foodbag.png")).convert_alpha(), (64, 64))
-bowl_img = pygame.transform.scale(pygame.image.load(resource_path("data2/bowl.png")).convert_alpha(), (64, 64))
+bottle_img = pygame.transform.scale(pygame.image.load(resource_path("data2/bottle.png")).convert_alpha(), (150, 150))
+foodbag_img = pygame.transform.scale(pygame.image.load(resource_path("data2/foodbag.png")).convert_alpha(), (150, 150))
+bowl_img = pygame.transform.scale(pygame.image.load(resource_path("data2/bowl.png")).convert_alpha(), (150, 150))
 
 def game1():
     global screen
@@ -125,11 +126,11 @@ def game1():
     food_scored = 0
     water_scored = 0
 
-    rect2 = pygame.Rect(100, 300, 64, 64)
-    rect3 = pygame.Rect(400, 200, 64, 64)
-    rect4 = pygame.Rect(700, 100, 64, 64)
-    rect5 = pygame.Rect(500, 500, 64, 64)
-    rect6 = pygame.Rect(1100, 600, 64, 64)
+    rect2 = pygame.Rect(random.uniform(600, 500), random.uniform(500, 2176), 96, 96)
+    rect3 = pygame.Rect(random.uniform(808, -52), random.uniform(500, 2176), 96, 96)
+    rect4 = pygame.Rect(random.uniform(560, 1360), random.uniform(500, 2176), 96, 96)
+    rect5 = pygame.Rect(random.uniform(1170, -108), random.uniform(500, 2176), 96, 96)
+    rect6 = pygame.Rect(random.uniform(530, -14), random.uniform(500, 2176), 96, 96)
 
     dog_rect = pygame.Rect(800, 500, 100, 100)
     water_needs = 2
@@ -143,7 +144,7 @@ def game1():
 
     while True:
         dt = clock.tick(60) / 1000
-        screen.fill("#28396b")
+        screen.fill("#0c1120")
 
         if not_picked1:
             screen.blit(foodbag_img, (rect2.x - camera_x, rect2.y - camera_y))
@@ -157,7 +158,7 @@ def game1():
             screen.blit(foodbag_img, (rect6.x - camera_x, rect6.y - camera_y))
 
         pygame.draw.rect(screen, "green", (dog_rect.x - camera_x, dog_rect.y - camera_y, dog_rect.width, dog_rect.height))
-        screen.blit(bowl_img, (800 - camera_x, 600 - camera_y))
+        screen.blit(bowl_img, (775 - camera_x, 550 - camera_y))
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -206,6 +207,9 @@ def game1():
         water_dog_needs = get_font(40).render(f"E to feed: {food_needs}", True, (255, 255, 255))
         food_dog_needs = get_font(40).render(f"F to water: {water_needs}", True, (255, 255, 255))
 
+        print(int(rect.x))
+        print(int(rect.y))
+
         if rect.colliderect(dog_rect):
             screen.blit(water_dog_needs, (700, 400))
             screen.blit(food_dog_needs, (700, 300))
@@ -244,5 +248,4 @@ def game1():
             return False
 
         pygame.display.update()
-
-game1()
+# game1()
