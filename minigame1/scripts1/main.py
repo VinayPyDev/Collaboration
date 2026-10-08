@@ -94,10 +94,10 @@ for layer in map_data["layers"]:
 
             hitboxes.append(
                 pygame.Rect(
-                    x + collision.x,
-                    y + collision.y,
-                    collision.width,
-                    collision.height
+                    x + (collision.x * scale),
+                    y + (collision.y * scale),
+                    collision.width * scale,
+                    collision.height * scale
                 )
             )
 
@@ -178,15 +178,17 @@ def game1():
         camera_x = rect.x - WIDTH // 2
         camera_y = rect.y - HEIGHT // 2
 
+        dx, dy = 0, 0
+
         keys = pygame.key.get_pressed()
         if keys[pygame.K_a]:
-            rect.x -= speed * dt
+            dx -= speed * dt
         if keys[pygame.K_d]:
-            rect.x += speed * dt
+            dx += speed * dt
         if keys[pygame.K_s]:
-            rect.y += speed * dt
+            dy += speed * dt
         if keys[pygame.K_w]:
-            rect.y -= speed * dt
+            dy -= speed * dt
 
         if not_picked1 and rect.colliderect(rect2):
             not_picked1 = False
@@ -207,9 +209,6 @@ def game1():
         water_dog_needs = get_font(40).render(f"E to feed: {food_needs}", True, (255, 255, 255))
         food_dog_needs = get_font(40).render(f"F to water: {water_needs}", True, (255, 255, 255))
 
-        print(int(rect.x))
-        print(int(rect.y))
-
         if rect.colliderect(dog_rect):
             screen.blit(water_dog_needs, (700, 400))
             screen.blit(food_dog_needs, (700, 300))
@@ -224,12 +223,14 @@ def game1():
             if water_needs < 0:
                 water_needs = 0
 
+        rect.x += dx
         for hitbox in hitboxes:
             if rect.colliderect(hitbox):
-                if rect.x > 0:
-                    rect.bottom = hitbox.top
-                elif rect.y < 0:
-                    rect.top = hitbox.bottom
+                rect.x -= dx
+        rect.y += dy
+        for hitbox in hitboxes:
+            if rect.colliderect(hitbox):
+                rect.y -= dy
 
         for tile in map_tiles:
             image = images[tile["gid"]]
@@ -248,4 +249,3 @@ def game1():
             return False
 
         pygame.display.update()
-# game1()
