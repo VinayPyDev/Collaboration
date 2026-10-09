@@ -23,7 +23,7 @@ pygame.init()
 screen = pygame.display.set_mode((1280, 720), pygame.RESIZABLE | pygame.SCALED)
 
 tileset = pygame.image.load(
-    resource_path("minigame_tileset1.png")
+    resource_path("tileset/minigame_tileset1.png")
 ).convert_alpha()
 mapx = -1000
 mapy = -1000
@@ -249,3 +249,4 @@ def game1():
             return False
 
         pygame.display.update()
+# game1()

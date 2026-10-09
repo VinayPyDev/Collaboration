@@ -17,7 +17,7 @@ from transition import TransitionObj, fade
 # from tilesets import Render_Sunrise_Tileset, Render_Dungeon_Tileset, Render_Void_Tileset
 from tilesets import Load_Sunrise_Tileset, Load_Dungeon_Tileset, Load_Void_Tileset
 from font import *
-from text import Start_text
+from text import Start_text, Awareness_text
 
 from key import RenderKeyA, RenderKeyS, RenderKeyD, RenderKeyW, LoadKeyA, LoadKeyD, LoadKeyS, LoadKeyW
 from art import PauseImg, PauseMenu
@@ -33,8 +33,11 @@ sys.path.append(str(Path(__file__).parent.parent))
 
 # minigames
 from minigame1.scripts1.main import game1
+from minigame1.scripts1.main import *
 from minigame2.scripts2.main import game2
+from minigame2.scripts2.main import *
 from minigame3.scripts3.main import game3
+from minigame3.scripts3.main import *
 
 def resource_path(relative_path):
     try:
@@ -475,7 +478,7 @@ while running:
         player_y = ground_y - 150
 
     if player_x >= 2230 and not minigame1_started:
-        game1(screen)
+        game1()
         player_x = player_x + 10
         minigame1_started = True
         move_left = False
@@ -787,6 +790,10 @@ while running:
 
     if current_page != 0 and page_opened == 0:
         screen.blit(pick_txt, (player_x - camera_x, player_y - 100))
+
+    if player_x >= 18100:
+        screen.fill((0, 0, 0))
+        Awareness_text()        
 
     if paused:
         left_click = pygame.mouse.get_pressed()[0]
