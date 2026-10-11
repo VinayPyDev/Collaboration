@@ -11,10 +11,10 @@ def resource_path(relative_path):
 
 def load_keys():
     return {
-        "key1": pygame.image.load(resource_path("data/sprite-0001.png")).convert_alpha(),
-        "key2": pygame.image.load(resource_path("data/sprite-0003.png")).convert_alpha(),
-        "key3": pygame.image.load(resource_path("data/sprite-0004.png")).convert_alpha(),
-        "key4": pygame.image.load(resource_path("data/sprite-0005.png")).convert_alpha()
+        "key1": pygame.image.load(resource_path("data2/sprite-0001.png")).convert_alpha(),
+        "key2": pygame.image.load(resource_path("data2/sprite-0003.png")).convert_alpha(),
+        "key3": pygame.image.load(resource_path("data2/sprite-0004.png")).convert_alpha(),
+        "key4": pygame.image.load(resource_path("data2/sprite-0005.png")).convert_alpha()
     }
 def render_key1(screen, art):
     screen.blit(art["key1"], (105, 0))
@@ -25,3 +25,120 @@ def render_key3(screen, art):
 def render_key4(screen, art):
     screen.blit(art["key4"], (170, 65))
 
+class KeyA():
+    def __init__(self, image):
+        self.sheet = image
+
+    def get_image(self, frame, width, height, scale, color, x_offset=0):
+        image = pygame.Surface((width, height))  
+        image.fill(color)
+        image.blit(self.sheet, (0, 0), (x_offset + frame * width, 0, width, height))
+        image = pygame.transform.scale(image, (int(width * scale), int(height * scale)))
+        image.set_colorkey(color)
+        return image
+
+def RenderKeyA():
+    key_a = pygame.image.load(resource_path("data2/A_spritesheet.png")).convert_alpha()
+    Spritesheet = KeyA(key_a)
+    frames = 5
+    width, height = 32, 32
+    x_offset = 0
+    scale = 4.0
+    colorkey = (10, 10, 10)
+
+    animation_list = []
+    for i in range(frames):
+        animation_list.append(Spritesheet.get_image(i, width, height, scale, colorkey, x_offset))
+
+    return animation_list
+
+class KeyS():
+    def __init__(self, image):
+        self.sheet = image
+
+    def get_image(self, frame, width, height, scale, color, x_offset=0):
+        image = pygame.Surface((width, height))  
+        image.fill(color)
+        image.blit(self.sheet, (0, 0), (x_offset + frame * width, 0, width, height))
+        image = pygame.transform.scale(image, (int(width * scale), int(height * scale)))
+        image.set_colorkey(color)
+        return image
+
+def RenderKeyS():
+    key_s = pygame.image.load(resource_path("data2/S_spritesheet.png")).convert_alpha()
+    Spritesheet = KeyS(key_s)
+    frames = 5
+    width, height = 32, 32
+    x_offset = 0
+    scale = 4.0
+    colorkey = (10, 10, 10)
+
+    animation_list = []
+    for i in range(frames):
+        animation_list.append(Spritesheet.get_image(i, width, height, scale, colorkey, x_offset))
+
+    return animation_list
+
+class KeyD():
+    def __init__(self, image):
+        self.sheet = image
+
+    def get_image(self, frame, width, height, scale, color, x_offset=0):
+        image = pygame.Surface((width, height))  
+        image.fill(color)
+        image.blit(self.sheet, (0, 0), (x_offset + frame * width, 0, width, height))
+        image = pygame.transform.scale(image, (int(width * scale), int(height * scale)))
+        image.set_colorkey(color)
+        return image
+
+def RenderKeyD():
+    key_d = pygame.image.load(resource_path("data2/D_spritesheet.png")).convert_alpha()
+    Spritesheet = KeyD(key_d)
+    frames = 5
+    width, height = 32, 32
+    x_offset = 0
+    scale = 4.0
+    colorkey = (10, 10, 10)
+
+    animation_list = []
+    for i in range(frames):
+        animation_list.append(Spritesheet.get_image(i, width, height, scale, colorkey, x_offset))
+
+    return animation_list
+
+class KeyW():
+    def __init__(self, image):
+        self.sheet = image
+
+    def get_image(self, frame, width, height, scale, color, x_offset=0):
+        image = pygame.Surface((width, height))  
+        image.fill(color)
+        image.blit(self.sheet, (0, 0), (x_offset + frame * width, 0, width, height))
+        image = pygame.transform.scale(image, (int(width * scale), int(height * scale)))
+        image.set_colorkey(color)
+        return image
+
+def RenderKeyW():
+    key_w = pygame.image.load(resource_path("data2/W_spritesheet.png")).convert_alpha()
+    Spritesheet = KeyW(key_w)
+    frames = 5
+    width, height = 32, 32
+    x_offset = 0
+    scale = 4.0
+    colorkey = (10, 10, 10)
+
+    animation_list = []
+    for i in range(frames):
+        animation_list.append(Spritesheet.get_image(i, width, height, scale, colorkey, x_offset))
+
+    return animation_list
+
+# [Key Render Functions]
+def LoadKeyA(screen, frame, pos):
+    screen.blit(frame, pos)
+def LoadKeyS(screen, frame, pos):
+    screen.blit(frame, pos)
+def LoadKeyD(screen, frame, pos):
+    screen.blit(frame, pos)
+def LoadKeyW(screen, frame, pos):
+    screen.blit(frame, pos)

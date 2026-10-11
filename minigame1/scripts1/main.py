@@ -5,10 +5,14 @@ import os
 import json
 import xml.etree.ElementTree as ET
 
-from art import LoadKeys
-from art import 
+from minigame1.scripts1.art import load_keys, render_key1, render_key2, render_key3, render_key4
+from minigame1.scripts1.art import RenderKeyA, RenderKeyS, RenderKeyD, RenderKeyW
+from minigame1.scripts1.art import LoadKeyA, LoadKeyD, LoadKeyS, LoadKeyW
+
 art = {}
 art.update()
+
+art_keys = load_keys()
 
 def resource_path(relative_path):
     try:
@@ -116,7 +120,7 @@ def game1():
 
     global bottle_img, foodbag_img, bowl_img
 
-    global art, LoadKeys, 
+    global art, LoadKeys
 
     WIDTH, HEIGHT = screen.get_size()
     clock = pygame.time.Clock()
@@ -137,6 +141,31 @@ def game1():
     rect5 = pygame.Rect(random.uniform(1170, -108), random.uniform(500, 2176), 96, 96)
     rect6 = pygame.Rect(random.uniform(530, -14), random.uniform(500, 2176), 96, 96)
 
+    KeyA = RenderKeyA()
+    frame_key_a = 0
+    last_update_key = pygame.time.get_ticks()
+    animation_cooldown_key = 150
+
+    KeyS = RenderKeyS()
+    frame_key_s = 0
+    last_update_key = pygame.time.get_ticks()
+    animation_cooldown_key = 150
+
+    KeyD = RenderKeyD()
+    frame_key_d = 0
+    last_update_key = pygame.time.get_ticks()
+    animation_cooldown_key = 150
+
+    KeyW = RenderKeyW()
+    frame_key_w = 0
+    last_update_key = pygame.time.get_ticks()
+    animation_cooldown_key = 150
+
+    key_pressed_a = False
+    key_pressed_s = False
+    key_pressed_d = False
+    key_pressed_w = False
+                    
     dog_rect = pygame.Rect(800, 500, 100, 100)
     water_needs = 2
     food_needs = 3
@@ -186,14 +215,43 @@ def game1():
         dx, dy = 0, 0
 
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_a]:
+
+        key_pressed_a = keys[pygame.K_a]
+        key_pressed_s = keys[pygame.K_s]
+        key_pressed_d = keys[pygame.K_d]
+        key_pressed_w = keys[pygame.K_w]
+
+        if key_pressed_a:
             dx -= speed * dt
-        if keys[pygame.K_d]:
+        if key_pressed_d:
             dx += speed * dt
-        if keys[pygame.K_s]:
+        if key_pressed_s:
             dy += speed * dt
-        if keys[pygame.K_w]:
+        if key_pressed_w:
             dy -= speed * dt
+
+        current_time = pygame.time.get_ticks()
+
+        if current_time - last_update_key >= animation_cooldown_key:
+            last_update_key = current_time
+
+            if key_pressed_a:
+                frame_key_a = (frame_key_a + 1) % len(KeyA)
+            if key_pressed_s:
+                frame_key_s = (frame_key_s + 1) % len(KeyS)
+            if key_pressed_d:
+                frame_key_d = (frame_key_d + 1) % len(KeyD)
+            if key_pressed_w:
+                frame_key_w = (frame_key_w + 1) % len(KeyW)
+            
+            if not key_pressed_a:
+                frame_key_a = 0
+            if not key_pressed_s:
+                frame_key_s = 0
+            if not key_pressed_d:
+                frame_key_d = 0
+            if not key_pressed_w:
+                frame_key_w = 0
 
         if not_picked1 and rect.colliderect(rect2):
             not_picked1 = False
@@ -213,6 +271,16 @@ def game1():
 
         water_dog_needs = get_font(40).render(f"E to feed: {food_needs}", True, (255, 255, 255))
         food_dog_needs = get_font(40).render(f"F to water: {water_needs}", True, (255, 255, 255))
+
+        render_key1(screen, art) 
+        render_key2(screen, art)
+        render_key3(screen, art)
+        render_key4(screen, art)
+
+        LoadKeyA(screen, KeyA[frame_key_a if key_pressed_a else 0], (10, 30))
+        LoadKeyS(screen, KeyS[frame_key_s if key_pressed_s else 0], (77, 30))
+        LoadKeyD(screen, KeyD[frame_key_d if key_pressed_d else 0], (140, 30))
+        LoadKeyW(screen, KeyW[frame_key_w if key_pressed_w else 0], (75, -35))
 
         if rect.colliderect(dog_rect):
             screen.blit(water_dog_needs, (700, 400))
