@@ -93,8 +93,8 @@ sunset_to_dusk = "The sun has descended and dusk holds i"
 sunset_to_dusk_2 = "- ts crown"
 dusk_to_dungeon = "The dusk faded away and now night is in its "
 dusk_to_dungeon_2 = "prime"
-dungeon_to_void = "The innocence has been stabbed and has turned"
-dungeon_to_void_2 = " to the path of corruption"
+dungeon_to_void = "The innocence has been stabbed and has tu"
+dungeon_to_void_2 = " rned to the path of corruption"
 
 sunset_fade_triggered = False
 dusk_fade_triggered = False

@@ -5,6 +5,11 @@ import os
 import json
 import xml.etree.ElementTree as ET
 
+from art import LoadKeys
+from art import 
+art = {}
+art.update()
+
 def resource_path(relative_path):
     try:
         base_path = sys._MEIPASS
@@ -19,7 +24,6 @@ def get_font_BOLD(size):
     return pygame.font.Font(resource_path("font/PixeloidSans-Bold.ttf"), size)
 
 pygame.init()
-
 screen = pygame.display.set_mode((1280, 720), pygame.RESIZABLE | pygame.SCALED)
 
 tileset = pygame.image.load(
@@ -29,7 +33,6 @@ mapx = -1000
 mapy = -1000
 
 images = {}
-
 scale = 3
 tile_size = 32
 
@@ -112,6 +115,8 @@ def game1():
     global objectgroup, tile, tile_id, idx, col, row, width
 
     global bottle_img, foodbag_img, bowl_img
+
+    global art, LoadKeys, 
 
     WIDTH, HEIGHT = screen.get_size()
     clock = pygame.time.Clock()
@@ -249,4 +254,3 @@ def game1():
             return False
 
         pygame.display.update()
-# game1()
