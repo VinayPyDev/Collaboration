@@ -289,6 +289,9 @@ map_end_x = 18600
 
 text_displayed = False
 
+surface1 = pygame.Surface((6396, 140))
+surface1_rect = surface1.get_rect(center=(100, 680))
+
 main_menu()
 
 running = True
@@ -323,6 +326,9 @@ while running:
                     page_opened = 0
                 elif current_page != 0:
                     page_opened = current_page
+
+    if pygame.mouse.get_just_pressed()[0]:
+        print(mouse_pos)
 
     keys = pygame.key.get_pressed()
 
@@ -838,6 +844,9 @@ while running:
         LoadJumpscare2(screen, Jumpscare2_frames[frame_j2], (400, 0))
         if frame_j2 == 31:
             j2_trigger = False
+
+    surface1.fill("#7a4841")
+    screen.blit(surface1, surface1_rect)
 
     pygame.display.update()
 
