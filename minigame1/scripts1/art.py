@@ -17,13 +17,13 @@ def load_keys():
         "key4": pygame.image.load(resource_path("data2/sprite-0005.png")).convert_alpha()
     }
 def render_key1(screen, art):
-    screen.blit(art["key1"], (105, 0))
+    screen.blit(art["key1"], (1005, 0))
 def render_key2(screen, art):
-    screen.blit(art["key2"], (40, 65))
+    screen.blit(art["key2"], (1040, 65))
 def render_key3(screen, art):
-    screen.blit(art["key3"], (105, 65))
+    screen.blit(art["key3"], (1005, 65))
 def render_key4(screen, art):
-    screen.blit(art["key4"], (170, 65))
+    screen.blit(art["key4"], (1070, 65))
 
 class KeyA():
     def __init__(self, image):
@@ -142,3 +142,29 @@ def LoadKeyD(screen, frame, pos):
     screen.blit(frame, pos)
 def LoadKeyW(screen, frame, pos):
     screen.blit(frame, pos)
+
+# [Reusable Keys]
+class KeyAnimation:
+    def __init__(self, key_frames, render_func, position, key_constant, cooldown=150):
+        self.key_frames = key_frames          
+        self.render_func = render_func        
+        self.position = position              
+        self.key_constant = key_constant      
+        self.cooldown = cooldown
+        
+        self.frame = 0
+        self.last_update = pygame.time.get_ticks()
+        self.is_pressed = False
+
+    def update(self, current_time, keys_pressed):
+        self.is_pressed = keys_pressed[self.key_constant]
+
+        if not self.is_pressed:
+            self.frame = 0
+        elif current_time - self.last_update >= self.cooldown:
+            self.last_update = current_time
+            self.frame = (self.frame + 1) % len(self.key_frames)
+
+    def draw(self, screen):
+        current_frame_data = self.key_frames[self.frame if self.is_pressed else 0]
+        self.render_func(screen, current_frame_data, self.position)

@@ -126,3 +126,33 @@ def LoadKeyD(screen, frame, pos):
     screen.blit(frame, pos)
 def LoadKeyW(screen, frame, pos):
     screen.blit(frame, pos)
+
+# [Reusable Keys]
+import pygame
+
+class KeyAnimation:
+    def __init__(self, key_frames, render_func, position, key_constant, cooldown=150):
+        self.key_frames = key_frames          
+        self.render_func = render_func        
+        self.position = position              
+        self.key_constant = key_constant      
+        self.cooldown = cooldown
+        
+        self.frame = 0
+        self.last_update = pygame.time.get_ticks()
+        self.is_pressed = False
+
+    def update(self, current_time, keys_pressed):
+        self.is_pressed = keys_pressed[self.key_constant]
+
+        if current_time - self.last_update >= self.cooldown:
+            self.last_update = current_time
+
+            if self.is_pressed:
+                self.frame = (self.frame + 1) % len(self.key_frames)
+            else:
+                self.frame = 0  
+
+    def draw(self, screen):
+        current_frame_data = self.key_frames[self.frame if self.is_pressed else 0]
+        self.render_func(screen, current_frame_data, self.position)
