@@ -289,8 +289,8 @@ map_end_x = 18600
 
 text_displayed = False
 
-surface1 = pygame.Surface((6396, 140))
-surface1_rect = surface1.get_rect(center=(100, 680))
+surface1 = pygame.Surface((6396, 220))
+surface1_rect = pygame.Rect(0, 612, 6396, 220)
 
 main_menu()
 
@@ -846,7 +846,7 @@ while running:
             j2_trigger = False
 
     surface1.fill("#7a4841")
-    screen.blit(surface1, surface1_rect)
+    screen.blit(surface1, (surface1_rect.x - camera_x, surface1_rect.y))
 
     pygame.display.update()
 
