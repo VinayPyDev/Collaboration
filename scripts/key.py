@@ -128,8 +128,6 @@ def LoadKeyW(screen, frame, pos):
     screen.blit(frame, pos)
 
 # [Reusable Keys]
-import pygame
-
 class KeyAnimation:
     def __init__(self, key_frames, render_func, position, key_constant, cooldown=150):
         self.key_frames = key_frames          
