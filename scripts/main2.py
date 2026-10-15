@@ -3,7 +3,7 @@ import sys
 import os
 
 # [additional memory tracking]
-import psutil
+# import psutil
 
 # [Function imports]
 from art import load_sunset_bg_full, load_dungeon_bg_full, load_sunset_bg_2_full, load_sunset_extra, load_keys, load_void_bg_full
@@ -17,7 +17,6 @@ from display import RenderSunsetToDungeon, RenderDungeonToVoid
 from menu import main_menu
 from memory_render import Render_memory_1, Render_memory_2, Render_memory_3, Render_memory_4, Render_memory_5, Render_memory_6, Render_memory_7, Render_memory_8, Render_memory_9
 from transition import TransitionObj, fade
-# from tilesets import Render_Sunrise_Tileset, Render_Dungeon_Tileset, Render_Void_Tileset
 from tilesets import Load_Sunrise_Tileset, Load_Dungeon_Tileset, Load_Void_Tileset
 from font import *
 from text import Start_text, Awareness_text
@@ -25,14 +24,14 @@ from text import Start_text, Awareness_text
 from MemoryLoader import MemoryAnimationLoader
 
 from key import RenderKeyA, RenderKeyS, RenderKeyD, RenderKeyW, LoadKeyA, LoadKeyD, LoadKeyS, LoadKeyW
-from key import KeyA, KeyW, KeyS, KeyD
+from key import KeyA, KeyW, KeyS, KeyD, KeyAnimation
 from art import PauseImg, PauseMenu
 from display import RenderPausedMenu
 
 from music import MenuTrack
 
 # Jumpscares
-from jumpscare import Render_jumpscare_1, Render_jumpscare_2, LoadJumpscare1, LoadJumpscare2
+from jumpscare import jumpscare_1_data, jumpscare_2_data
 
 from pathlib import Path
 sys.path.append(str(Path(__file__).parent.parent))
@@ -158,38 +157,23 @@ page_6_rect = page_pick_rects[5]
 pick_txt = get_font_BOLD(45).render("Press E", True, (0, 0, 0))
 
 # [Key anim vars]
-KeyA = RenderKeyA()
-frame_key_a = 0
-last_update_key = pygame.time.get_ticks()
-animation_cooldown_key = 150
-
-KeyS = RenderKeyS()
-frame_key_s = 0
-last_update_key = pygame.time.get_ticks()
-animation_cooldown_key = 150
-
-KeyD = RenderKeyD()
-frame_key_d = 0
-last_update_key = pygame.time.get_ticks()
-animation_cooldown_key = 150
-
-KeyW = RenderKeyW()
-frame_key_w = 0
-last_update_key = pygame.time.get_ticks()
-animation_cooldown_key = 150
-
 key_pressed_a = False
 key_pressed_s = False
 key_pressed_d = False
 key_pressed_w = False
 
+keys_manager = [
+    KeyAnimation(RenderKeyA(), LoadKeyA, (10, 30), pygame.K_a),
+    KeyAnimation(RenderKeyS(), LoadKeyS, (77, 30), pygame.K_s),
+    KeyAnimation(RenderKeyD(), LoadKeyD, (140, 30), pygame.K_d),
+    KeyAnimation(RenderKeyW(), LoadKeyW, (75, -35), pygame.K_w),
+]
+
 # Jumpscare anim vars
-Jumpscare1_frames = Render_jumpscare_1()
 frame_j = 0
 last_updatej = pygame.time.get_ticks()
 animation_cooldownj = 400
 
-Jumpscare2_frames = Render_jumpscare_2()
 frame_j2 = 0
 last_updatej = pygame.time.get_ticks()
 animation_cooldownj = 400
@@ -201,7 +185,6 @@ j1_started = False
 j2_started = False
 
 # [memory anim vars]
-
 memory_manager = [
     MemoryAnimationLoader(Render_memory_1(), render_memory_1, trigger_x=1260),
     MemoryAnimationLoader(Render_memory_2(), render_memory_2, trigger_x=3450),
@@ -327,42 +310,15 @@ while running:
 
         if j1_trigger:
             frame_j += 1
-            if frame_j >= len(Jumpscare1_frames):
+            if frame_j >= jumpscare_1_data.total_frames:
                 frame_j = 0
                 j1_trigger = False
 
         if j2_trigger:
             frame_j2 += 1
-            if frame_j2 >= len(Jumpscare2_frames):
+            if frame_j2 >= jumpscare_2_data.total_frames:
                 frame_j2 = 0
                 j2_trigger = False
-                
-    if current_time - last_update_key >= animation_cooldown_key:
-        last_update_key = current_time
-
-        if key_pressed_a:
-            frame_key_a = (frame_key_a + 1) % len(KeyA)
-
-        if key_pressed_s:
-            frame_key_s = (frame_key_s + 1) % len(KeyS)
-
-        if key_pressed_d:
-            frame_key_d = (frame_key_d + 1) % len(KeyD)
-
-        if key_pressed_w:
-            frame_key_w = (frame_key_w + 1) % len(KeyW)
-
-        if not key_pressed_a:
-            frame_key_a = 0
-
-        if not key_pressed_s:
-            frame_key_s = 0
-
-        if not key_pressed_d:
-            frame_key_d = 0
-
-        if not key_pressed_w:
-            frame_key_w = 0
         
     if player_rect.colliderect(page_pick_rects[0]) and not picked_page_1:
         text_of_page_1 = True
@@ -676,11 +632,11 @@ while running:
     screen.blit(RenderKeyD()[0], (140, 30))
     screen.blit(RenderKeyW()[0], (75, -35))
 
-    LoadKeyA(screen, KeyA[frame_key_a if key_pressed_a else 0], (10, 30))
-    LoadKeyS(screen, KeyS[frame_key_s if key_pressed_s else 0], (77, 30))
-    LoadKeyD(screen, KeyD[frame_key_d if key_pressed_d else 0], (140, 30))
-    LoadKeyW(screen, KeyW[frame_key_w if key_pressed_w else 0], (75, -35))
-
+    pressed_keys = pygame.key.get_pressed()
+    for key_anim in keys_manager:
+            key_anim.update(current_time, pressed_keys)
+            key_anim.draw(screen)
+    
     if page_opened == 1:
         screen.blit(page_1, (0, 0))
     if page_opened == 2:
@@ -728,27 +684,30 @@ while running:
         elif quit_rect.collidepoint(mouse_pos) and left_click:
             main_menu()
             MenuTrack()
-            
+                
     if j1_trigger:
-        screen.fill((0, 0, 0))
-        move_left = False
-        move_right = False
-        LoadJumpscare1(screen, Jumpscare1_frames[frame_j], (400, 0))
-        if frame_j == 50:
-            j1_trigger = False
+            screen.fill((0, 0, 0))
+            move_left = False
+            move_right = False
+            current_frame_surface = jumpscare_1_data.get_frame(frame_j)
+            screen.blit(current_frame_surface, (400, 0))
+            if frame_j == jumpscare_1_data.total_frames - 1:
+                j1_trigger = False
+
     if j2_trigger:
         screen.fill((0, 0, 0))
         move_left = False
         move_right = False
-        LoadJumpscare2(screen, Jumpscare2_frames[frame_j2], (400, 0))
-        if frame_j2 == 31:
+        current_frame_surface = jumpscare_2_data.get_frame(frame_j2)
+        screen.blit(current_frame_surface, (400, 0))
+        if frame_j2 == jumpscare_2_data.total_frames - 1:
             j2_trigger = False
-
+    
     surface1.fill("#7a4841")
     screen.blit(surface1, (surface1_rect.x - camera_x, surface1_rect.y))
 
-    process = psutil.Process(os.getpid())
-    print(f"Actual RAM Usage: {process.memory_info().rss / (1024 * 1024):.2f} MB")
+    # process = psutil.Process(os.getpid())
+    # print(f"Actual RAM Usage: {process.memory_info().rss / (1024 * 1024):.2f} MB")
     pygame.display.update()
 
 pygame.quit()

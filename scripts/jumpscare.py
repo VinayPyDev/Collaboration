@@ -9,59 +9,21 @@ def resource_path(relative_path):
         base_path = os.path.dirname(os.path.dirname(__file__))
     return os.path.join(base_path, relative_path)
 
-class jumpscare_1():
-    def __init__(self, image):
-        self.sheet = image
+class JumpscarePlayer:
+    def __init__(self, path, frames, width, height, scale, color):
+        self.sheet = pygame.image.load(resource_path(path)).convert_alpha()
+        self.total_frames = frames
+        self.width = width
+        self.height = height
+        self.scale = scale
+        self.color = color
 
-    def get_image(self, frame, width, height, scale, color):
-        image = pygame.Surface((width, height), pygame.SRCALPHA).convert_alpha()
-        image.blit(self.sheet, (0, 0), (frame * width, 0, width, height))
-        image = pygame.transform.scale(image, (width * scale, height * scale))
-        image.set_colorkey(color)
+    def get_frame(self, frame_index):
+        image = pygame.Surface((self.width, self.height), pygame.SRCALPHA).convert_alpha()
+        image.blit(self.sheet, (0, 0), (frame_index * self.width, 0, self.width, self.height))
+        image = pygame.transform.scale(image, (int(self.width * self.scale), int(self.height * self.scale)))
+        image.set_colorkey(self.color)
         return image
-    
-def Render_jumpscare_1():
-    jumpscare_img_1 = pygame.image.load(resource_path("jumpscares/2ndJumpscareV2.png")).convert_alpha()
-    SpriteSheet = jumpscare_1(jumpscare_img_1)
-    frames = 51
-    width, height = 150, 150
-    scale = 4.5
-    colorkey = (255, 255, 255)
 
-    animation_list = []
-    for i in range(frames):
-        animation_list.append(SpriteSheet.get_image(i, width, height, scale, colorkey))
-
-    return animation_list
-
-class jumpscare_2():
-    def __init__(self, image):
-        self.sheet = image
-
-    def get_image(self, frame, width, height, scale, color):
-        image = pygame.Surface((width, height), pygame.SRCALPHA).convert_alpha()
-        image.blit(self.sheet, (0, 0), (frame * width, 0, width, height))
-        image = pygame.transform.scale(image, (width * scale, height * scale))
-        image.set_colorkey(color)
-        return image
-    
-def Render_jumpscare_2():
-    jumpscare_img_2 = pygame.image.load(resource_path("jumpscares/LockerJumpscare.png")).convert_alpha()
-    SpriteSheet = jumpscare_2(jumpscare_img_2)
-    frames = 32
-    width, height = 150, 150
-    scale = 4.5
-    colorkey = (0, 0, 255)
-
-    animation_list = []
-    for i in range(frames):
-        animation_list.append(SpriteSheet.get_image(i, width, height, scale, colorkey))
-
-    return animation_list
-
-# Load calls
-def LoadJumpscare1(screen, frame, pos):
-    screen.blit(frame, pos)
-    
-def LoadJumpscare2(screen, frame, pos):
-    screen.blit(frame, pos)
+jumpscare_1_data = JumpscarePlayer("jumpscares/2ndJumpscareV2.png", 51, 150, 150, 4.5, (255, 255, 255))
+jumpscare_2_data = JumpscarePlayer("jumpscares/LockerJumpscare.png", 32, 150, 150, 4.5, (0, 0, 255))
