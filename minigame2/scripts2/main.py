@@ -6,7 +6,11 @@ from font import get_font
 
 pygame.init()
 
+has_no_options = False
+
 def game2(screen):
+    global has_no_options
+
     WIDTH, HEIGHT = screen.get_size()
     clock = pygame.time.Clock()
     dt = 0
@@ -47,6 +51,7 @@ def game2(screen):
     while True:
         screen.fill((0, 0, 0))
         dt = clock.tick(60) / 1000
+        has_no_options = False
 
         if not picked_itm_1:
             pygame.draw.rect(screen, "purple", rect_obj_1)
@@ -125,6 +130,8 @@ def game2(screen):
                         has_clicked = True
 
         if broken_itm_1 and broken_itm_2 and broken_itm_3 and broken_itm_4:
-            return False
+            has_no_options = True
+            break
 
-        pygame.display.update()
+        pygame.display.update() 
+    return has_no_options       

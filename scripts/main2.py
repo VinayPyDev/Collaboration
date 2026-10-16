@@ -3,7 +3,7 @@ import sys
 import os
 
 # [additional memory tracking]
-# import psutil
+import psutil
 
 # [Function imports]
 from art import load_sunset_bg_full, load_dungeon_bg_full, load_sunset_bg_2_full, load_sunset_extra, load_keys, load_void_bg_full
@@ -41,8 +41,11 @@ from minigame1.scripts1.main import game1
 from minigame1.scripts1.main import *
 from minigame2.scripts2.main import game2
 from minigame2.scripts2.main import *
+from minigame2.scripts2 import main as minigame_2
 from minigame3.scripts3.main import game3
 from minigame3.scripts3.main import *
+    
+from minigame2.scripts2.main import has_no_options
 
 def resource_path(relative_path):
     try:
@@ -392,13 +395,19 @@ while running:
         move_left = False
         move_right = False
 
+    if minigame2_started and minigame_2.has_no_options and player_x >=8343:
+        if not j2_trigger:
+            j2_trigger = True
+        if not j2_started:
+            j2_started = True
+
     if not j1_started and player_x > 16865:
         j1_trigger = True
         j1_started = True
 
-    if not j2_started and player_x > 8812:
-        j2_trigger = True
-        j2_started = True
+    # if not j2_started and player_x > 8812:
+    #     j2_trigger = True
+    #     j2_started = True
 
     if in_dungeon:
         draw_dungeon_bg_full(screen, art, camera_x)
@@ -702,12 +711,13 @@ while running:
         screen.blit(current_frame_surface, (400, 0))
         if frame_j2 == jumpscare_2_data.total_frames - 1:
             j2_trigger = False
+            minigame_2.has_no_options = False
     
     surface1.fill("#7a4841")
     screen.blit(surface1, (surface1_rect.x - camera_x, surface1_rect.y))
 
-    # process = psutil.Process(os.getpid())
-    # print(f"Actual RAM Usage: {process.memory_info().rss / (1024 * 1024):.2f} MB")
+    process = psutil.Process(os.getpid())
+    print(f"RAM usage: {process.memory_info().rss / (1024 * 1024):.2f} MB")
     pygame.display.update()
 
 pygame.quit()

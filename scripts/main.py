@@ -41,8 +41,11 @@ from minigame1.scripts1.main import game1
 from minigame1.scripts1.main import *
 from minigame2.scripts2.main import game2
 from minigame2.scripts2.main import *
+from minigame2.scripts2 import main as minigame_2
 from minigame3.scripts3.main import game3
 from minigame3.scripts3.main import *
+    
+from minigame2.scripts2.main import has_no_options
 
 def resource_path(relative_path):
     try:
@@ -392,13 +395,19 @@ while running:
         move_left = False
         move_right = False
 
+    if minigame2_started and minigame_2.has_no_options and player_x >=8343:
+        if not j2_trigger:
+            j2_trigger = True
+        if not j2_started:
+            j2_started = True
+
     if not j1_started and player_x > 16865:
         j1_trigger = True
         j1_started = True
 
-    if not j2_started and player_x > 8812:
-        j2_trigger = True
-        j2_started = True
+    # if not j2_started and player_x > 8812:
+    #     j2_trigger = True
+    #     j2_started = True
 
     if in_dungeon:
         draw_dungeon_bg_full(screen, art, camera_x)

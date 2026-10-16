@@ -28,8 +28,8 @@ def Awareness_text():
     description_2 = get_font(32).render("bullying isn't harmless but the emotional impact is chronic.", True, "#DADADA") 
     description_3 = get_font(32).render("Sometimes the limit is crossed to a point where sucidial thoughts begins rising until the life of the victim is over", True, "#DADADA")
     screen.blit(description, (0, 50))
-    screen.blit(description_2, (0, 200))
-    screen.blit(description_3, (0, 350))
+    screen.blit(description_2, (0, 125))
+    screen.blit(description_3, (0, 200))
 
 def disclaimer_screen():
     clock = pygame.time.Clock()
