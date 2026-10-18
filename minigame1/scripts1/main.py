@@ -10,6 +10,9 @@ from minigame1.scripts1.art import RenderKeyA, RenderKeyS, RenderKeyD, RenderKey
 from minigame1.scripts1.art import LoadKeyA, LoadKeyD, LoadKeyS, LoadKeyW
 from minigame1.scripts1.art import KeyAnimation, KeyA, KeyD, KeyS, KeyW
 
+from minigame1.scripts1.art2 import player_down_data, player_left_data, player_right_data, player_up_data
+from minigame1.scripts1.art2 import dog_idle_data
+
 art = {}
 art.update(load_keys())
 
@@ -111,15 +114,23 @@ bottle_img = pygame.transform.scale(pygame.image.load(resource_path("data2/bottl
 foodbag_img = pygame.transform.scale(pygame.image.load(resource_path("data2/foodbag.png")).convert_alpha(), (150, 150))
 bowl_img = pygame.transform.scale(pygame.image.load(resource_path("data2/bowl.png")).convert_alpha(), (150, 150))
 
+frm1 = 0
+frm2 = 0  
+frm3 = 0
+frm4 = 0
+frm_d = 0
+last_upd = pygame.time.get_ticks()
+animation_cooldwn = 100
+animation_cooldwn2 = 250
+
 def game1():
     global screen
     global tsx, map_tiles, map_data, mapx, mapy
     global collisions, collision, hitboxes, root, images, tileset, gid
     global objectgroup, tile, tile_id, idx, col, row, width
-
     global bottle_img, foodbag_img, bowl_img
-
     global art, LoadKeyA, LoadKeyD, LoadKeyS, LoadKeyW
+    global frm1, frm2, frm3, frm4, frm_d, last_upd, animation_cooldwn, animation_cooldwn2
 
     WIDTH, HEIGHT = screen.get_size()
     clock = pygame.time.Clock()
@@ -147,7 +158,7 @@ def game1():
         KeyAnimation(RenderKeyW(), LoadKeyW, (1075, -35), pygame.K_w),
     ]
 
-    dog_rect = pygame.Rect(800, 500, 100, 100)
+    dog_rect = pygame.Rect(800, 300, 100, 100)
     water_needs = 2
     food_needs = 3
 
@@ -172,7 +183,7 @@ def game1():
         if not_picked5:
             screen.blit(foodbag_img, (rect6.x - camera_x, rect6.y - camera_y))
 
-        pygame.draw.rect(screen, "green", (dog_rect.x - camera_x, dog_rect.y - camera_y, dog_rect.width, dog_rect.height))
+        # pygame.draw.rect(screen, "green", (dog_rect.x - camera_x, dog_rect.y - camera_y, dog_rect.width, dog_rect.height))
         screen.blit(bowl_img, (775 - camera_x, 550 - camera_y))
 
         for event in pygame.event.get():
@@ -267,7 +278,7 @@ def game1():
         screen.blit(text1, (0, 0))
         screen.blit(text2, (0, 100))
 
-        pygame.draw.rect(screen, (255, 0, 0), (rect.x - camera_x, rect.y - camera_y, rect.width, rect.height))
+        # pygame.draw.rect(screen, (255, 0, 0), (rect.x - camera_x, rect.y - camera_y, rect.width, rect.height))
 
         screen.blit(RenderKeyA()[0], (1010, 30))
         screen.blit(RenderKeyS()[0], (1077, 30))
@@ -277,7 +288,30 @@ def game1():
         for key_anim in keys_manager:
             key_anim.update(current_time, pressed_keys)
             key_anim.draw(screen)
-    
+
+        if key_pressed_a:
+            active_player_data = player_left_data
+            frm3 = (frm3 + 1) % active_player_data.total_frames if current_time - last_upd >= animation_cooldwn else frm3
+            current_frame_idx = frm3
+        elif key_pressed_d:
+            active_player_data = player_right_data
+            frm2 = (frm2 + 1) % active_player_data.total_frames if current_time - last_upd >= animation_cooldwn else frm2
+            current_frame_idx = frm2
+        elif key_pressed_w:
+            active_player_data = player_up_data
+            frm4 = (frm4 + 1) % active_player_data.total_frames if current_time - last_upd >= animation_cooldwn else frm4
+            current_frame_idx = frm4
+        elif key_pressed_s:
+            active_player_data = player_down_data
+            frm1 = (frm1 + 1) % active_player_data.total_frames if current_time - last_upd >= animation_cooldwn else frm1
+            current_frame_idx = frm1
+        else:
+            active_player_data = player_down_data
+            current_frame_idx = 0  
+
+        active_player_data.draw(screen, current_frame_idx, rect.x, rect.y, camera_x, camera_y)
+        dog_idle_data.draw(screen, frm_d, dog_rect.x, dog_rect.y, camera_x, camera_y)
+
         if food_needs == 0 and water_needs == 0:
             return False
 

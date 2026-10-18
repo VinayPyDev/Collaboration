@@ -1,11 +1,24 @@
 import pygame
+import sys
+import os
 
+from art import LoadFlags
 from font import get_font, get_font_BOLD
 from thanks import ThanksToDevsScreen
+
+def resource_path(relative_path):
+    if hasattr(sys, '_MEIPASS'):
+        base_path = sys._MEIPASS
+    else:
+        base_path = os.path.abspath(os.path.dirname(__file__))
+    return os.path.join(base_path, relative_path)
 
 WIDTH = 1280
 HEIGHT = 720
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
+
+art = {}
+art.update(LoadFlags())
 
 def Disclaimer_text():
     header = get_font_BOLD(45).render("DISCLAIMER", True, "#FF0000")
@@ -24,12 +37,37 @@ def Disclaimer_text():
     screen.blit(age_restriction_note_2, (10, 360))
 
 def Awareness_text():
+    global resource_path
+    global get_font_BOLD
     description = get_font(32).render("Thousands of lives of adolescents are lost due to bullying,", True, "#DADADA")
     description_2 = get_font(32).render("bullying isn't harmless but the emotional impact is chronic.", True, "#DADADA") 
-    description_3 = get_font(32).render("Sometimes the limit is crossed to a point where sucidial thoughts begins rising until the life of the victim is over", True, "#DADADA")
-    screen.blit(description, (0, 50))
-    screen.blit(description_2, (0, 125))
-    screen.blit(description_3, (0, 200))
+    description_3 = get_font(32).render("Sometimes the limit is crossed to a point where sucidial thoughts begins", True, "#DADADA")
+    description_4 = get_font(32).render(" rising until the life of the victim is over", True, "#DADADA")
+    screen.blit(description, (0, 25))
+    screen.blit(description_2, (0, 100))
+    screen.blit(description_3, (0, 175))
+    screen.blit(description_4, (0, 250))
+
+    screen.blit(art["Brazil"], (20, 320))
+    screen.blit(art["France"], (20, 470))
+    screen.blit(art["India"], (20, 620))
+    screen.blit(art["Japan"], (625, 320))
+    screen.blit(art["UK"], (625, 470))
+    screen.blit(art["USA"], (625, 620))
+
+    brazil_num = get_font_BOLD(45).render("+55 1131514109", True, "#FFFFFF")
+    france_num = get_font_BOLD(45).render("+33 145394000", True, "#FFFFFF")
+    india_num = get_font_BOLD(45).render("+91 8376804102", True, "#FFFFFF")
+    japan_num = get_font_BOLD(45).render("+81 643954343", True, "#FFFFFF")    
+    UK_num = get_font_BOLD(45).render("+44 8000684141", True, "#FFFFFF")
+    USA_num = get_font_BOLD(45).render("988", True, "#FFFFFF")
+
+    screen.blit(brazil_num, (130, 320))
+    screen.blit(france_num, (130, 470))
+    screen.blit(india_num, (130, 620))
+    screen.blit(japan_num, (735, 320))
+    screen.blit(UK_num, (735, 470))
+    screen.blit(USA_num, (735, 620))
 
 def disclaimer_screen():
     clock = pygame.time.Clock()

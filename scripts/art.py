@@ -181,3 +181,14 @@ def PauseMenu():
     return {
         "paused_menu": pygame.image.load(resource_path("data 2/paused_menu.png")).convert_alpha()
     }
+
+# [Flags]
+def LoadFlags():
+    return {
+        "Brazil": pygame.image.load(resource_path(r"flags\Brazil_flag.png")).convert_alpha(),
+        "France": pygame.image.load(resource_path(r"flags\France_flag.png")).convert_alpha(),
+        "India": pygame.image.load(resource_path(r"flags\India_flag.png")).convert_alpha(),
+        "Japan": pygame.image.load(resource_path(r"flags\Japan_flag.png")).convert_alpha(),
+        "UK": pygame.image.load(resource_path(r"flags\UK_flag.png")).convert_alpha(),
+        "USA": pygame.image.load(resource_path(r"flags\USA_flag.png")).convert_alpha()
+    }
