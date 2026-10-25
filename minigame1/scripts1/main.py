@@ -225,6 +225,10 @@ def game1():
         current_time = pygame.time.get_ticks()
         pressed_keys = pygame.key.get_pressed()
 
+        if current_time - last_upd >= animation_cooldwn2:
+            frm_d = (frm_d + 1) % dog_idle_data.total_frames
+            last_upd = current_time
+        
         if not_picked1 and rect.colliderect(rect2):
             not_picked1 = False
             food_scored = food_scored + 1
@@ -277,8 +281,6 @@ def game1():
         text2 = get_font(50).render(f"Water: {water_scored}", True, (255, 255, 255))
         screen.blit(text1, (0, 0))
         screen.blit(text2, (0, 100))
-
-        # pygame.draw.rect(screen, (255, 0, 0), (rect.x - camera_x, rect.y - camera_y, rect.width, rect.height))
 
         screen.blit(RenderKeyA()[0], (1010, 30))
         screen.blit(RenderKeyS()[0], (1077, 30))

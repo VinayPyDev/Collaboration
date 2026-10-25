@@ -16,7 +16,7 @@ from display import RenderSunsetToDungeon, RenderDungeonToVoid
 
 from menu import main_menu
 from memory_render import Render_memory_1, Render_memory_2, Render_memory_3, Render_memory_4, Render_memory_5, Render_memory_6, Render_memory_7, Render_memory_8, Render_memory_9
-from transition import TransitionObj, fade
+from transition import TransitionObj, fade, FadeIn, FadeOut
 from tilesets import Load_Sunrise_Tileset, Load_Dungeon_Tileset, Load_Void_Tileset
 from font import *
 from text import Start_text, Awareness_text
@@ -238,11 +238,10 @@ map_end_x = 18600
 
 text_displayed = False
 
-surface1 = pygame.Surface((6396, 220))
+surface1 = pygame.Surface((6396, 220), pygame.SRCALPHA).convert_alpha()
 surface1_rect = pygame.Rect(0, 612, 6396, 220)
 
 main_menu()
-
 running = True
 while running:
     
@@ -599,6 +598,7 @@ while running:
         transition_text_surface = get_font_BOLD(45).render(sunset_to_dusk, True, (244, 244, 244))
         transition_text_surface_2 = get_font_BOLD(45).render(sunset_to_dusk_2, True, (244, 244, 244))
         text_timer = 3000
+        text_displayed = False
         fade.start(1500, reverse=False) 
         fade_out_started = True
         current_bg = "dusk"
@@ -607,7 +607,8 @@ while running:
     if player_x >= 6400 and current_bg == "dusk" and in_sunset_2 and not dusk_fade_triggered:
         transition_text_surface = get_font_BOLD(45).render(dusk_to_dungeon, True, (244, 244, 244))
         transition_text_surface_2 = get_font_BOLD(45).render(dusk_to_dungeon_2, True, (244, 244, 244))
-        text_timer = 8000
+        text_timer = 3000
+        text_displayed = False
         fade.start(1500, reverse=False)
         fade_out_started = True
         current_bg = "dungeon"
@@ -616,7 +617,8 @@ while running:
     if player_x >= 11578 and current_bg == "dungeon" and in_dungeon and not dungeon_fade_triggered:
         transition_text_surface = get_font_BOLD(45).render(dungeon_to_void, True, (244, 244, 244))
         transition_text_surface_2 = get_font_BOLD(45).render(dungeon_to_void_2, True, (244, 244, 244))
-        text_timer = 11000
+        text_timer = 3000
+        text_displayed = False
         fade.start(1500, reverse=False)
         fade_out_started = True
         current_bg = "void"
@@ -709,7 +711,7 @@ while running:
             j2_trigger = False
             minigame_2.has_no_options = False
     
-    surface1.fill("#7a4841")
+    surface1.fill("#7a4841", 0)
     screen.blit(surface1, (surface1_rect.x - camera_x, surface1_rect.y))
 
     process = psutil.Process(os.getpid())

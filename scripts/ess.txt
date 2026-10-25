@@ -76,3 +76,34 @@
 # sunset_tiles = build_sunrise_ground(0, 12000)
 # dungeon_tiles = build_dungeon_ground(0, 12000)
 # void_tiles = build_void_ground(0, 12000)
+
+# Fade in and out
+
+    # alpha = 0
+    # fade_in_timer = pygame.time.get_ticks()
+    # if player_x >= 2600 and current_bg == "sunset" and in_sunset and not sunset_fade_triggered:
+    #     alpha = FadeIn(alpha, speed=5)
+    #     if alpha == 255:
+    #         fade_in_timer += dt
+    #         if fade_in_timer >= 5:
+    #             alpha = FadeOut(alpha, speed=5)
+    #             if alpha < 0:
+    #                 alpha = 0
+    # alpha = 0
+    # if player_x >= 6400 and current_bg == "dusk" and in_sunset_2 and not dusk_fade_triggered:
+    #     alpha = FadeIn(alpha, speed=5)
+    #     if alpha == 255:
+    #         fade_in_timer += dt
+    #         if fade_in_timer >= 5:
+    #             alpha = FadeOut(alpha, speed=5)
+    #             if alpha < 0:
+    #                 alpha = 0
+    # alpha = 0
+    # if player_x >= 11578 and current_bg == "dungeon" and in_dungeon and not dungeon_fade_triggered:
+    #     alpha = FadeIn(alpha, speed=5)
+    #     if alpha == 255:
+    #         fade_in_timer += dt
+    #         if fade_in_timer >= 5:
+    #             alpha = FadeOut(alpha, speed=5)
+    #             if alpha < 0:
+    #                 alpha = 0

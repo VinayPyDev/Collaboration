@@ -1,11 +1,22 @@
 import pygame
 import sys
+import os
 
 pygame.init()
 screen = pygame.display.set_mode((600, 400))
 clock = pygame.time.Clock()
-font = pygame.font.Font(None, 64)
-orig_surf = font.render('enter the text', True, (255, 255, 255))
+
+def resource_path(relative_path):
+    try:
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.dirname(os.path.dirname(__file__))
+    return os.path.join(base_path, relative_path)
+
+def get_font(size):
+    return pygame.font.Font(resource_path("font/PixeloidSans-Bold.ttf"), size)
+
+orig_surf = get_font(45).render('enter the text', True, (255, 255, 255))
 txt_surf = orig_surf.copy()
 
 alpha_surf = pygame.Surface(txt_surf.get_size(), pygame.SRCALPHA)

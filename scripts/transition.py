@@ -2,6 +2,7 @@ import pygame
 
 WIDTH = 1280
 HEIGHT = 720
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
 class TransitionObj:
     def __init__(self, screen_size, SubtractingInt=200):
@@ -37,12 +38,12 @@ class TransitionObj:
                 return
             
             if not self.reverse:
-                self.val += 51 * dt
+                self.val += 180 * dt
                 if self.val >= 255:
                     self.val = 255
                     self.waiting = True
             else:
-                self.val -= 51 * dt
+                self.val -= 180 * dt
                 if self.val <= 0:
                     self.val = 0
                     self.active = False
@@ -57,7 +58,7 @@ fade = TransitionObj((WIDTH, HEIGHT))
 
 def fadeout():
     fade_surface = pygame.Surface((WIDTH, HEIGHT)).convert()
-    fade_surface.fill(black)
+    fade_surface.fill("black")
     for i in range(0, 256, 2):
         fade_surface.set_alpha(i)
         screen.blit(fade_surface, (0, 0))
@@ -66,7 +67,7 @@ def fadeout():
 
 def fadein(new_level_surface):
     fade_surface = pygame.Surface((WIDTH, HEIGHT)).convert()
-    fade_surface.fill(black)
+    fade_surface.fill("black")
     for i in range(0, 256, 2):
         screen.blit(new_level_surface, (0, 0))
         
@@ -75,3 +76,25 @@ def fadein(new_level_surface):
         
         pygame.display.update()
         pygame.time.delay(5)
+
+# new fade functions
+def FadeIn(alpha, speed=5):
+    alpha += speed
+    if alpha >= 255:
+        alpha = 255
+    return alpha
+def FadeOut(alpha, speed=5):
+    alpha -= speed
+    if alpha < 0:
+        alpha = 0
+    return alpha
+     
+alpha = 0
+fade_dir = -1 #-1 fade out, +1 fade in 
+def FadeText(speed=4):
+    alpha += fade_dir * speed
+    if alpha <= 0:
+        alpha = 0
+    elif alpha >= 255:
+        alpha = 255
+        fade_dir = -1
