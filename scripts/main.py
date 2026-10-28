@@ -16,7 +16,7 @@ from display import RenderSunsetToDungeon, RenderDungeonToVoid
 
 from menu import main_menu
 from memory_render import Render_memory_1, Render_memory_2, Render_memory_3, Render_memory_4, Render_memory_5, Render_memory_6, Render_memory_7, Render_memory_8, Render_memory_9
-from transition import TransitionObj, fade, FadeIn, FadeOut
+from transition import TransitionObj, fade, FadeTextCalc, FadeTextSurf
 from tilesets import Load_Sunrise_Tileset, Load_Dungeon_Tileset, Load_Void_Tileset
 from font import *
 from text import Start_text, Awareness_text
@@ -624,6 +624,17 @@ while running:
         current_bg = "void"
         dungeon_fade_triggered = True
 
+    if fade.active and transition_text_surface is not None:
+        txt_alpha = fade.val
+        fade_txt_1 = FadeTextSurf(transition_text_surface, txt_alpha)
+        screen.blit(fade_txt_1, (10, 260))
+        if transition_text_surface_2 is not None:
+            fade_txt_2 = FadeTextSurf(transition_text_surface_2, txt_alpha)
+            screen.blit(fade_txt_2, (100, 360))
+    else:
+        transition_text_surface = None
+        transition_text_surface_2 = None
+
     if fade_out_started and fade.val >= 255 and not text_displayed:
         text_displayed = True
 
@@ -711,7 +722,7 @@ while running:
             j2_trigger = False
             minigame_2.has_no_options = False
     
-    surface1.fill("#7a4841", 0)
+    surface1.fill("#7a4841")
     screen.blit(surface1, (surface1_rect.x - camera_x, surface1_rect.y))
 
     process = psutil.Process(os.getpid())

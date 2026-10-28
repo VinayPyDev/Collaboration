@@ -29,8 +29,8 @@ class M1Animations:
 
     def draw(self, surface, frame_index, x, y, camera_x, camera_y):
         frame = self.get_frame(frame_index)
-        draw_x = x - camera_x - self.x_off
-        draw_y = y - camera_y - self.y_off
+        draw_x = x - camera_x - (frame.get_width() - 100) // 2
+        draw_y = y - camera_y - (frame.get_height() - 100)
         surface.blit(frame, (draw_x, draw_y))
 
 player_down_data = M1Animations(r"data2\player_down.png", 3, 48, 100, 3.125, 100, 100, (255, 255, 255))

@@ -77,24 +77,21 @@ def fadein(new_level_surface):
         pygame.display.update()
         pygame.time.delay(5)
 
-# new fade functions
-def FadeIn(alpha, speed=5):
-    alpha += speed
-    if alpha >= 255:
-        alpha = 255
-    return alpha
-def FadeOut(alpha, speed=5):
-    alpha -= speed
-    if alpha < 0:
-        alpha = 0
-    return alpha
-     
 alpha = 0
-fade_dir = -1 #-1 fade out, +1 fade in 
-def FadeText(speed=4):
-    alpha += fade_dir * speed
-    if alpha <= 0:
-        alpha = 0
-    elif alpha >= 255:
-        alpha = 255
-        fade_dir = -1
+def FadeTextCalc(alpha, fading=True, speed=3):
+    if fading:
+        alpha += speed
+        if alpha >= 255:
+            alpha = 255
+    else:
+        alpha -= speed
+        if alpha <= 0:
+            alpha = 0
+    return alpha
+
+def FadeTextSurf(orig_surf, alpha):
+    txt_surf = orig_surf.copy()
+    alpha_surf = pygame.Surface(txt_surf.get_size(), pygame.SRCALPHA)
+    alpha_surf.fill((255, 255, 255, int(alpha)))
+    txt_surf.blit(alpha_surf, (0, 0), special_flags=pygame.BLEND_RGBA_MULT)
+    return txt_surf
