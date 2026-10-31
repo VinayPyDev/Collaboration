@@ -290,7 +290,7 @@ def game1():
         for key_anim in keys_manager:
             key_anim.update(current_time, pressed_keys)
             key_anim.draw(screen)
-
+        
         if key_pressed_a:
             active_player_data = player_left_data
             frm3 = (frm3 + 1) % active_player_data.total_frames if current_time - last_upd >= animation_cooldwn else frm3
@@ -309,11 +309,13 @@ def game1():
             current_frame_idx = frm1
         else:
             active_player_data = player_down_data
-            current_frame_idx = 0  
+            current_frame_idx = 0
 
         active_player_data.draw(screen, current_frame_idx, rect.x, rect.y, camera_x, camera_y)
         dog_idle_data.draw(screen, frm_d, dog_rect.x, dog_rect.y, camera_x, camera_y)
 
+        # player_down_data.draw(screen, frm1, rect.x, rect.y, camera_x, camera_y)
+    
         if food_needs == 0 and water_needs == 0:
             return False
 
