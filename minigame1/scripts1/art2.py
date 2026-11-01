@@ -39,9 +39,9 @@ class M1Animations:
         return image
     def draw(self, surface, frame_index, x, y, camera_x, camera_y):
         frame = self.animation_list[frame_index]
-        draw_x = x - camera_x - self.x_off
-        draw_y = y - camera_y - self.y_off
-        surface.blit(frame, (draw_x, draw_y))
+        sprite_rect = frame.get_rect()
+        sprite_rect.center = (x + 50 - camera_x, y + 100 - camera_y)
+        surface.blit(frame, sprite_rect)
 
 class M1DogAnimations:
     def __init__(self, path, frames, width, height, scale, x_off, y_off, color):
@@ -65,9 +65,9 @@ class M1DogAnimations:
         draw_y = y - camera_y - (frame.get_height() - 100)
         surface.blit(frame, (draw_x, draw_y))
 
-player_down_data = M1Animations(r"data2\player_down.png", 3, 48, 100, 3.125, 100, 100, (255, 255, 255))
-player_right_data = M1Animations(r"data2\player_right.png", 3, 48, 100, 3.125, 100, 100, (255, 255, 255))
-player_left_data = M1Animations(r"data2\player_left.png", 3, 48, 100, 3.125, 100, 100, (255, 255, 255))
-player_up_data = M1Animations(r"data2\player_up.png", 3, 48, 100, 3.125, 100, 100, (255, 255, 255))
+player_down_data = M1Animations(r"data2\player_down.png", 3, 44.5, 64, 3.0, 50, 100, (255, 255, 255))
+player_right_data = M1Animations(r"data2\player_right.png", 3, 44.5, 64, 3.0, 50, 100, (255, 255, 255))
+player_left_data = M1Animations(r"data2\player_left.png", 3, 44.5, 64, 3.0, 50, 100, (255, 255, 255))
+player_up_data = M1Animations(r"data2\player_up.png", 3, 44.5, 64, 3.0, 50, 100, (255, 255, 255))
 
-dog_idle_data = M1DogAnimations(r"data2\dog_idle.png", 2, 48, 100, 3.125, 100, 100, (255, 255, 255))
+dog_idle_data = M1DogAnimations(r"data2\dog_idle.png", 2, 48, 100, 3.0, 100, 100, (255, 255, 255))

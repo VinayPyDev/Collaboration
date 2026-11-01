@@ -139,7 +139,9 @@ def game1():
     camera_x = 0
     camera_y = 0
 
-    rect = pygame.Rect(640, 360, 100, 100)
+    # rect = pygame.Rect(640, 360, 32, 32)
+    rect = player_down_data.animation_list[0].get_rect(center=(640, 360))
+    rect.size = (96, 96)
     speed = 500
 
     food_scored = 0
@@ -200,6 +202,10 @@ def game1():
                 elif event.key == pygame.K_e and food_scored > 0:
                     food_scored -= 1
                     food_needs -= 1
+
+                if event.key == pygame.K_ESCAPE:
+                    pygame.quit()
+                    sys.exit()
 
         camera_x = rect.x - WIDTH // 2
         camera_y = rect.y - HEIGHT // 2
