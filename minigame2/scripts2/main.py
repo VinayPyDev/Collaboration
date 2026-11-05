@@ -3,17 +3,26 @@ import sys
 import random
 
 from font import get_font
+from minigame2.scripts2.art import Locker, pin, filer, coin, screwdriver
 
 pygame.init()
 
 has_no_options = False
+art = {}
 
 def game2(screen):
     global has_no_options
+    global art
 
     WIDTH, HEIGHT = screen.get_size()
     clock = pygame.time.Clock()
     dt = 0
+
+    art.update(filer())
+    art.update(pin())
+    art.update(Locker())
+    art.update(coin())
+    art.update(screwdriver())
 
     rect_obj_1 = pygame.Rect(1100, 100, 100, 100)
     rect_obj_2 = pygame.Rect(1100, 250, 100, 100)
@@ -53,8 +62,10 @@ def game2(screen):
         dt = clock.tick(60) / 1000
         has_no_options = False
 
-        if not picked_itm_1:
-            pygame.draw.rect(screen, "purple", rect_obj_1)
+        screen.blit(art["locker"], (0, 0))
+
+        # if not picked_itm_1:
+        #     pygame.draw.rect(screen, "purple", rect_obj_1)
         if not picked_itm_2:
             pygame.draw.rect(screen, "purple", rect_obj_2)
         if not picked_itm_3:
@@ -88,8 +99,8 @@ def game2(screen):
         if picked_itm_4 and has_clicked:
             broken_itm_4 = True
 
-        if broken_itm_1:
-            pygame.draw.rect(screen, "blue", rect_obj_broken_1)
+        # if broken_itm_1:
+        #     pygame.draw.rect(screen, "blue", rect_obj_broken_1)
             has_clicked = False
         if broken_itm_2:
             pygame.draw.rect(screen, "blue", rect_obj_broken_2)
@@ -128,6 +139,11 @@ def game2(screen):
                         print("clicked")
                         has_picked_up = False
                         has_clicked = True
+
+        if not broken_itm_1:
+            screen.blit(art["coin"], (rect_obj_1.x, rect_obj_1.y))
+        else:
+            screen.blit(art["coin"], (rect_obj_broken_1.x, rect_obj_broken_1.y))
 
         if broken_itm_1 and broken_itm_2 and broken_itm_3 and broken_itm_4:
             has_no_options = True
